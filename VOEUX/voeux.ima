@@ -1,0 +1,13 @@
+num,oblig1,oblig2,oblig3,cons1,cons2,cons3,cons4,cons5
+1,bima,mapsi,,model,complex,mogpl,,
+2,bima,mapsi,,model,complex,mogpl,,
+3,bima,mapsi,,algav,mogpl,il,,
+4,mapsi,,,lrc,il,,,
+5,bima,mapsi,,model,mogpl,il,,
+6,bima,mapsi,,aagb,mogpl,lrc,,
+7,bima,mapsi,,model,complex,mogpl,,
+8,bima,mapsi,,mogpl,lrc,il,,
+9,mapsi,,,il,,,,
+10,mapsi,,,complex,lrc,il,,
+11,bima,mapsi,,dlp,algav,il,,
+12,bima,mapsi,,model,mogpl,lrc,,
