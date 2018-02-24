@@ -17,6 +17,18 @@ def generer_model_dict_creneau(nbMaxGroupeParUE):
 
 class MainModel():
 
+    #Les attributs
+    # ListeDesEtudiants : liste des objets Etudiants
+    # EDT : Liste de dictionnaires des creneaux
+    # ModelGurobi : le modele Gurobi
+    # DictUEs : dictionnaire des UEs; cle: intitule - valeur: Objet UE
+    # ListeDesUEs : Liste des references vers les UEs indicees sur leur id
+    # ListeDesParcours: Listes des parcours (des String)
+    # nbMaxVoeuxParEtudiant : int
+    # nbMaxGroupeParUE
+    # nbMaxUEObligatoires/parcours
+    # nbMaxUEConseillees/parcours
+    # EnsIncompatibilites : ensemble des incompatibilites
 # Par defaut
     nbMaxVoeuxParEtudiant = 5
     nbMaxGroupeParUE = 5
@@ -81,6 +93,9 @@ class MainModel():
         def get_nb_groupes(self):
             return self.nb_groupes
 
+        def ajouterEtuInteresses(self, name):
+            self.EnsEtuInteresses.add(name)
+
 
         def __str__(self):
             """ Retourne la chaine representant une UE"""
@@ -94,7 +109,8 @@ class MainModel():
                 td, tme = self.ListeCreneauxTdTme[i]
                 s += "\tTD {} : {}\n\t".format(i, td)
                 s += "\tTME {} : {}\n\t".format(i, tme)
-            s += "\n"
+
+            s += "Nombre Etudiants interesses: {}\n\n".format(len(self.EnsEtuInteresses))
 
             return s
 
@@ -141,18 +157,19 @@ class MainModel():
             modelGurobi.setObjective(objectif,GRB.MAXIMIZE) # NE PEUt-ON PAS S'EN PASSER
             modelGurobi.update()
 
-    #Les attributs
-    # ListeDesEtudiants : liste des objets Etudiants
-    # EDT : Liste de dictionnaires des creneaux
-    # ModelGurobi : le modele Gurobi
-    # DictUEs : dictionnaire des UEs; cle: intitule - valeur: Objet UE
-    # ListeDesUEs : Liste des references vers les UEs indicees sur leur id
-    # ListeDesParcours: Listes des parcours (des String)
-    # nbMaxVoeuxParEtudiant : int
-    # nbMaxGroupeParUE
-    # nbMaxUEObligatoires/parcours
-    # nbMaxUEConseillees/parcours
-    # EnsIncompatibilites : ensemble des incompatibilites
+        def enregistrer_interet_pour_UE(self):
+            for ue in self.ue_non_obligatoires + self.ue_obligatoires:
+                MainModel.ListeDesUEs[ue].ajouterEtuInteresses(self.varName)
+
+
+
+
+
+    # DEBUT MAINMODEL
+
+
+
+
 
     def __init__(self, dossierVoeux, fileUE):
         """Initialise le model principal A COMPLeTER"""
@@ -210,6 +227,8 @@ class MainModel():
                 #rajout des variables et contraintes s'appliquant a currentEtu
                 currentEtu.gerer_variables_contraintes_ue_non_obligatoires(MainModel.modelGurobi)
                 currentEtu.gerer_variables_contraintes_ue_obligatoires(MainModel.modelGurobi)
+                #Enregistrement de l'interet pour l'ensemble de ses UE
+                currentEtu.enregistrer_interet_pour_UE()
             MainModel.ListeDesParcours.append(parcours)
             indexParcours += 1
 
