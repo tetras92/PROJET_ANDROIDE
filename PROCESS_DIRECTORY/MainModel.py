@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import csv
 import copy
 import os
+from gurobipy import *
 
 #Modele d'un dictionnaire Creneau
 def generer_model_dict_creneau(nbMaxGroupeParUE):
@@ -31,6 +32,11 @@ class MainModel():
     ListeDesUEs = ["null"] + ["null"]*nbUE
     DictUEs = dict()
 
+    ListeDesEtudiants = list()
+    ListeDesParcours = list()
+    ListeEffectifDesParcours = list()
+
+    modelGurobi = Model("OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK)")
     class Incompatibilite:
         def __init__(self, idUEI, idGroupK, idUEJ, idGroupL):
             """Definit une incompatiblite de type ((idUEI, idGroupK),(idUEJ, idGroupL))"""
@@ -72,6 +78,10 @@ class MainModel():
         def get_id(self):
             return self.id
 
+        def get_nb_groupes(self):
+            return self.nb_groupes
+
+
         def __str__(self):
             """ Retourne la chaine representant une UE"""
             s = "UE {} ({}) :\n\tNombre de groupes : {}\n\tCapacite totale d'accueil: {}\n".format(self.intitule, self.id, self.nb_groupes, sum(self.ListeCapacites))
@@ -86,10 +96,50 @@ class MainModel():
                 s += "\tTME {} : {}\n\t".format(i, tme)
             s += "\n"
 
-            s += "\n\nEDT:\n{}".format(MainModel.EDT)
-
             return s
 
+    class Etudiant:
+        def __init__(self,csv_line, parcours, indexParcours):
+            self.idRelatif = int(csv_line["num"])
+            self.parcours = parcours
+            self.indexParcours = indexParcours
+            self.ue_obligatoires = [MainModel.DictUEs[csv_line["oblig"+str(id)]].get_id() for id in range(1, MainModel.nbMaxUEObligatoires+1) if csv_line["oblig"+str(id)] != ""]
+            self.ue_non_obligatoires = [MainModel.DictUEs[csv_line["cons"+str(id)]].get_id() for id in range(1, MainModel.nbMaxUEConseillees+1) if csv_line["cons"+str(id)] != ""]
+            self.varName = "x_{}_{}".format(self.indexParcours, self.idRelatif)
+
+
+        def gerer_variables_contraintes_ue_obligatoires(self,modelGurobi):
+            objectif = modelGurobi.getObjective()
+
+            for id_ue in self.ue_obligatoires:
+                var = modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name="y_%d"%self.indexParcours+"_%d"%self.idRelatif+"_%d"%id_ue)
+                contrainte = LinExpr()
+                for num_group in range(1, MainModel.ListeDesUEs[id_ue].get_nb_groupes()+1):
+                    contrainte += modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name=self.varName+"_%d"%id_ue+"_%d"%num_group)
+                contrainte -= var
+
+                objectif += var
+                modelGurobi.addConstr(var , GRB.EQUAL, 1)   #y_i_j = 1
+                modelGurobi.addConstr(contrainte, GRB.EQUAL, 0)
+
+            modelGurobi.setObjective(objectif,GRB.MAXIMIZE) # NE PEUt-ON PAS S'EN PASSER
+            modelGurobi.update()
+
+        def gerer_variables_contraintes_ue_non_obligatoires(self, modelGurobi):
+            objectif = modelGurobi.getObjective()
+
+            for id_ue in self.ue_non_obligatoires:
+                var = modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name="y_%d"%self.indexParcours+"_%d"%self.idRelatif+"_%d"%id_ue)
+                contrainte = LinExpr()
+                for num_group in range(1, MainModel.ListeDesUEs[id_ue].get_nb_groupes()+1):
+                    contrainte += modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name=self.varName+"_%d"%id_ue+"_%d"%num_group)
+                contrainte -= var
+                objectif += var
+
+                modelGurobi.addConstr(contrainte, GRB.EQUAL, 0)
+
+            modelGurobi.setObjective(objectif,GRB.MAXIMIZE) # NE PEUt-ON PAS S'EN PASSER
+            modelGurobi.update()
 
     #Les attributs
     # ListeDesEtudiants : liste des objets Etudiants
@@ -134,95 +184,49 @@ class MainModel():
             MainModel.ListeDesUEs[currentUE.get_id()] = currentUE             #Rajout a la listeUe
             MainModel.DictUEs[currentUE.intitule] = currentUE                  #Rajout au DictUe
 
+            #NETTOYER EDT
+        for creneau in range(1, len(MainModel.EDT)):
+            dictCopy = MainModel.EDT[creneau].copy()
+            for id in dictCopy:
+                if len(dictCopy[id]) == 0:
+                    del MainModel.EDT[creneau][id]
+            # FIN NETTOYAGE EDT
 
+        #FIN TRAITEMENT UE
+
+        #TRAITEMENT VOEUX ETUDIANTS
+        indexParcours = 0
+        for fichierVoeux in os.listdir(dossierVoeux):
+            parcours = fichierVoeux.split('.')[1]
+
+            path = dossierVoeux+"/"+fichierVoeux
+            f_voeux = open(path)
+            data = csv.DictReader(f_voeux)
+            effectif = 0
+            for ligneEtu in data:
+                currentEtu = MainModel.Etudiant(ligneEtu, parcours, indexParcours)
+                effectif += 1
+                MainModel.ListeDesEtudiants.append(currentEtu)
+                #rajout des variables et contraintes s'appliquant a currentEtu
+                currentEtu.gerer_variables_contraintes_ue_non_obligatoires(MainModel.modelGurobi)
+                currentEtu.gerer_variables_contraintes_ue_obligatoires(MainModel.modelGurobi)
+            MainModel.ListeDesParcours.append(parcours)
+            indexParcours += 1
 
     def __str__(self):
         """Affiche les UES du Modele"""
         s = ""
         for intitule,ue in MainModel.DictUEs.items():
             s += str(ue)
+
+        s += "\n\nEDT:\n{}\n\n".format(MainModel.EDT)
+
+        s += str(MainModel.ListeDesParcours) # A GeRER PLUS FINEMENT ET ELEGAMMENT
         # print(MainModel.EDT)
         return s
 
     #     STOP HERE
 
-    # def __init__(self,fetu,fedt_ue,fue,max_groupe):
-    #     self.ListeDesUEs = ["null"] #A ACTUALISER
-    #     self.model = Model("Affectation")
-    #     self.max_groupe = max_groupe
-    #     self.ens_ue,self.edt = self.read_ue_edt(fedt_ue)     #dictionnaire cle: intitule valeur:objet UE
-    #     self.ens_etu = self.read_etu(fetu)  # liste d'objet ETU
-    #     self.code_ue = self.encode_UE(fue)
-    #     self.model.update()
-    #     for ue in self.ens_ue:
-    #         self.ens_ue[ue].add_constrs(self.model)
-    #     self.model.update()
-    #     self.model.optimize()
-    #
-    #     for etu in self.ens_etu:
-    #         print(etu.get_affectation(self.model))
-    #
-    # def read_ue_edt(self,fue):
-    #     f = open(fue)
-    #     data = csv.DictReader(f)
-    #     edt = [{i:set() for i in range(self.max_groupe+1)} for j in range(25)]
-    #
-    #     ens_ue = dict()
-    #     for ue in data:
-    #         ens_ue[ue["intitule"]] = UE(ue)
-    #
-    #         for i in [1,2] :
-    #             if ue["cours"+str(i)] !="" :
-    #                 edt[int(ue["cours"+str(i)])][0].add(int(ue["id_ue"]))
-    #
-    #
-    #         for i in range(1,int(ue["nb_groupes"])+1):
-    #             if ue["td"+str(i)] !="" :
-    #                 edt[int(ue["td"+str(i)])][i].add(int(ue["id_ue"]))
-    #
-    #             if ue["tme"+str(i)] !="" :
-    #                 edt[int(ue["tme"+str(i)])][i].add(int(ue["id_ue"]))
-    #
-    #     #supprimer les ensembles vide pour plus de lisibilite de l'edt
-    #     edt_update = copy.deepcopy(edt)
-    #     for i in range(25):
-    #         for c,v in edt[i].items():
-    #             if len(v) == 0:
-    #                 edt_update[i].pop(c)
-    #     edt = edt_update
-    #     return ens_ue,edt
-    #
-    #
-    # def encode_UE(self,filename):
-    #     f = open(filename)
-    #     data_file = csv.DictReader(f)
-    #
-    #     dico= dict()
-    #     for ue in data_file:
-    #         dico[ue['intitule']]=ue['num']
-    #     return dico
-    #
-    # def read_etu(self,filename):  #le nom du parcours = nom fichier
-    #     f = open(filename)
-    #     data_file = csv.DictReader(f)
-    #     id_etu=0
-    #     Liste_Etu = list()
-    #     for etu in data_file:
-    #         id_etu+=1
-    #         l = {'oblig':list(),'voeux':list()}
-    #         for c,v in etu.items():
-    #             if "oblig" in c and v != '':
-    #                 l['oblig'].append(self.ens_ue[v])
-    #             elif 'cons' in c and v !='':
-    #                 l['voeux'].append(self.ens_ue[v])
-    #         etu = ETU(id_etu, filename, l['oblig'], l['voeux'])
-    #         etu.add_constr_ue_obl(self.model)
-    #         etu.add_constr_ue_voeux(self.model)
-    #         Liste_Etu.append(etu)
-    #
-    #     return Liste_Etu
-    #
-    
 
 
     
