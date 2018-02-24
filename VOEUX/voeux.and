@@ -38,7 +38,7 @@ num,oblig1,oblig2,oblig3,cons1,cons2,cons3,cons4,cons5
 37,lrc,mogpl,,complex,mapsi,mlbda,,
 38,mogpl,lrc,,complex,mapsi,il,,
 39,mogpl,lrc,,complex,mapsi,il,,
-40,mogpl,lrc,,complex,mapsi,p,,
+40,mogpl,lrc,,complex,mapsi,,,
 41,mogpl,,,mlbda,mapsi,,,
 42,mogpl,lrc,,complex,mapsi,il,,
 43,mogpl,lrc,,bima,complex,mapsi,,

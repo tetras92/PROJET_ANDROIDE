@@ -1,5 +1,5 @@
 import csv
-with open('stl.csv') as csvfile:
+with open('EDT_Bis.csv') as csvfile:
     with open('voeux.stl', 'w') as csvfileW:
         fieldnames = ["num"] + ["oblig"+str(i) for i in range(1,4)] + ["cons"+str(i) for i in range(1,6)]
         writer = csv.DictWriter(csvfileW, fieldnames=fieldnames)
