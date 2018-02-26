@@ -47,6 +47,11 @@ class MainModel():
     ListeDesEtudiants = list()
     ListeDesParcours = list()
     ListeEffectifDesParcours = list()
+    EnsIncompatibilites = set()
+    nbTotalIncompatibilites = 0
+    nbTotalIncompatibilitesVides = 0
+    nbInscriptionsSatisfaites = 0
+    ListedesVarY = list()
 
     modelGurobi = Model("OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK)")
     class Incompatibilite:
@@ -56,14 +61,23 @@ class MainModel():
             self.ueGroup1 = idUEI, idGroupK
             self.ueGroup2 = idUEJ, idGroupL
             self.ensEtuConcernes =  MainModel.ListeDesUEs[idUEI].getEnsEtu() & MainModel.ListeDesUEs[idUEJ].getEnsEtu()  #getEnsEtu  a definir dans UE
-
+            self.vide = (len(self.ensEtuConcernes) == 0)
+            MainModel.nbTotalIncompatibilites += 1
+            if self.vide:
+                MainModel.nbTotalIncompatibilitesVides += 1
         def __str__(self):
             """Retourne la chaine d'affichage de l'incompatibilite et l'effectif des etudiants concernes"""
             s = "Incompatibilite entre l'UE/Groupe {} et l'UE/Groupe {}\n\tNombre d'etudiants concernes: {}\n\n".format(self.ueGroup1, self.ueGroup2, len(self.ensEtuConcernes))
 
             return s
 
+        def ajouterContrainteModeleGurobi(self, modelGurobi):
+            if not self.vide:
+                for etuName in self.ensEtuConcernes:
+                    contrainte = LinExpr()
+                    modelGurobi.addConstr(modelGurobi.getVarByName(etuName+"_%d"%self.ueGroup1[0]+"_%d"%self.ueGroup1[1]) + modelGurobi.getVarByName(etuName+"_%d"%self.ueGroup2[0]+"_%d"%self.ueGroup2[1]) <= 1)
 
+                modelGurobi.update()
 
     class UE:
 
@@ -75,7 +89,9 @@ class MainModel():
             self.EnsEtuInteresses = set()
             self.ListeCreneauxCours = [int(csv_line["cours"+str(i)]) for i in range(1,MainModel.nbMaxCoursParUE+1) if csv_line["cours"+str(i)] != ""]
             self.ListeCreneauxTdTme = [()]+[(csv_line["td"+str(i)],csv_line["tme"+str(i)]) for i in range(1,int(self.nb_groupes)+1)]
-
+            self.ResumeDesAffectations = ["null"] + [set()]*self.nb_groupes
+            self.nbInscrits = 0
+            self.ListeNonInscrits = list()
         def actualiseEDT(self):
             """MAJ de l'EDT"""
             for creneauCours in self.ListeCreneauxCours:
@@ -96,6 +112,23 @@ class MainModel():
         def ajouterEtuInteresses(self, name):
             self.EnsEtuInteresses.add(name)
 
+        def getEnsEtu(self):
+            return self.EnsEtuInteresses
+
+        def ajouterContrainteCapaciteModelGurobi(self, modelGurobi):
+            for idGroup in range(1, self.nb_groupes+1):
+                modelGurobi.addConstr(quicksum(modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup) for etu in self.EnsEtuInteresses) <= self.ListeCapacites[idGroup-1])
+            modelGurobi.update()
+
+        def affecterEtuGroup(self, parcours, idRelatif, idGroup):
+            self.ResumeDesAffectations[idGroup].add((parcours, idRelatif))
+
+        def ajouterUnInscrit(self):
+            self.nbInscrits += 1
+
+        def signalerNonInscrit(self, parcours, idRelatif):
+            self.ListeNonInscrits.append((parcours, idRelatif))
+
 
         def __str__(self):
             """ Retourne la chaine representant une UE"""
@@ -110,7 +143,13 @@ class MainModel():
                 s += "\tTD {} : {}\n\t".format(i, td)
                 s += "\tTME {} : {}\n\t".format(i, tme)
 
-            s += "Nombre Etudiants interesses: {}\n\n".format(len(self.EnsEtuInteresses))
+            s += "Nombre Etudiants interesses: {}\n\t".format(len(self.EnsEtuInteresses))
+            s += "Nombre Etudiants effectivement inscrits : {}\n\t".format(self.nbInscrits)
+            s += "Les Non-inscrits : "
+            for parcours, idRelatif in self.ListeNonInscrits:
+                s += str(idRelatif)+"("+MainModel.ListeDesParcours[int(parcours)]+") "
+            s+= "\n\n"
+
 
             return s
 
@@ -129,6 +168,7 @@ class MainModel():
 
             for id_ue in self.ue_obligatoires:
                 var = modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name="y_%d"%self.indexParcours+"_%d"%self.idRelatif+"_%d"%id_ue)
+                MainModel.ListedesVarY.append("y_{}_{}_{}".format(self.indexParcours, self.idRelatif, id_ue))
                 contrainte = LinExpr()
                 for num_group in range(1, MainModel.ListeDesUEs[id_ue].get_nb_groupes()+1):
                     contrainte += modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name=self.varName+"_%d"%id_ue+"_%d"%num_group)
@@ -146,6 +186,7 @@ class MainModel():
 
             for id_ue in self.ue_non_obligatoires:
                 var = modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name="y_%d"%self.indexParcours+"_%d"%self.idRelatif+"_%d"%id_ue)
+                MainModel.ListedesVarY.append("y_{}_{}_{}".format(self.indexParcours, self.idRelatif, id_ue))
                 contrainte = LinExpr()
                 for num_group in range(1, MainModel.ListeDesUEs[id_ue].get_nb_groupes()+1):
                     contrainte += modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name=self.varName+"_%d"%id_ue+"_%d"%num_group)
@@ -231,6 +272,88 @@ class MainModel():
                 currentEtu.enregistrer_interet_pour_UE()
             MainModel.ListeDesParcours.append(parcours)
             indexParcours += 1
+        #FIN TRAITEMENT VOEUX ETUDIANTS
+
+        #GERER LES INCOMPATIBILITES
+        for creneauId in range(1, len(MainModel.EDT)):
+            #incompatibilites groupesTdTme
+            dictCreneau = MainModel.EDT[creneauId]
+
+            for (idGroup1, EnsUE1) in dictCreneau.items():
+                if idGroup1 != 0:
+                    #Incompatibilite intra meme numeroGroup
+                    for ueIntra1 in EnsUE1:
+                        for ueIntra2 in EnsUE2:
+                            if ueIntra1 < ueIntra2:
+                                currentIncompatibilite = MainModel.Incompatibilite(ueIntra1, idGroup1, ueIntra2, idGroup1)
+                                #Instruction Rajout au model
+                                currentIncompatibilite.ajouterContrainteModeleGurobi(MainModel.modelGurobi)
+                                #Fin
+                                MainModel.EnsIncompatibilites.add(currentIncompatibilite)
+                #Fin Incompatibilite intra meme numeroGroup
+                for (idGroup2, EnsUE2) in dictCreneau.items():
+                    if idGroup1 > 0 and idGroup1 < idGroup2: # CONVENTION IdGroup1 < IdGroup2:
+                        for ue1 in EnsUE1:
+                            for ue2 in EnsUE2:
+                                if ue1 != ue2: #l'incopatibilite entre deux groupes d'une meme ue est deja gere
+                                    currentIncompatibilite = MainModel.Incompatibilite(ue1, idGroup1, ue2, idGroup2)
+                                    #Instruction Rajout au model
+                                    currentIncompatibilite.ajouterContrainteModeleGurobi(MainModel.modelGurobi)
+                                    #Fin
+                                    MainModel.EnsIncompatibilites.add(currentIncompatibilite)
+
+            #Incompatibilite intra cours meme creneau + incompatibilite inter cours et td tme
+            try:
+                for ue1 in dictCreneau[0]:
+                    #Incompatibilite intra cours meme creneau
+                    nb_group_ue1 = MainModel.ListeDesUEs[ue1].get_nb_groupes()
+                    for ue2 in dictCreneau[0]:
+                        if ue1 < ue2:
+
+                            nb_group_ue2 = MainModel.ListeDesUEs[ue1].get_nb_groupes()
+                            for idGroup1 in range(1, nb_group_ue1+1):
+                                for idGroup2 in range(1, nb_group_ue2):
+                                    currentIncompatibilite = MainModel.Incompatibilite(ue1, idGroup1, ue2, idGroup2)
+                                    #Instruction Rajout au model
+                                    currentIncompatibilite.ajouterContrainteModeleGurobi(MainModel.modelGurobi)
+                                    #Fin
+                                    MainModel.EnsIncompatibilites.add(currentIncompatibilite)
+
+                    # incompatibilite inter cours et td tme
+                    for (idGroupTdTme, EnsUE2) in dictCreneau.items():
+                        if idGroupTdTme > 0:
+                            for ue2 in EnsUE2:
+                                for idGroup1 in range(1, nb_group_ue1+1):
+                                    currentIncompatibilite = MainModel.Incompatibilite(ue1, idGroup1, ue2, idGroupTdTme)
+                                    #Instruction Rajout au model
+                                    currentIncompatibilite.ajouterContrainteModeleGurobi(MainModel.modelGurobi)
+                                    #Fin
+                                    MainModel.EnsIncompatibilites.add(currentIncompatibilite)
+
+            except:
+                pass
+
+        #FIN GESTION DES INCOMPATIBILITES
+        # GERER LES CONTRAINTES DE CAPACITE
+        for UE in MainModel.ListeDesUEs[1:]:
+            UE.ajouterContrainteCapaciteModelGurobi(MainModel.modelGurobi)
+        #FIN CONTRAINTES DE CAPACITE
+
+
+    def resoudre(self):
+        # print (MainModel.modelGurobi.getObjective())
+        MainModel.modelGurobi.optimize()
+
+        for varName in MainModel.ListedesVarY:
+            if MainModel.modelGurobi.getVarByName(varName).x == 1:
+                MainModel.nbInscriptionsSatisfaites += 1
+                parcours, idRelatif, ue = varName[2:].split('_')
+                MainModel.ListeDesUEs[int(ue)].ajouterUnInscrit()
+
+            else:
+                parcours, idRelatif, ue = varName[2:].split('_')
+                MainModel.ListeDesUEs[int(ue)].signalerNonInscrit(parcours, idRelatif)
+
 
     def __str__(self):
         """Affiche les UES du Modele"""
@@ -242,6 +365,10 @@ class MainModel():
 
         s += str(MainModel.ListeDesParcours) # A GeRER PLUS FINEMENT ET ELEGAMMENT
         # print(MainModel.EDT)
+
+        s += "\n****Nombre total d'incompatibilites: {}****\n****Nombre total d'incompatibilites vides: {}****\n\n".format(MainModel.nbTotalIncompatibilites, MainModel.nbTotalIncompatibilitesVides)
+        s += "Nombre Total d'inscriptions a satisfaire : {} \n".format(len(MainModel.ListedesVarY))
+        s += "Nombre d'inscriptions satisfaites : {}\n".format(MainModel.nbInscriptionsSatisfaites)
         return s
 
     #     STOP HERE
@@ -250,4 +377,7 @@ class MainModel():
 
     
 m = MainModel("../VOEUX", "edt.csv")
+
+m.resoudre()
+
 print(m)
