@@ -15,7 +15,7 @@ with open('EDT_Bis.csv') as csvfile:
             D = dict()
             D["num"] = etu
             etu += 1
-            for ide in ["a", "b", "c", "d", "e"]:
+            for ide in ["b", "c", "d", "e"]:
                 if row[ide][:-1] in OBLIGATOIRE:
                     D["oblig"+str(i_obl)] = row[ide][:-1]
                     i_obl += 1
