@@ -97,6 +97,7 @@ class MainModel():
             self.nbInscrits = 0
             self.ListeNonInscrits = list()
             self.ListeEtudiantsGroupes = [list() for kk in range(self.nb_groupes+1)]
+
         def actualiseEDT(self):
             """MAJ de l'EDT"""
             for creneauCours in self.ListeCreneauxCours:
