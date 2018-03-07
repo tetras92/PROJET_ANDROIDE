@@ -3,8 +3,10 @@ import matplotlib.pyplot as plt
 import csv
 import copy
 import os
+from Analyses import *
 import random
 from gurobipy import *
+
 
 #Modele d'un dictionnaire Creneau
 def generer_model_dict_creneau(nbMaxGroupeParUE):
@@ -138,6 +140,9 @@ class MainModel():
         def get_intitule(self):
             return self.intitule
 
+        def get_ListeDesCapacites(self):
+            return self.ListeCapacites
+
         def inscrire(self, etuName, numeroGroupe):
                 self.ListeEtudiantsGroupes[numeroGroupe].append(etuName)
 
@@ -177,6 +182,7 @@ class MainModel():
             self.indexParcours = indexParcours
             self.ue_obligatoires = [MainModel.DictUEs[csv_line["oblig"+str(id)]].get_id() for id in range(1, MainModel.nbMaxUEObligatoires+1) if csv_line["oblig"+str(id)] != ""]
             self.ue_non_obligatoires = [MainModel.DictUEs[csv_line["cons"+str(id)]].get_id() for id in range(1, MainModel.nbMaxUEConseillees+1) if csv_line["cons"+str(id)] != ""]
+            self.nombreDeVoeux = len(self.ue_obligatoires) + len(self.ue_non_obligatoires)
             self.varName = "x_{}_{}".format(self.indexParcours, self.idRelatif)
             self.ListeDesInscriptions = list()
 
@@ -220,6 +226,12 @@ class MainModel():
         def enregistrer_interet_pour_UE(self):
             for ue in self.ue_non_obligatoires + self.ue_obligatoires:
                 MainModel.ListeDesUEs[ue].ajouterEtuInteresses(self.varName)
+
+        def get_nombreDeVoeux(self):
+            return self.nombreDeVoeux
+
+        def get_index_parcours(self):
+            return  self.indexParcours
 
         def get_varName(self):
             return self.varName
@@ -417,7 +429,7 @@ class MainModel():
         except:
             pass
         for parcours in range(len(MainModel.ListeDesParcours)):
-            f = open("affectations.{}".format(MainModel.ListeDesParcours[parcours]), "w")
+            f = open("../AFFECTATIONS PAR PARCOURS/affectations.{}".format(MainModel.ListeDesParcours[parcours]), "w")
             f.write("LES AFFECTATIONS\n")
             for idRelatif in range(1, MainModel.ListeEffectifDesParcours[parcours]+1):
                 MainModel.ListeDesEtudiants[MainModel.ListeDesEffectifsCumules[parcours] + int(idRelatif)].enregistrer_affectation(f)
@@ -425,6 +437,7 @@ class MainModel():
 
             # [37, 12, 51, 27, 59, 25, 48, 33, 50]
             # [0, 37, 49, 100, 127, 186, 211, 259, 292, 50]
+
 
     def __str__(self):
         """Affiche les UES du Modele"""
@@ -453,4 +466,7 @@ m = MainModel("../VOEUX", "edt.csv")
 
 m.resoudre()
 
-print(m)
+analyses = Analyses(m)
+
+# print(m)
+print(analyses)
