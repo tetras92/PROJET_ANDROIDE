@@ -468,5 +468,5 @@ m.resoudre()
 
 analyses = Analyses(m)
 
-# print(m)
-print(analyses)
+print(m)
+# print(analyses)
