@@ -455,6 +455,7 @@ class MainModel():
         s += "\n****Nombre total d'incompatibilites: {}****\n****Nombre total d'incompatibilites vides: {}****\n\n".format(MainModel.nbTotalIncompatibilites, MainModel.nbTotalIncompatibilitesVides)
         s += "Nombre Total d'inscriptions a satisfaire : {} \n".format(len(MainModel.ListedesVarY))
         s += "Nombre d'inscriptions satisfaites : {}\n".format(MainModel.nbInscriptionsSatisfaites)
+
         return s
 
     #     STOP HERE
@@ -462,11 +463,14 @@ class MainModel():
 
 
     
-m = MainModel("../VOEUX", "edt.csv")
-
+# m = MainModel("../VOEUX", "edt.csv")
+m = MainModel("RAND_VOEUX1", "edt.csv")
 m.resoudre()
 
 analyses = Analyses(m)
-
-print(m)
+f = open("R1inscription2017_2018.txt", "w")
+f.write(str(m))
+f.write("\n\n"+str(analyses))
+f.close()
+# print(m)
 # print(analyses)
