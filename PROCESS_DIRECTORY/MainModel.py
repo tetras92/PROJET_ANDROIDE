@@ -58,7 +58,7 @@ class MainModel():
     ListedesVarY = list()
 
     ListeDesEtudiantsParParcours = list()
-
+    DictionnaireDesInsatisfactionsParParcours = dict()
     modelGurobi = Model("OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK)")
     class Incompatibilite:
         def __init__(self, idUEI, idGroupK, idUEJ, idGroupL):
@@ -150,16 +150,16 @@ class MainModel():
             """ Retourne la chaine representant une UE"""
             s = "UE {} ({}) :\n\tNombre de groupes : {}\n\tCapacite totale d'accueil: {}\n".format(self.intitule, self.id, self.nb_groupes, sum(self.ListeCapacites))
             #CRENEAUX
-            s += "\tLes Creneaux\n\t"
-            for cours in self.ListeCreneauxCours:
-                s += "\tCours: {}\n\t".format(cours)
+            # s += "\tLes Creneaux\n\t"
+            # for cours in self.ListeCreneauxCours:
+            #     s += "\tCours: {}\n\t".format(cours)
+            #                                                                                     #LES CRENEAUX
+            # for i in range(1, len(self.ListeCreneauxTdTme)):                                     #LES CRENEAUX
+            #     td, tme = self.ListeCreneauxTdTme[i]                                            #LES CRENEAUX
+            #     s += "\tTD {} : {}\n\t".format(i, td)
+            #     s += "\tTME {} : {}\n\t".format(i, tme)
 
-            for i in range(1, len(self.ListeCreneauxTdTme)):
-                td, tme = self.ListeCreneauxTdTme[i]
-                s += "\tTD {} : {}\n\t".format(i, td)
-                s += "\tTME {} : {}\n\t".format(i, tme)
-
-            s += "Nombre Etudiants interesses: {}\n\t".format(len(self.EnsEtuInteresses))
+            s += "\tNombre Etudiants interesses: {}\n\t".format(len(self.EnsEtuInteresses))
             s += "Nombre Etudiants effectivement inscrits : {}\n\t".format(self.nbInscrits)
             s += "Les Non-inscrits : "
             for parcours, idRelatif in self.ListeNonInscrits:
@@ -242,6 +242,13 @@ class MainModel():
                     MainModel.ListeDesUEs[ue].inscrire(str(self), numeroGroup)
             else:
                     chaine = MainModel.ListeDesUEs[ue].get_intitule()+"X"
+
+                    pattern = ""
+
+                    for ue in self.ue_obligatoires + self.ue_non_obligatoires:
+                        pattern += MainModel.ListeDesUEs[ue].get_intitule() + " "
+
+                    MainModel.DictionnaireDesInsatisfactionsParParcours[self.parcours].add((str(self),pattern))
             if ue in self.ue_obligatoires:
                 self.ListeDesInscriptions = [chaine] + self.ListeDesInscriptions
             else:
@@ -252,6 +259,7 @@ class MainModel():
             for aff in self.ListeDesInscriptions:
                 file.write(aff + " ")
             file.write("\n")
+
         def __str__(self):
             s = str(self.idRelatif)+"("+MainModel.ListeDesParcours[self.indexParcours]+")"
             return s
@@ -307,6 +315,8 @@ class MainModel():
         for fichierVoeux in os.listdir(dossierVoeux):
             parcours = fichierVoeux.split('.')[1]
 
+            #INITIALISATION DICTIONNAIRE DES INSATISFACTIONS PAR PARCOURS
+            MainModel.DictionnaireDesInsatisfactionsParParcours[parcours] = set()
 
             path = dossierVoeux+"/"+fichierVoeux
             f_voeux = open(path)
@@ -403,6 +413,7 @@ class MainModel():
 
     def resoudre(self):
         # print (MainModel.modelGurobi.getObjective())
+
         MainModel.modelGurobi.optimize()
 
         for varName in MainModel.ListedesVarY:
@@ -438,7 +449,9 @@ class MainModel():
             # [37, 12, 51, 27, 59, 25, 48, 33, 50]
             # [0, 37, 49, 100, 127, 186, 211, 259, 292, 50]
 
-
+    def strDictionnaireDesInsatisfactions(self):
+        s = ""
+        # TO BE CONTINUED
     def __str__(self):
         """Affiche les UES du Modele"""
         s = ""
@@ -454,8 +467,9 @@ class MainModel():
 
         s += "\n****Nombre total d'incompatibilites: {}****\n****Nombre total d'incompatibilites vides: {}****\n\n".format(MainModel.nbTotalIncompatibilites, MainModel.nbTotalIncompatibilitesVides)
         s += "Nombre Total d'inscriptions a satisfaire : {} \n".format(len(MainModel.ListedesVarY))
-        s += "Nombre d'inscriptions satisfaites : {}\n".format(MainModel.nbInscriptionsSatisfaites)
-
+        proportionSatisfaction = round(100.0*MainModel.nbInscriptionsSatisfaites/len(MainModel.ListedesVarY),2)
+        s += "Nombre d'inscriptions satisfaites : {} soit {}%\n".format(MainModel.nbInscriptionsSatisfaites, proportionSatisfaction)
+        s += "Detail des inscriptions non satisfaites : {}\n".format(str(MainModel.DictionnaireDesInsatisfactionsParParcours))
         return s
 
     #     STOP HERE
@@ -469,6 +483,8 @@ m.resoudre()
 
 analyses = Analyses(m)
 f = open("R1inscription2017_2018.txt", "w")
+# f = open("inscription2017_2018.txt", "w")
+
 f.write(str(m))
 f.write("\n\n"+str(analyses))
 f.close()

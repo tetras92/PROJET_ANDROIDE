@@ -6,50 +6,6 @@ class Analyses():
     nbMaxUEObligatoires = 3
     nbMaxUEConseillees = 8
 
-    class Parcours:
-
-
-        def __init__(self, csvLine):
-            self.nom = csvLine["parcours"]
-            self.ListeUEObligatoires = [csvLine["oblig"+str(i)] for i in range(1, Analyses.nbMaxUEObligatoires+1)]
-            self.nbUEObligatoires = len(self.ListeUEObligatoires)
-            self.ListeUEConseilles = [csvLine["cons"+str(i)] for i in range(1, Analyses.nbMaxUEConseillees+1)]
-            self.nbUEConseilles = len(self.ListeUEConseilles)
-
-        def constituer_voeux(self, k):
-            """Construit un voeu de k UE"""
-
-            nbMinUEObligatoiresDuVoeu = self.nbUEObligatoires - (Analyses.modelePrincipal.nbMaxVoeuxParEtudiant - k)
-            nbUEObligatoiresDuVoeu = random.randint(nbMinUEObligatoiresDuVoeu, self.nbUEObligatoires) #PEUT eTRE AFFINEE AVEC LES PROBA DE REUSSIR UNE UE OBLIGATOIRES
-            nbUeConseilleesDuVoeu = k - nbUEObligatoiresDuVoeu
-            ListeChoixUEObligatoires = random.sample([i for i in range(len(self.ListeUEObligatoires))], nbUEObligatoiresDuVoeu)
-            ListeChoixUEConseillees = random.sample([i for i in range(len(self.ListeUEConseilles))], nbUeConseilleesDuVoeu)
-            contratUEObligatoires = [self.ListeUEObligatoires[ue_oblig] for ue_oblig in ListeChoixUEObligatoires]
-            contratUEConseillees = [self.ListeUEConseilles[ue_cons] for ue_cons in ListeChoixUEConseillees]
-
-            return contratUEObligatoires, contratUEConseillees
-
-        def generer_csv_aleatoires(self, n, P):
-            """Genere un csv aleatoire d'au plus n etudiants au cas ou 0 apparait dans les tirages aleatoires (loi binomiale n, P)"""
-            file = open("../RAND_VOEUX/voeux."+self.nom)
-
-            fieldnames = ["num"] + ["oblig"+str(i) for i in range(1,4)] + ["cons"+str(i) for i in range(1,6)]
-            writer = csv.DictWriter(file, fieldnames=fieldnames)
-            writer.writeheader()
-
-            s = np.random.binomial(Analyses.modelePrincipal.nbMaxVoeuxParEtudiant, n)
-            id_rel = 0
-            for i in range(len(s)):
-                L_Oblig, L_Cons = self.constituer_voeux(s[i])
-                return #A enlever
-
-
-
-
-
-
-
-
 
     def __init__(self, modelMain):
         self.nb_calculs = 0
