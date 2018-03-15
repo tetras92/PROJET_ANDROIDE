@@ -1,0 +1,28 @@
+LES AFFECTATIONS
+1 model1 pr1 archi11 noyau2 ares2 
+2 model1 complex1 dlp2 mapsi1 noyau3 
+3 model1 complex1 pr3 ares2 noyau4 
+4 model1 dlp1 pr3 ares1 noyau1 
+5 model1 complex1 mapsi4 pr3 mlbda1 
+6 model1 complex2 dlp2 pr2 ares1 
+7 complex2 pr2 ares1 noyau4 
+8 model1 complex1 mapsi5 archi11 ares2 
+9 complex1 archi14 mapsi4 ares2 
+10 model1 complex1 archi11 mapsi5 ares2 
+11 model1 complex1 dlp1 ares2 noyau1 
+12 model1 complex2 archi11 ares1 noyau1 
+13 model1 complex1 mapsi4 pr3 mlbda1 
+14 model1 complex2 pr2 noyau4 ares1 
+15 model1 complex2 pr2 ares1 noyau2 
+16 model1 complex2 pr2 ares1 noyau4 
+17 model1 complex1 pr3 mapsi5 ares2 
+18 model1 complex1 archi11 pr2 noyau1 
+19 model1 complex1 pr3 mapsi4 noyau3 
+20 model1 complex2 pr2 ares1 noyau1 
+21 model1 complex2 mapsi4 pr1 noyau3 
+22 model1 complex2 pr2 ares1 noyau1 
+23 model1 complex1 dlp3 pr2 mapsi1 
+24 complex1 dlp2 noyau2 
+25 complex1 pr4 mapsi5 ares2 
+26 complex1 dlp2 pr2 noyau1 
+27 model1 dlp3 archi12 pr1 ares2 

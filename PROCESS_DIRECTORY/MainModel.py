@@ -19,7 +19,7 @@ def generer_model_dict_creneau(nbMaxGroupeParUE):
 
 
 class MainModel():
-
+    count = 0
     #Les attributs
     # ListeDesEtudiants : liste des objets Etudiants
     # EDT : Liste de dictionnaires des creneaux
@@ -56,9 +56,14 @@ class MainModel():
     nbTotalIncompatibilitesVides = 0
     nbInscriptionsSatisfaites = 0
     ListedesVarY = list()
-
+    #Jeudi 15
+    charge = 0
+    capaciteMaximale = 0
+    #Jeudi 15
     ListeDesEtudiantsParParcours = list()
     DictionnaireDesInsatisfactionsParParcours = dict()
+    DictionnaireDistribUEInsatisfaitesParParcours = dict()
+
     modelGurobi = Model("OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK)")
     class Incompatibilite:
         def __init__(self, idUEI, idGroupK, idUEJ, idGroupL):
@@ -99,6 +104,7 @@ class MainModel():
             self.nbInscrits = 0
             self.ListeNonInscrits = list()
             self.ListeEtudiantsGroupes = [list() for kk in range(self.nb_groupes+1)]
+            self.capaciteTotale = sum(self.ListeCapacites)
 
         def actualiseEDT(self):
             """MAJ de l'EDT"""
@@ -113,6 +119,10 @@ class MainModel():
                     pass
         def get_id(self):
             return self.id
+
+        def get_capaciteTotale(self):
+            return self.capaciteTotale
+
 
         def get_nb_groupes(self):
             return self.nb_groupes
@@ -145,6 +155,13 @@ class MainModel():
 
         def inscrire(self, etuName, numeroGroupe):
                 self.ListeEtudiantsGroupes[numeroGroupe].append(etuName)
+
+        def get_nbInscrits(self):
+            return self.nbInscrits
+
+        def get_nbInteresses(self):
+            return len(self.EnsEtuInteresses)
+
 
         def __str__(self):
             """ Retourne la chaine representant une UE"""
@@ -225,6 +242,8 @@ class MainModel():
 
         def enregistrer_interet_pour_UE(self):
             for ue in self.ue_non_obligatoires + self.ue_obligatoires:
+                if ue == 11:
+                    MainModel.count += 1
                 MainModel.ListeDesUEs[ue].ajouterEtuInteresses(self.varName)
 
         def get_nombreDeVoeux(self):
@@ -244,11 +263,13 @@ class MainModel():
                     chaine = MainModel.ListeDesUEs[ue].get_intitule()+"X"
 
                     pattern = ""
-
-                    for ue in self.ue_obligatoires + self.ue_non_obligatoires:
+                    ListeTrieeDesUE = self.ue_obligatoires + self.ue_non_obligatoires
+                    ListeTrieeDesUE.sort()
+                    # print(ListeTrieeDesUE)
+                    for ue in ListeTrieeDesUE:
                         pattern += MainModel.ListeDesUEs[ue].get_intitule() + " "
 
-                    MainModel.DictionnaireDesInsatisfactionsParParcours[self.parcours].add((str(self),pattern))
+                    MainModel.DictionnaireDesInsatisfactionsParParcours[self.parcours].append([str(self),ListeTrieeDesUE]) #remplacer ListeTrieeDesUEs par pattern if pertinent
             if ue in self.ue_obligatoires:
                 self.ListeDesInscriptions = [chaine] + self.ListeDesInscriptions
             else:
@@ -316,7 +337,7 @@ class MainModel():
             parcours = fichierVoeux.split('.')[1]
 
             #INITIALISATION DICTIONNAIRE DES INSATISFACTIONS PAR PARCOURS
-            MainModel.DictionnaireDesInsatisfactionsParParcours[parcours] = set()
+            MainModel.DictionnaireDesInsatisfactionsParParcours[parcours] = list()#set()
 
             path = dossierVoeux+"/"+fichierVoeux
             f_voeux = open(path)
@@ -413,7 +434,7 @@ class MainModel():
 
     def resoudre(self):
         # print (MainModel.modelGurobi.getObjective())
-
+        self.calculer_charge()
         MainModel.modelGurobi.optimize()
 
         for varName in MainModel.ListedesVarY:
@@ -450,26 +471,66 @@ class MainModel():
             # [0, 37, 49, 100, 127, 186, 211, 259, 292, 50]
 
     def strDictionnaireDesInsatisfactions(self):
+        ListeParcoursStr = list()
+        ListeNbInsatisfaction = list()
+        ListeDistrUEInsatisfParParcours = list()
         s = ""
-        # TO BE CONTINUED
+        def concatener_ue_insatisfaites(L):
+            R = [ue for LP in L for ue in LP]
+            R.sort()
+            return R
+
+        for parcours, List in MainModel.DictionnaireDesInsatisfactionsParParcours.items():
+            ListeParcoursStr.append(parcours)
+            ListeNbInsatisfaction.append(len(List))
+            R = concatener_ue_insatisfaites([LP[1] for LP in List])
+            ListeDistrUEInsatisfParParcours.append(R)
+            s += "{} : {} |".format(parcours, str(len(List)))
+
+        print(ListeDistrUEInsatisfParParcours)
+
+        #JETER COUP D'OEIl a MainModel.DictionnaireDistribUEInsatisfaitesParParcours
+        return s[:-1]
+    def strListeDesInsatisfactionsParUE(self):
+        s = ""
+        for ue_id in range(1, len(MainModel.ListeDesUEs)):
+            if MainModel.ListeDesUEs[ue_id].get_nbInscrits() != MainModel.ListeDesUEs[ue_id].get_nbInteresses():
+                if MainModel.ListeDesUEs[ue_id].get_nbInscrits() == MainModel.ListeDesUEs[ue_id].get_capaciteTotale():
+                    s += "**"
+                s += MainModel.ListeDesUEs[ue_id].get_intitule()+" ({})|".format(MainModel.ListeDesUEs[ue_id].get_nbInteresses() - MainModel.ListeDesUEs[ue_id].get_nbInscrits())
+        return s[:-1]
+
+
+    def calculer_capaciteMaximale(self):
+        capMax = 0
+        for ue in range(1, len(MainModel.ListeDesUEs)):
+            capMax += sum(MainModel.ListeDesUEs[ue].get_ListeDesCapacites())
+        MainModel.capaciteMaximale = capMax
+
+
+    def calculer_charge(self):
+        nombreDemandesInscriptions = len(MainModel.ListedesVarY)
+        self.calculer_capaciteMaximale()
+        MainModel.charge = round(100.0*nombreDemandesInscriptions/MainModel.capaciteMaximale,2)
+
     def __str__(self):
         """Affiche les UES du Modele"""
-        s = ""
+        s = "**********OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK)**********\n\n"
+        s += "\nNombre total d'incompatibilites: {}\nNombre total d'incompatibilites vides: {}\n\n".format(MainModel.nbTotalIncompatibilites, MainModel.nbTotalIncompatibilitesVides)
+        s += "Nombre Total d'inscriptions a satisfaire : {} \n".format(len(MainModel.ListedesVarY))
+        s += "Nombre Maximal d'inscriptions pouvant etre satisfaites : {} \n".format(MainModel.capaciteMaximale)
+        s += "Charge : {}% \n\n\t\t\t*LES RESULTATS D'AFFECTATION*\n\n".format(MainModel.charge)
+        proportionSatisfaction = round(100.0*MainModel.nbInscriptionsSatisfaites/len(MainModel.ListedesVarY),2)
+        s += "Nombre d'inscriptions satisfaites : {} soit {}%\n".format(MainModel.nbInscriptionsSatisfaites, proportionSatisfaction)
+        s += "Detail des inscriptions non satisfaites : \n\t\tNombre de demandes non satisfaites par parcours : {}\n".format(self.strDictionnaireDesInsatisfactions())
+        s += "\t\tNombre de demandes non satisfaites par UE (**Saturee): {}\n".format(self.strListeDesInsatisfactionsParUE())
+        s += "\n\t\t\t*DETAIL DES AFFECTATIONS PAR UE*\n\n"
+
+
         for intitule,ue in MainModel.DictUEs.items():
             s += str(ue)
 
-        s += "\n\nEDT:\n{}\n\n".format(MainModel.EDT)
 
-        s += str(MainModel.ListeDesParcours) # A GeRER PLUS FINEMENT ET ELEGAMMENT
-        s += "\n" + str(MainModel.ListeEffectifDesParcours)
-        s += "\n" + str(MainModel.ListeDesEffectifsCumules)
-        # print(MainModel.EDT)
-
-        s += "\n****Nombre total d'incompatibilites: {}****\n****Nombre total d'incompatibilites vides: {}****\n\n".format(MainModel.nbTotalIncompatibilites, MainModel.nbTotalIncompatibilitesVides)
-        s += "Nombre Total d'inscriptions a satisfaire : {} \n".format(len(MainModel.ListedesVarY))
-        proportionSatisfaction = round(100.0*MainModel.nbInscriptionsSatisfaites/len(MainModel.ListedesVarY),2)
-        s += "Nombre d'inscriptions satisfaites : {} soit {}%\n".format(MainModel.nbInscriptionsSatisfaites, proportionSatisfaction)
-        s += "Detail des inscriptions non satisfaites : {}\n".format(str(MainModel.DictionnaireDesInsatisfactionsParParcours))
         return s
 
     #     STOP HERE
@@ -477,16 +538,16 @@ class MainModel():
 
 
     
-# m = MainModel("../VOEUX", "edt.csv")
-m = MainModel("RAND_VOEUX1", "edt.csv")
+m = MainModel("../VOEUX", "edt.csv")
+# m = MainModel("RAND_VOEUX1", "edt.csv")
 m.resoudre()
 
-analyses = Analyses(m)
-f = open("R1inscription2017_2018.txt", "w")
-# f = open("inscription2017_2018.txt", "w")
+
+f = open("inscription2017_2018.txt", "w")
+# f = open("R1inscription2017_2018.txt", "w")
 
 f.write(str(m))
-f.write("\n\n"+str(analyses))
+# f.write("\n\n"+str(analyses))
 f.close()
 # print(m)
 # print(analyses)

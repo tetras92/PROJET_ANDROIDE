@@ -1,0 +1,265 @@
+**********OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK)**********
+
+
+Nombre total d'incompatibilites: 634
+Nombre total d'incompatibilites vides: 199
+
+Nombre Total d'inscriptions a satisfaire : 1530 
+Nombre Maximal d'inscriptions pouvant etre satisfaites : 1844 
+Charge : 82.97% 
+
+			*LES RESULTATS D'AFFECTATION*
+Nombre d'inscriptions satisfaites : 1463 soit 95.62%
+Detail des inscriptions non satisfaites : 
+		Nombre de demandes non satisfaites par parcours : ima : 6 |and : 16 |bim : 14 |dac : 5 |stl : 13 |res : 3 |sfpn : 10 |sesi : 0 |sar : 0 
+		Nombre de demandes non satisfaites par UE (**Saturee): aagb (2)|algav (4)|archi1 (10)|**ares (9)|complex (6)|il (5)|lrc (1)|mapsi (1)|mlbda (26)|noyau (1)|signal (2)
+DETAIL DES AFFECTATIONS PAR UE
+
+UE mobj (14) :
+	Nombre de groupes : 2
+	Capacite totale d'accueil: 32
+	Nombre Etudiants interesses: 16
+	Nombre Etudiants effectivement inscrits : 16
+	Les Non-inscrits : 
+	Les Inscrits:
+		Groupe 1 [10/16] : 5(sesi) 9(sesi) 15(sesi) 20(sesi) 25(sesi) 30(sesi) 39(sesi) 41(sesi) 42(sesi) 44(sesi) 
+		Groupe 2 [6/16] : 8(sesi) 11(sesi) 14(sesi) 17(sesi) 29(sesi) 45(sesi) 
+
+
+UE rtel (19) :
+	Nombre de groupes : 2
+	Capacite totale d'accueil: 64
+	Nombre Etudiants interesses: 44
+	Nombre Etudiants effectivement inscrits : 44
+	Les Non-inscrits : 
+	Les Inscrits:
+		Groupe 1 [30/32] : 1(res) 5(res) 8(res) 9(res) 11(res) 12(res) 14(res) 15(res) 20(res) 22(res) 23(res) 24(res) 26(res) 27(res) 29(res) 31(res) 32(res) 33(res) 34(res) 35(res) 37(res) 39(res) 40(res) 42(res) 43(res) 45(res) 46(res) 47(res) 48(res) 50(res) 
+		Groupe 2 [14/32] : 2(res) 3(res) 4(res) 6(res) 10(res) 16(res) 19(res) 25(res) 28(res) 30(res) 38(res) 41(res) 44(res) 51(res) 
+
+
+UE lrc (10) :
+	Nombre de groupes : 4
+	Capacite totale d'accueil: 128
+	Nombre Etudiants interesses: 106
+	Nombre Etudiants effectivement inscrits : 105
+	Les Non-inscrits : 56(stl) 
+	Les Inscrits:
+		Groupe 1 [32/32] : 5(dac) 7(dac) 12(dac) 17(dac) 18(dac) 19(dac) 21(dac) 22(dac) 25(dac) 30(dac) 31(dac) 37(dac) 4(ima) 10(ima) 12(ima) 33(stl) 51(stl) 55(stl) 9(and) 10(and) 15(and) 16(and) 18(and) 20(and) 22(and) 28(and) 30(and) 33(and) 37(and) 38(and) 41(and) 42(and) 
+		Groupe 2 [23/32] : 1(dac) 2(dac) 3(dac) 4(dac) 8(dac) 9(dac) 10(dac) 20(dac) 23(dac) 24(dac) 27(dac) 28(dac) 32(dac) 35(dac) 2(ima) 3(ima) 19(stl) 36(stl) 44(stl) 1(and) 19(and) 27(and) 46(and) 
+		Groupe 3 [28/32] : 6(dac) 16(dac) 26(dac) 33(dac) 34(dac) 36(dac) 7(stl) 18(stl) 20(stl) 21(stl) 26(stl) 41(stl) 2(and) 3(and) 14(and) 21(and) 23(and) 25(and) 26(and) 29(and) 32(and) 35(and) 36(and) 39(and) 40(and) 44(and) 47(and) 48(and) 
+		Groupe 4 [22/32] : 13(dac) 14(dac) 5(ima) 6(ima) 9(stl) 12(stl) 16(stl) 24(stl) 43(stl) 46(stl) 47(stl) 48(stl) 53(stl) 5(and) 6(and) 8(and) 11(and) 13(and) 17(and) 24(and) 31(and) 43(and) 
+
+
+UE mlbda (13) :
+	Nombre de groupes : 4
+	Capacite totale d'accueil: 128
+	Nombre Etudiants interesses: 125
+	Nombre Etudiants effectivement inscrits : 99
+	Les Non-inscrits : 4(bim) 5(bim) 6(bim) 7(bim) 8(bim) 9(bim) 11(bim) 13(bim) 14(bim) 15(bim) 16(bim) 20(bim) 21(bim) 25(bim) 3(and) 8(and) 14(and) 25(and) 29(and) 32(and) 35(and) 36(and) 39(and) 40(and) 44(and) 48(and) 
+	Les Inscrits:
+		Groupe 1 [32/32] : 3(dac) 4(dac) 9(dac) 13(dac) 16(dac) 18(dac) 21(dac) 25(dac) 27(dac) 31(dac) 33(dac) 35(dac) 36(dac) 2(sfpn) 3(sfpn) 4(sfpn) 8(sfpn) 9(sfpn) 15(sfpn) 18(sfpn) 23(sfpn) 11(stl) 51(stl) 52(stl) 53(stl) 1(and) 9(and) 21(and) 27(and) 8(sar) 13(sar) 26(sar) 
+		Groupe 2 [17/32] : 5(dac) 6(dac) 12(dac) 22(dac) 24(dac) 29(dac) 34(dac) 6(sfpn) 10(sfpn) 11(sfpn) 12(sfpn) 20(sfpn) 21(sfpn) 26(sfpn) 1(stl) 13(and) 3(sar) 
+		Groupe 3 [24/32] : 2(dac) 10(dac) 19(dac) 31(stl) 32(stl) 33(stl) 10(and) 15(and) 16(and) 20(and) 26(and) 34(and) 38(and) 42(and) 4(sar) 10(sar) 14(sar) 17(sar) 18(sar) 22(sar) 27(sar) 28(sar) 30(sar) 32(sar) 
+		Groupe 4 [26/32] : 1(dac) 7(dac) 14(dac) 17(dac) 20(dac) 23(dac) 28(dac) 30(dac) 32(dac) 37(dac) 4(stl) 19(stl) 25(stl) 39(stl) 44(stl) 45(stl) 10(bim) 5(and) 6(and) 7(and) 17(and) 19(and) 22(and) 28(and) 33(and) 47(and) 
+
+
+UE aagb (1) :
+	Nombre de groupes : 1
+	Capacite totale d'accueil: 32
+	Nombre Etudiants interesses: 30
+	Nombre Etudiants effectivement inscrits : 28
+	Les Non-inscrits : 13(and) 26(and) 
+	Les Inscrits:
+		Groupe 1 [28/32] : 2(bim) 3(bim) 4(bim) 5(bim) 6(bim) 7(bim) 8(bim) 9(bim) 11(bim) 12(bim) 13(bim) 14(bim) 15(bim) 16(bim) 17(bim) 18(bim) 19(bim) 20(bim) 21(bim) 22(bim) 25(bim) 3(and) 8(and) 29(and) 30(and) 31(and) 35(and) 40(and) 
+
+
+UE mapsi (11) :
+	Nombre de groupes : 5
+	Capacite totale d'accueil: 144
+	Nombre Etudiants interesses: 96
+	Nombre Etudiants effectivement inscrits : 95
+	Les Non-inscrits : 37(and) 
+	Les Inscrits:
+		Groupe 1 [31/32] : 2(dac) 5(dac) 7(dac) 15(dac) 20(dac) 29(dac) 30(dac) 32(dac) 37(dac) 3(ima) 4(ima) 5(ima) 6(ima) 7(ima) 10(ima) 11(ima) 1(sfpn) 6(sfpn) 21(sfpn) 26(sfpn) 27(sfpn) 1(bim) 6(and) 17(and) 18(and) 20(and) 22(and) 24(and) 28(and) 34(and) 42(and) 
+		Groupe 2 [31/32] : 1(dac) 3(dac) 13(dac) 19(dac) 22(dac) 23(dac) 24(dac) 25(dac) 28(dac) 31(dac) 35(dac) 12(ima) 25(sfpn) 2(bim) 3(bim) 4(bim) 5(bim) 6(bim) 7(bim) 8(bim) 12(bim) 13(bim) 14(bim) 16(bim) 17(bim) 18(bim) 20(bim) 21(bim) 25(bim) 19(and) 38(and) 
+		Groupe 3 [6/16] : 21(dac) 9(sfpn) 11(sfpn) 19(sfpn) 9(and) 33(and) 
+		Groupe 4 [14/32] : 12(dac) 27(dac) 1(ima) 2(ima) 8(ima) 9(ima) 20(sfpn) 5(and) 10(and) 13(and) 15(and) 30(and) 31(and) 41(and) 
+		Groupe 5 [13/32] : 4(dac) 9(dac) 18(dac) 3(sfpn) 13(sfpn) 17(sfpn) 18(sfpn) 24(sfpn) 9(bim) 11(bim) 15(bim) 22(bim) 23(bim) 
+
+
+UE signal (20) :
+	Nombre de groupes : 2
+	Capacite totale d'accueil: 64
+	Nombre Etudiants interesses: 41
+	Nombre Etudiants effectivement inscrits : 39
+	Les Non-inscrits : 1(res) 48(res) 
+	Les Inscrits:
+		Groupe 1 [31/32] : 5(ima) 2(res) 3(res) 4(res) 6(res) 16(res) 19(res) 25(res) 28(res) 38(res) 44(res) 49(res) 5(sesi) 7(sesi) 9(sesi) 10(sesi) 12(sesi) 14(sesi) 15(sesi) 16(sesi) 21(sesi) 22(sesi) 23(sesi) 26(sesi) 28(sesi) 29(sesi) 30(sesi) 31(sesi) 37(sesi) 39(sesi) 40(sesi) 
+		Groupe 2 [8/32] : 14(res) 29(res) 39(res) 46(res) 2(sesi) 3(sesi) 27(sesi) 43(sesi) 
+
+
+UE algav (2) :
+	Nombre de groupes : 3
+	Capacite totale d'accueil: 96
+	Nombre Etudiants interesses: 70
+	Nombre Etudiants effectivement inscrits : 66
+	Les Non-inscrits : 1(ima) 8(ima) 9(ima) 12(ima) 
+	Les Inscrits:
+		Groupe 1 [32/32] : 2(stl) 4(stl) 6(stl) 8(stl) 9(stl) 11(stl) 13(stl) 14(stl) 15(stl) 16(stl) 19(stl) 22(stl) 24(stl) 29(stl) 31(stl) 32(stl) 33(stl) 36(stl) 38(stl) 40(stl) 43(stl) 45(stl) 47(stl) 48(stl) 49(stl) 51(stl) 52(stl) 53(stl) 54(stl) 56(stl) 57(stl) 31(sar) 
+		Groupe 2 [28/32] : 3(ima) 4(ima) 7(ima) 11(ima) 3(stl) 7(stl) 10(stl) 17(stl) 18(stl) 20(stl) 21(stl) 23(stl) 25(stl) 26(stl) 27(stl) 30(stl) 35(stl) 50(stl) 55(stl) 59(stl) 2(sar) 5(sar) 8(sar) 16(sar) 23(sar) 24(sar) 25(sar) 26(sar) 
+		Groupe 3 [6/32] : 1(stl) 28(stl) 41(stl) 9(sar) 11(sar) 15(sar) 
+
+
+UE mogpl (16) :
+	Nombre de groupes : 4
+	Capacite totale d'accueil: 128
+	Nombre Etudiants interesses: 117
+	Nombre Etudiants effectivement inscrits : 117
+	Les Non-inscrits : 
+	Les Inscrits:
+		Groupe 1 [32/32] : 13(dac) 14(dac) 5(ima) 6(ima) 7(ima) 11(ima) 2(res) 6(res) 20(res) 27(res) 8(stl) 14(stl) 31(stl) 32(stl) 34(stl) 37(stl) 39(stl) 43(stl) 45(stl) 47(stl) 48(stl) 54(stl) 59(stl) 5(and) 6(and) 13(and) 14(and) 25(and) 26(and) 36(and) 40(and) 48(and) 
+		Groupe 2 [32/32] : 1(dac) 2(dac) 7(dac) 19(dac) 20(dac) 23(dac) 26(dac) 28(dac) 33(dac) 36(dac) 37(dac) 22(res) 25(res) 26(res) 29(res) 31(res) 34(res) 40(res) 43(res) 2(and) 3(and) 4(and) 7(and) 12(and) 21(and) 22(and) 23(and) 28(and) 29(and) 30(and) 32(and) 37(and) 
+		Groupe 3 [22/32] : 5(dac) 6(dac) 16(dac) 30(dac) 34(dac) 17(res) 16(stl) 46(stl) 9(and) 10(and) 15(and) 17(and) 19(and) 33(and) 34(and) 35(and) 38(and) 39(and) 41(and) 42(and) 44(and) 45(and) 
+		Groupe 4 [31/32] : 10(dac) 15(dac) 35(dac) 2(ima) 4(ima) 5(res) 9(res) 10(res) 15(res) 30(res) 37(res) 41(res) 42(res) 47(res) 50(res) 51(res) 1(stl) 2(stl) 17(stl) 35(stl) 40(stl) 49(stl) 51(stl) 1(and) 8(and) 11(and) 18(and) 20(and) 24(and) 27(and) 31(and) 
+
+
+UE pr (18) :
+	Nombre de groupes : 4
+	Capacite totale d'accueil: 128
+	Nombre Etudiants interesses: 117
+	Nombre Etudiants effectivement inscrits : 117
+	Les Non-inscrits : 
+	Les Inscrits:
+		Groupe 1 [32/32] : 13(res) 26(res) 31(res) 34(res) 37(res) 39(res) 46(res) 47(res) 14(sfpn) 15(sfpn) 18(sfpn) 19(sfpn) 7(stl) 9(stl) 10(stl) 12(stl) 13(stl) 21(stl) 26(stl) 35(stl) 53(stl) 8(sar) 16(sar) 17(sar) 19(sar) 22(sar) 23(sar) 26(sar) 15(sesi) 32(sesi) 38(sesi) 46(sesi) 
+		Groupe 2 [32/32] : 4(res) 9(res) 14(res) 16(res) 18(res) 28(res) 29(res) 38(res) 5(sfpn) 7(sfpn) 2(stl) 27(stl) 30(stl) 49(stl) 6(sar) 24(sar) 25(sar) 2(sesi) 3(sesi) 6(sesi) 7(sesi) 16(sesi) 20(sesi) 21(sesi) 27(sesi) 31(sesi) 33(sesi) 34(sesi) 37(sesi) 42(sesi) 43(sesi) 47(sesi) 
+		Groupe 3 [32/32] : 11(res) 23(res) 24(res) 32(res) 45(res) 3(sfpn) 4(sfpn) 8(sfpn) 11(sfpn) 23(sfpn) 1(sar) 2(sar) 7(sar) 9(sar) 10(sar) 12(sar) 13(sar) 14(sar) 15(sar) 27(sar) 28(sar) 32(sar) 33(sar) 4(sesi) 8(sesi) 11(sesi) 19(sesi) 24(sesi) 35(sesi) 36(sesi) 45(sesi) 50(sesi) 
+		Groupe 4 [21/32] : 8(res) 17(res) 33(res) 40(res) 43(res) 25(sfpn) 16(stl) 20(stl) 46(stl) 56(stl) 3(sar) 4(sar) 5(sar) 18(sar) 29(sar) 30(sar) 31(sar) 13(sesi) 41(sesi) 48(sesi) 49(sesi) 
+
+
+UE bima (5) :
+	Nombre de groupes : 1
+	Capacite totale d'accueil: 32
+	Nombre Etudiants interesses: 25
+	Nombre Etudiants effectivement inscrits : 25
+	Les Non-inscrits : 
+	Les Inscrits:
+		Groupe 1 [25/32] : 10(dac) 14(dac) 21(dac) 32(dac) 1(ima) 2(ima) 3(ima) 4(ima) 5(ima) 6(ima) 7(ima) 8(ima) 9(ima) 10(ima) 11(ima) 12(ima) 2(bim) 1(and) 8(and) 11(and) 18(and) 24(and) 27(and) 31(and) 46(and) 
+
+
+UE vlsi1 (21) :
+	Nombre de groupes : 2
+	Capacite totale d'accueil: 64
+	Nombre Etudiants interesses: 47
+	Nombre Etudiants effectivement inscrits : 47
+	Les Non-inscrits : 
+	Les Inscrits:
+		Groupe 1 [16/32] : 4(sesi) 6(sesi) 13(sesi) 20(sesi) 32(sesi) 33(sesi) 34(sesi) 36(sesi) 38(sesi) 41(sesi) 42(sesi) 44(sesi) 47(sesi) 48(sesi) 49(sesi) 50(sesi) 
+		Groupe 2 [31/32] : 1(sesi) 2(sesi) 3(sesi) 5(sesi) 7(sesi) 8(sesi) 9(sesi) 11(sesi) 12(sesi) 14(sesi) 16(sesi) 17(sesi) 18(sesi) 19(sesi) 21(sesi) 22(sesi) 23(sesi) 24(sesi) 25(sesi) 26(sesi) 27(sesi) 28(sesi) 29(sesi) 30(sesi) 31(sesi) 35(sesi) 37(sesi) 39(sesi) 40(sesi) 43(sesi) 45(sesi) 
+
+
+UE dlp (7) :
+	Nombre de groupes : 3
+	Capacite totale d'accueil: 96
+	Nombre Etudiants interesses: 77
+	Nombre Etudiants effectivement inscrits : 77
+	Les Non-inscrits : 
+	Les Inscrits:
+		Groupe 1 [31/32] : 14(sfpn) 1(stl) 6(stl) 14(stl) 17(stl) 19(stl) 20(stl) 25(stl) 29(stl) 31(stl) 32(stl) 38(stl) 39(stl) 40(stl) 42(stl) 43(stl) 45(stl) 47(stl) 48(stl) 49(stl) 51(stl) 3(sar) 4(sar) 10(sar) 13(sar) 14(sar) 24(sar) 25(sar) 26(sar) 28(sar) 30(sar) 
+		Groupe 2 [14/32] : 6(sfpn) 12(sfpn) 2(stl) 8(stl) 13(stl) 15(stl) 22(stl) 34(stl) 37(stl) 53(stl) 54(stl) 56(stl) 57(stl) 58(stl) 
+		Groupe 3 [32/32] : 5(sfpn) 7(sfpn) 17(sfpn) 22(sfpn) 24(sfpn) 27(sfpn) 3(stl) 7(stl) 9(stl) 10(stl) 11(stl) 12(stl) 18(stl) 21(stl) 23(stl) 24(stl) 26(stl) 27(stl) 28(stl) 30(stl) 33(stl) 36(stl) 41(stl) 50(stl) 52(stl) 55(stl) 6(sar) 16(sar) 17(sar) 19(sar) 22(sar) 23(sar) 
+
+
+UE archi1 (3) :
+	Nombre de groupes : 4
+	Capacite totale d'accueil: 128
+	Nombre Etudiants interesses: 121
+	Nombre Etudiants effectivement inscrits : 111
+	Les Non-inscrits : 21(sfpn) 6(stl) 14(stl) 22(stl) 34(stl) 40(stl) 43(stl) 47(stl) 54(stl) 58(stl) 
+	Les Inscrits:
+		Groupe 1 [32/32] : 10(res) 21(res) 30(res) 36(res) 41(res) 51(res) 2(sfpn) 10(sfpn) 13(sfpn) 18(sfpn) 5(stl) 44(stl) 1(sar) 7(sar) 12(sar) 18(sar) 21(sar) 27(sar) 32(sar) 33(sar) 1(sesi) 2(sesi) 3(sesi) 8(sesi) 11(sesi) 18(sesi) 19(sesi) 25(sesi) 27(sesi) 35(sesi) 43(sesi) 45(sesi) 
+		Groupe 2 [32/32] : 1(res) 6(res) 11(res) 14(res) 16(res) 20(res) 27(res) 28(res) 32(res) 33(res) 37(res) 38(res) 45(res) 48(res) 5(sfpn) 7(sfpn) 22(sfpn) 10(stl) 12(stl) 23(stl) 27(stl) 30(stl) 35(stl) 55(stl) 5(sar) 15(sar) 16(sar) 23(sar) 7(sesi) 21(sesi) 24(sesi) 37(sesi) 
+		Groupe 3 [15/32] : 2(res) 8(res) 47(res) 24(sfpn) 27(sfpn) 50(stl) 59(stl) 20(sar) 12(sesi) 13(sesi) 14(sesi) 23(sesi) 41(sesi) 48(sesi) 49(sesi) 
+		Groupe 4 [32/32] : 3(res) 12(res) 44(res) 11(stl) 24(stl) 26(stl) 33(stl) 8(sar) 11(sar) 17(sar) 22(sar) 4(sesi) 5(sesi) 6(sesi) 9(sesi) 15(sesi) 16(sesi) 17(sesi) 20(sesi) 26(sesi) 28(sesi) 29(sesi) 30(sesi) 31(sesi) 32(sesi) 33(sesi) 34(sesi) 36(sesi) 39(sesi) 42(sesi) 47(sesi) 50(sesi) 
+
+
+UE il (9) :
+	Nombre de groupes : 5
+	Capacite totale d'accueil: 160
+	Nombre Etudiants interesses: 122
+	Nombre Etudiants effectivement inscrits : 117
+	Les Non-inscrits : 6(dac) 22(dac) 24(dac) 34(dac) 41(and) 
+	Les Inscrits:
+		Groupe 1 [32/32] : 1(dac) 10(dac) 14(dac) 19(dac) 23(dac) 9(ima) 12(ima) 5(stl) 14(stl) 17(stl) 18(stl) 19(stl) 20(stl) 23(stl) 25(stl) 27(stl) 28(stl) 29(stl) 32(stl) 36(stl) 39(stl) 49(stl) 55(stl) 5(and) 11(and) 38(and) 5(sar) 11(sar) 14(sar) 15(sar) 28(sar) 32(sar) 
+		Groupe 2 [11/32] : 28(dac) 30(stl) 31(stl) 59(stl) 4(and) 10(and) 19(and) 10(sar) 21(sar) 25(sar) 27(sar) 
+		Groupe 3 [31/32] : 2(dac) 4(dac) 7(dac) 9(dac) 16(dac) 30(dac) 36(dac) 37(dac) 6(ima) 1(bim) 9(bim) 11(bim) 15(bim) 19(bim) 22(bim) 24(bim) 1(and) 12(and) 14(and) 17(and) 20(and) 21(and) 22(and) 24(and) 32(and) 35(and) 37(and) 39(and) 42(and) 44(and) 20(sar) 
+		Groupe 4 [16/32] : 1(ima) 8(ima) 11(ima) 4(stl) 6(stl) 11(stl) 22(stl) 45(stl) 58(stl) 34(and) 45(and) 1(sar) 7(sar) 13(sar) 18(sar) 33(sar) 
+		Groupe 5 [27/32] : 3(dac) 13(dac) 15(dac) 25(dac) 27(dac) 31(dac) 35(dac) 4(bim) 7(bim) 8(bim) 10(bim) 12(bim) 13(bim) 16(bim) 18(bim) 20(bim) 25(bim) 6(and) 25(and) 26(and) 36(and) 40(and) 43(and) 48(and) 2(sar) 6(sar) 9(sar) 
+
+
+UE esa (8) :
+	Nombre de groupes : 2
+	Capacite totale d'accueil: 32
+	Nombre Etudiants interesses: 10
+	Nombre Etudiants effectivement inscrits : 10
+	Les Non-inscrits : 
+	Les Inscrits:
+		Groupe 1 [4/16] : 19(sesi) 21(sesi) 23(sesi) 35(sesi) 
+		Groupe 2 [6/16] : 1(sesi) 12(sesi) 18(sesi) 22(sesi) 38(sesi) 48(sesi) 
+
+
+UE noyau (17) :
+	Nombre de groupes : 4
+	Capacite totale d'accueil: 128
+	Nombre Etudiants interesses: 123
+	Nombre Etudiants effectivement inscrits : 122
+	Les Non-inscrits : 24(stl) 
+	Les Inscrits:
+		Groupe 1 [31/32] : 12(res) 1(stl) 5(stl) 4(sar) 6(sar) 7(sar) 8(sar) 10(sar) 13(sar) 14(sar) 18(sar) 20(sar) 22(sar) 26(sar) 32(sar) 33(sar) 3(sesi) 6(sesi) 8(sesi) 13(sesi) 14(sesi) 16(sesi) 27(sesi) 33(sesi) 34(sesi) 35(sesi) 40(sesi) 43(sesi) 45(sesi) 47(sesi) 49(sesi) 
+		Groupe 2 [32/32] : 7(res) 8(res) 22(res) 23(res) 25(res) 26(res) 31(res) 34(res) 41(res) 43(res) 44(res) 8(sfpn) 25(stl) 1(sar) 2(sar) 3(sar) 9(sar) 17(sar) 24(sar) 25(sar) 27(sar) 28(sar) 30(sar) 2(sesi) 11(sesi) 17(sesi) 23(sesi) 28(sesi) 29(sesi) 31(sesi) 32(sesi) 50(sesi) 
+		Groupe 3 [32/32] : 3(res) 10(res) 21(res) 30(res) 33(res) 36(res) 45(res) 51(res) 13(sfpn) 14(sfpn) 17(sfpn) 22(sfpn) 10(stl) 17(stl) 23(stl) 40(stl) 5(sar) 12(sar) 15(sar) 16(sar) 21(sar) 23(sar) 1(sesi) 4(sesi) 5(sesi) 9(sesi) 18(sesi) 19(sesi) 25(sesi) 30(sesi) 36(sesi) 44(sesi) 
+		Groupe 4 [27/32] : 5(res) 9(res) 15(res) 24(res) 39(res) 42(res) 46(res) 50(res) 1(sfpn) 11(sfpn) 15(sfpn) 19(sfpn) 20(sfpn) 21(sfpn) 23(sfpn) 3(stl) 4(stl) 7(stl) 9(stl) 18(stl) 21(stl) 41(stl) 52(stl) 19(sar) 29(sar) 10(sesi) 46(sesi) 
+
+
+UE model (15) :
+	Nombre de groupes : 1
+	Capacite totale d'accueil: 50
+	Nombre Etudiants interesses: 34
+	Nombre Etudiants effectivement inscrits : 34
+	Les Non-inscrits : 
+	Les Inscrits:
+		Groupe 1 [34/50] : 3(dac) 4(dac) 5(dac) 9(dac) 12(dac) 16(dac) 18(dac) 25(dac) 27(dac) 31(dac) 33(dac) 9(ima) 1(sfpn) 2(sfpn) 3(sfpn) 4(sfpn) 5(sfpn) 6(sfpn) 7(sfpn) 8(sfpn) 9(sfpn) 10(sfpn) 11(sfpn) 14(sfpn) 15(sfpn) 17(sfpn) 18(sfpn) 20(sfpn) 21(sfpn) 22(sfpn) 23(sfpn) 24(sfpn) 26(sfpn) 27(sfpn) 
+
+
+UE complex (6) :
+	Nombre de groupes : 2
+	Capacite totale d'accueil: 82
+	Nombre Etudiants interesses: 83
+	Nombre Etudiants effectivement inscrits : 77
+	Les Non-inscrits : 36(dac) 3(ima) 7(ima) 4(res) 36(stl) 41(stl) 
+	Les Inscrits:
+		Groupe 1 [47/50] : 8(dac) 11(dac) 18(dac) 20(dac) 21(dac) 26(dac) 32(dac) 33(dac) 2(ima) 1(res) 5(res) 11(res) 12(res) 15(res) 20(res) 22(res) 23(res) 24(res) 27(res) 32(res) 36(res) 40(res) 42(res) 48(res) 50(res) 1(sfpn) 2(sfpn) 4(sfpn) 8(sfpn) 9(sfpn) 16(sfpn) 23(sfpn) 25(sfpn) 27(sfpn) 2(stl) 42(stl) 52(stl) 54(stl) 56(stl) 3(and) 9(and) 18(and) 27(and) 28(and) 29(and) 30(and) 33(and) 
+		Groupe 2 [30/32] : 6(dac) 12(dac) 22(dac) 24(dac) 34(dac) 1(ima) 8(ima) 14(sfpn) 6(stl) 22(stl) 58(stl) 2(bim) 5(bim) 6(bim) 12(bim) 14(bim) 18(bim) 19(bim) 21(bim) 22(bim) 24(bim) 14(and) 25(and) 32(and) 36(and) 37(and) 39(and) 41(and) 44(and) 48(and) 
+
+
+UE maths4m062 (12) :
+	Nombre de groupes : 1
+	Capacite totale d'accueil: 32
+	Nombre Etudiants interesses: 21
+	Nombre Etudiants effectivement inscrits : 21
+	Les Non-inscrits : 
+	Les Inscrits:
+		Groupe 1 [21/32] : 2(bim) 3(bim) 4(bim) 5(bim) 6(bim) 7(bim) 8(bim) 9(bim) 11(bim) 12(bim) 13(bim) 14(bim) 15(bim) 16(bim) 17(bim) 18(bim) 20(bim) 21(bim) 22(bim) 23(bim) 25(bim) 
+
+
+UE ares (4) :
+	Nombre de groupes : 3
+	Capacite totale d'accueil: 96
+	Nombre Etudiants interesses: 105
+	Nombre Etudiants effectivement inscrits : 96
+	Les Non-inscrits : 2(sfpn) 3(sfpn) 4(sfpn) 6(sfpn) 9(sfpn) 10(sfpn) 15(sfpn) 20(sfpn) 26(sfpn) 
+	Les Inscrits:
+		Groupe 1 [32/32] : 7(res) 8(res) 14(res) 17(res) 29(res) 33(res) 35(res) 43(res) 45(res) 49(res) 5(sfpn) 7(sfpn) 13(sfpn) 22(sfpn) 24(sfpn) 4(sar) 24(sar) 30(sar) 31(sar) 4(sesi) 6(sesi) 10(sesi) 13(sesi) 20(sesi) 33(sesi) 36(sesi) 41(sesi) 42(sesi) 44(sesi) 47(sesi) 48(sesi) 49(sesi) 
+		Groupe 2 [32/32] : 1(res) 5(res) 6(res) 11(res) 12(res) 15(res) 19(res) 20(res) 22(res) 23(res) 24(res) 27(res) 32(res) 37(res) 39(res) 40(res) 42(res) 44(res) 46(res) 48(res) 50(res) 16(sfpn) 19(sfpn) 25(sfpn) 2(sar) 9(sar) 17(sesi) 22(sesi) 26(sesi) 28(sesi) 39(sesi) 40(sesi) 
+		Groupe 3 [32/32] : 2(res) 3(res) 4(res) 9(res) 10(res) 16(res) 25(res) 26(res) 28(res) 30(res) 31(res) 34(res) 38(res) 41(res) 47(res) 51(res) 12(sfpn) 1(sar) 3(sar) 6(sar) 7(sar) 33(sar) 1(sesi) 7(sesi) 12(sesi) 18(sesi) 25(sesi) 32(sesi) 34(sesi) 37(sesi) 38(sesi) 50(sesi) 
+
+

@@ -1,0 +1,13 @@
+num,oblig1,oblig2,oblig3,cons1,cons2,cons3,cons4,cons5
+1,bima,mapsi,,il,algav,complex,,
+2,bima,mapsi,,mogpl,complex,lrc,,
+3,bima,mapsi,,lrc,complex,algav,,
+4,mapsi,bima,,lrc,mogpl,algav,,
+5,mapsi,bima,,signal,lrc,mogpl,,
+6,mapsi,bima,,il,lrc,mogpl,,
+7,bima,mapsi,,algav,complex,mogpl,,
+8,bima,mapsi,,il,algav,complex,,
+9,bima,mapsi,,il,algav,model,,
+10,bima,mapsi,,lrc,,,,
+11,bima,mapsi,,il,mogpl,algav,,
+12,mapsi,bima,,il,lrc,algav,,
