@@ -50,8 +50,5 @@ class Generateur_Voeux:
         return path, self.ListeDesParcours
 
 
-if __name__ == "__main__":
-    generateur = Generateur_Voeux("parcours.csv", "edt.csv")
-    for i in range(1):
-        generateur.generer()
+
                 

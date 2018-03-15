@@ -65,6 +65,7 @@ class MainModel():
     DictionnaireDistribUEInsatisfaitesParParcours = dict()
 
     modelGurobi = Model("OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK)")
+
     class Incompatibilite:
         def __init__(self, idUEI, idGroupK, idUEJ, idGroupL):
             """Definit une incompatiblite de type ((idUEI, idGroupK),(idUEJ, idGroupL))"""
@@ -532,22 +533,43 @@ class MainModel():
 
 
         return s
+    def remise_a_zero(self):
+        MainModel.EDT = [dict()] + [generer_model_dict_creneau(MainModel.nbMaxGroupeParUE) for i in range(0, MainModel.nbCreneauxParSemaine)]
+        MainModel.ListeDesUEs = ["null"] + ["null"]*MainModel.nbUE
+        MainModel.DictUEs = dict()
 
+        MainModel.ListeDesEtudiants = ["null"]
+        MainModel.ListeDesParcours = list()
+        MainModel.ListeEffectifDesParcours = list()
+        MainModel.ListeDesEffectifsCumules = list()
+        MainModel.EnsIncompatibilites = set()
+        MainModel.nbTotalIncompatibilites = 0
+        MainModel.nbTotalIncompatibilitesVides = 0
+        MainModel.nbInscriptionsSatisfaites = 0
+        MainModel.ListedesVarY = list()
+        #Jeudi 15
+        MainModel.charge = 0
+        MainModel.capaciteMaximale = 0
+        #Jeudi 15
+        MainModel.ListeDesEtudiantsParParcours = list()
+        MainModel.DictionnaireDesInsatisfactionsParParcours = dict()
+        MainModel.DictionnaireDistribUEInsatisfaitesParParcours = dict()
+
+        MainModel.modelGurobi = Model("OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK)")
     #     STOP HERE
 
 
 
     
-m = MainModel("../VOEUX", "edt.csv")
-# m = MainModel("RAND_VOEUX1", "edt.csv")
-m.resoudre()
+# m = MainModel("../VOEUX", "edt.csv")
+# # m = MainModel("RAND_VOEUX1", "edt.csv")
+# m.resoudre()
+#
+#
+# f = open("inscription2017_2018.txt", "w")
+# # f = open("R1inscription2017_2018.txt", "w")
+#
+# f.write(str(m))
+# # f.write("\n\n"+str(analyses))
+# f.close()
 
-
-f = open("inscription2017_2018.txt", "w")
-# f = open("R1inscription2017_2018.txt", "w")
-
-f.write(str(m))
-# f.write("\n\n"+str(analyses))
-f.close()
-# print(m)
-# print(analyses)
