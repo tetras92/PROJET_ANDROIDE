@@ -1,0 +1,10 @@
+parcours,effectif_min,effectif_max,oblig1,oblig2,oblig3,cons1,cons2,cons3,cons4,cons5,cons6,cons7,cons8,P1,P2,P3,P4,P5
+and,40,55,mogpl,lrc,,aagb,bima,complex,il,mapsi,mlbda,,,0,0.11,0.03,0.08,0.78
+bim,20,30,aagb,mapsi,maths4m062,bima,complex,il,mlbda,,,,,0,0.08,0.08,0.08,0.76
+dac,30,45,lrc,mlbda,,bima,complex,il,mapsi,model,mogpl,,,0.02,0.06,0.08,0,0.84
+ima,10,22,bima,mapsi,,algav,complex,il,lrc,model,mogpl,signal,,0,0,0.04,0.15,0.81
+res,45,61,ares,rtel,,archi1,complex,mogpl,noyau,pr,signal,,,0.02,0.08,0.07,0.07,0.76
+sar,25,35,noyau,pr,,archi1,ares,algav,dlp,il,mlbda,,,0,0.04,0.2,0.08,0.68
+sesi,40,55,archi1,vlsi1,,esa,ares,mobj,noyau,pr,signal,,,0,0.04,0.06,0.1,0.8
+sfpn,20,35,model,,,archi1,ares,complex,dlp,mapsi,mlbda,noyau,pr,0.03,0.06,0.09,0.09,0.73
+stl,50,70,algav,dlp,,archi1,complex,il,lrc,mlbda,mogpl,noyau,pr,0,0.08,0.16,0.08,0.68

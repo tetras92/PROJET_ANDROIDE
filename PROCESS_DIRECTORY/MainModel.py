@@ -19,19 +19,27 @@ def generer_model_dict_creneau(nbMaxGroupeParUE):
 
 
 class MainModel():
+    """ Le Modele Geneneral:\nSes attributs (des variables statiques) :
+                ListeDesEtudiants : liste des objets Etudiants
+                EDT : Liste de dictionnaires des creneaux
+                ModelGurobi : le modele Gurobi
+                DictUEs : dictionnaire des UEs; cle: intitule - valeur: Objet UE
+                ListeDesUEs : Liste des references vers les UEs indicees sur leur id
+                ListeDesParcours: Listes des parcours (des String)
+                EnsIncompatibilites : ensemble des incompatibilites
+
+
+                nbMaxVoeuxParEtudiant : int
+                nbMaxGroupeParUE
+                nbMaxUEObligatoires/parcours
+                nbMaxUEConseillees/parcours
+                nbMaxCoursParUE
+                nbCreneauxParSemaine
+                nbUE : nombre total d'Ues du Master d'Informatique
+
+                """
     count = 0
-    #Les attributs
-    # ListeDesEtudiants : liste des objets Etudiants
-    # EDT : Liste de dictionnaires des creneaux
-    # ModelGurobi : le modele Gurobi
-    # DictUEs : dictionnaire des UEs; cle: intitule - valeur: Objet UE
-    # ListeDesUEs : Liste des references vers les UEs indicees sur leur id
-    # ListeDesParcours: Listes des parcours (des String)
-    # nbMaxVoeuxParEtudiant : int
-    # nbMaxGroupeParUE
-    # nbMaxUEObligatoires/parcours
-    # nbMaxUEConseillees/parcours
-    # EnsIncompatibilites : ensemble des incompatibilites
+
 # Par defaut
     nbMaxVoeuxParEtudiant = 5
     nbMaxGroupeParUE = 5
@@ -40,7 +48,8 @@ class MainModel():
     nbMaxCoursParUE = 2
     nbCreneauxParSemaine = 25
     nbUE = 21
-    # Fin Defaut
+    edtInitialise = False
+# Fin Defaut
 
 
     EDT = [dict()] + [generer_model_dict_creneau(nbMaxGroupeParUE) for i in range(0, nbCreneauxParSemaine)]
@@ -65,7 +74,13 @@ class MainModel():
     DictionnaireDistribUEInsatisfaitesParParcours = dict()
 
     modelGurobi = Model("OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK)")
-
+    idModel = 1
+    #Vendredi 16
+    proportionSatisfaction = 0
+    #Mardi 20
+    # DDecisionEtuUE = dict()
+    #Jeudi 22
+    # DNbrUeContrat = dict()
     class Incompatibilite:
         def __init__(self, idUEI, idGroupK, idUEJ, idGroupL):
             """Definit une incompatiblite de type ((idUEI, idGroupK),(idUEJ, idGroupL))"""
@@ -90,6 +105,8 @@ class MainModel():
                     modelGurobi.addConstr(modelGurobi.getVarByName(etuName+"_%d"%self.ueGroup1[0]+"_%d"%self.ueGroup1[1]) + modelGurobi.getVarByName(etuName+"_%d"%self.ueGroup2[0]+"_%d"%self.ueGroup2[1]) <= 1)
 
                 modelGurobi.update()
+
+
 
     class UE:
 
@@ -200,7 +217,16 @@ class MainModel():
             self.indexParcours = indexParcours
             self.ue_obligatoires = [MainModel.DictUEs[csv_line["oblig"+str(id)]].get_id() for id in range(1, MainModel.nbMaxUEObligatoires+1) if csv_line["oblig"+str(id)] != ""]
             self.ue_non_obligatoires = [MainModel.DictUEs[csv_line["cons"+str(id)]].get_id() for id in range(1, MainModel.nbMaxUEConseillees+1) if csv_line["cons"+str(id)] != ""]
+            # **
+            # L = MainModel.DDecisionEtuUE[parcours] + self.ue_non_obligatoires
+            # L.sort()
+            # MainModel.DDecisionEtuUE[parcours] = L
+            # ** bincount
+
             self.nombreDeVoeux = len(self.ue_obligatoires) + len(self.ue_non_obligatoires)
+
+            # MainModel.DNbrUeContrat[parcours].append(self.nombreDeVoeux)
+
             self.varName = "x_{}_{}".format(self.indexParcours, self.idRelatif)
             self.ListeDesInscriptions = list()
 
@@ -314,6 +340,8 @@ class MainModel():
         #Fin Modele
 
         #TRAITEMENT UE : GENERATION DE L'EDT ET DES OBJETS UE
+        # if not (MainModel.edtInitialise): MainModel.edtInitialise = True
+
         f_ue = open(fileUE)
         data = csv.DictReader(f_ue)
         for ligneUE in data:
@@ -335,14 +363,26 @@ class MainModel():
         #TRAITEMENT VOEUX ETUDIANTS
         indexParcours = 0
         for fichierVoeux in os.listdir(dossierVoeux):
+
+
+            # try: #POUR EVITER LES ERREURS DE SPLIT SUR LE DOSSIER AFFECTATION PAR PARCOURS
             parcours = fichierVoeux.split('.')[1]
-
-            #INITIALISATION DICTIONNAIRE DES INSATISFACTIONS PAR PARCOURS
-            MainModel.DictionnaireDesInsatisfactionsParParcours[parcours] = list()#set()
-
             path = dossierVoeux+"/"+fichierVoeux
             f_voeux = open(path)
             data = csv.DictReader(f_voeux)
+            # except:
+            #     pass
+
+            #INITIALISATION DICTIONNAIRE DES INSATISFACTIONS PAR PARCOURS
+            # if not(MainModel.edtInitialise):
+            MainModel.DictionnaireDesInsatisfactionsParParcours[parcours] = list()#set()
+            # MainModel.DDecisionEtuUE[parcours] = list() #**
+
+
+            # MainModel.DNbrUeContrat[parcours] = list()
+
+
+
             effectif = 0
             for ligneEtu in data:
                 currentEtu = MainModel.Etudiant(ligneEtu, parcours, indexParcours)
@@ -356,7 +396,7 @@ class MainModel():
             MainModel.ListeEffectifDesParcours.append(effectif)
             MainModel.ListeDesParcours.append(parcours)
             indexParcours += 1
-
+        MainModel.edtInitialise = True
         MainModel.ListeDesEffectifsCumules = [0] + [val for val in MainModel.ListeEffectifDesParcours]
         for l in range(1, len(MainModel.ListeEffectifDesParcours)):
             MainModel.ListeDesEffectifsCumules[l] += MainModel.ListeDesEffectifsCumules[l-1]
@@ -436,8 +476,8 @@ class MainModel():
     def resoudre(self):
         # print (MainModel.modelGurobi.getObjective())
         self.calculer_charge()
+        MainModel.modelGurobi.setParam( 'OutputFlag', False )
         MainModel.modelGurobi.optimize()
-
         for varName in MainModel.ListedesVarY:
             if MainModel.modelGurobi.getVarByName(varName).x == 1:
                 MainModel.nbInscriptionsSatisfaites += 1
@@ -457,17 +497,31 @@ class MainModel():
                 MainModel.ListeDesUEs[int(ue)].signalerNonInscrit(parcours, idRelatif)
                 currentEtudiant = MainModel.ListeDesEtudiants[MainModel.ListeDesEffectifsCumules[int(parcours)] + int(idRelatif)]
                 currentEtudiant.entrer_inscription(int(ue), 0)
+
+        MainModel.proportionSatisfaction = round(100.0*MainModel.nbInscriptionsSatisfaites/len(MainModel.ListedesVarY),2)
         try:
-            os.mkdir("../AFFECTATIONS PAR PARCOURS")
+            # os.mkdir("../AFFECTATIONS PAR PARCOURS")
+            affectationDirectory = "/Vrac/DAK/RAND_VOEUX"+str(MainModel.idModel)+"_AFFECTATIONS PAR PARCOURS"
+            os.mkdir(affectationDirectory)
         except:
             pass
         for parcours in range(len(MainModel.ListeDesParcours)):
-            f = open("../AFFECTATIONS PAR PARCOURS/affectations.{}".format(MainModel.ListeDesParcours[parcours]), "w")
+            # f = open("../AFFECTATIONS PAR PARCOURS/affectations.{}".format(MainModel.ListeDesParcours[parcours]), "w")
+            f = open("/Vrac/DAK/RAND_VOEUX"+str(MainModel.idModel)+"_AFFECTATIONS PAR PARCOURS/affectations.{}".format(MainModel.ListeDesParcours[parcours]), "w")
             f.write("LES AFFECTATIONS\n")
             for idRelatif in range(1, MainModel.ListeEffectifDesParcours[parcours]+1):
                 MainModel.ListeDesEtudiants[MainModel.ListeDesEffectifsCumules[parcours] + int(idRelatif)].enregistrer_affectation(f)
             f.close()
+        # print(MainModel.DDecisionEtuUE)
+        # for p in MainModel.DDecisionEtuUE:
+        #     MainModel.DDecisionEtuUE[p] = np.bincount(MainModel.DDecisionEtuUE[p])
+        # print(MainModel.DDecisionEtuUE)
 
+        # for p in MainModel.DNbrUeContrat:
+        #     MainModel.DNbrUeContrat[p] = np.bincount(MainModel.DNbrUeContrat[p])
+        # print(MainModel.DNbrUeContrat)
+        MainModel.idModel += 1
+        return MainModel.charge, MainModel.proportionSatisfaction
             # [37, 12, 51, 27, 59, 25, 48, 33, 50]
             # [0, 37, 49, 100, 127, 186, 211, 259, 292, 50]
 
@@ -488,9 +542,9 @@ class MainModel():
             ListeDistrUEInsatisfParParcours.append(R)
             s += "{} : {} |".format(parcours, str(len(List)))
 
-        print(ListeDistrUEInsatisfParParcours)
+        # print(ListeDistrUEInsatisfParParcours)            LA DISTRIBUTION DES INSATISFACTIONS A AFFICHER
 
-        #JETER COUP D'OEIl a MainModel.DictionnaireDistribUEInsatisfaitesParParcours
+
         return s[:-1]
     def strListeDesInsatisfactionsParUE(self):
         s = ""
@@ -521,8 +575,8 @@ class MainModel():
         s += "Nombre Total d'inscriptions a satisfaire : {} \n".format(len(MainModel.ListedesVarY))
         s += "Nombre Maximal d'inscriptions pouvant etre satisfaites : {} \n".format(MainModel.capaciteMaximale)
         s += "Charge : {}% \n\n\t\t\t*LES RESULTATS D'AFFECTATION*\n\n".format(MainModel.charge)
-        proportionSatisfaction = round(100.0*MainModel.nbInscriptionsSatisfaites/len(MainModel.ListedesVarY),2)
-        s += "Nombre d'inscriptions satisfaites : {} soit {}%\n".format(MainModel.nbInscriptionsSatisfaites, proportionSatisfaction)
+        # proportionSatisfaction = round(100.0*MainModel.nbInscriptionsSatisfaites/len(MainModel.ListedesVarY),2)
+        s += "Nombre d'inscriptions satisfaites : {} soit {}%\n".format(MainModel.nbInscriptionsSatisfaites, MainModel.proportionSatisfaction)
         s += "Detail des inscriptions non satisfaites : \n\t\tNombre de demandes non satisfaites par parcours : {}\n".format(self.strDictionnaireDesInsatisfactions())
         s += "\t\tNombre de demandes non satisfaites par UE (**Saturee): {}\n".format(self.strListeDesInsatisfactionsParUE())
         s += "\n\t\t\t*DETAIL DES AFFECTATIONS PAR UE*\n\n"
@@ -552,7 +606,9 @@ class MainModel():
         MainModel.capaciteMaximale = 0
         #Jeudi 15
         MainModel.ListeDesEtudiantsParParcours = list()
-        MainModel.DictionnaireDesInsatisfactionsParParcours = dict()
+        # for parcours, List in MainModel.DictionnaireDesInsatisfactionsParParcours.items():
+        #     print (parcours + " " + str(len(List)))
+        MainModel.DictionnaireDesInsatisfactionsParParcours = dict() #MARDI 20 MARS :  non remise a zero du dictionnaire des insat par parcours idee connaitre les parcours qui rejette le plus
         MainModel.DictionnaireDistribUEInsatisfaitesParParcours = dict()
 
         MainModel.modelGurobi = Model("OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK)")

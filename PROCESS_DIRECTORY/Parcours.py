@@ -10,7 +10,7 @@ import csv
 import numpy as np
 import scipy.stats as stat
 import math
-import matplotlib.pyplot as plt
+
 
 class Parcours:
 
@@ -23,14 +23,16 @@ class Parcours:
             self.nbUEObligatoires = len(self.ListeUEObligatoires)
             self.ListeUEConseilles = [csvLine["cons"+str(i)] for i in range(1, 8+1) if csvLine["cons"+str(i)] != ""] #***
             self.nbUEConseilles = len(self.ListeUEConseilles)
-            print([csvLine["P"+str(i)] for i in range(1, 6)])
+            # print([csvLine["P"+str(i)] for i in range(1, 6)])
             self.Proportions = [float(csvLine["P"+str(i)]) for i in range(1, 6)]
             self.EnsembleIdEtudiantsInsatisfaits = set()
             self.EnsembleIdUEInsatisfaites = set()
 
-            self.ListeCapaciteUEConseillees = [DictCapaciteUE[ue_cons] for ue_cons in self.ListeUEConseilles]
-            self.ListeProbaUEConseillees = [1.0*valeur/sum(self.ListeCapaciteUEConseillees) for valeur in self.ListeCapaciteUEConseillees]
-            # print("somme" , self.ListeProbaUEConseillees)
+            # self.ListeCapaciteUEConseillees = [DictCapaciteUE[ue_cons] for ue_cons in self.ListeUEConseilles]
+            # ANCIENNE METHODE CHOIX DES UES CONSEILLEES
+            # self.ListeProbaUEConseillees = [1.0*valeur/sum(self.ListeCapaciteUEConseillees) for valeur in self.ListeCapaciteUEConseillees]
+            self.ListeProbaUEConseillees = [float(csvLine["Pcons"+str(i)]) for i in range(1, 8+1) if csvLine["Pcons"+str(i)] != ""]
+            # print("somme" + self.nom , self.ListeProbaUEConseillees)
 
 
 

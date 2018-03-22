@@ -10,7 +10,7 @@ import os
 class Generateur_Voeux:
     
     nbMaxUEParVoeu = 5
-    directoryName = "RAND_VOEUX"
+    directoryName = "/Vrac/DAK/RAND_VOEUX"
     
     def __init__(self, fichierDescParcours, fichierEDT):
         self.fichierDescParcours = fichierDescParcours
