@@ -1,38 +1,38 @@
 LES AFFECTATIONS
-1 mlbda4 lrc1 mapsi1 mogpl3 il3 
-2 mlbda4 lrc1 complex1 mogpl2 mapsi3 
-3 mlbda4 lrc2 mapsi1 mogpl2 il3 
+1 mlbda3 lrc2 mapsi1 mogpl2 il3 
+2 mlbda2 lrc1 complex2 mogpl2 mapsi3 
+3 mlbda3 lrc2 mapsi1 mogpl2 il3 
 4 mlbda2 lrc2 bima1 complex2 mapsi4 
-5 mlbda3 lrc1 mapsi2 mogpl2 il1 
-6 mlbda4 lrc4 mapsi2 mogpl1 il5 
-7 mlbda1 lrc2 model1 mapsi5 il3 
-8 mlbda1 lrc4 mogpl1 mapsi4 il5 
-9 mlbda4 lrc2 bima1 mapsi4 il1 
-10 mlbda4 lrc1 mapsi1 mogpl2 il3 
-11 mlbda4 lrc4 mapsi4 mogpl1 il1 
-12 mlbda1 lrc4 mogpl1 mapsi5 il3 
-13 mlbda3 lrc1 mapsi2 mogpl2 il2 
-14 mlbda1 lrc2 mogpl4 mapsi5 il3 
-15 mlbda4 lrc1 bima1 mapsi1 il3 
-16 mlbda1 lrc4 mapsi5 mogpl1 il3 
-17 mlbda4 lrc1 mapsi1 mogpl2 il3 
+5 mlbda1 lrc4 mapsi5 mogpl1 il3 
+6 mlbda4 lrc1 mapsi2 mogpl2 il1 
+7 mlbda1 lrc2 model1 mapsi4 il5 
+8 mlbda4 lrc1 mogpl3 mapsi2 il1 
+9 mlbda4 lrc1 bima1 mapsi4 il1 
+10 mlbda1 lrc2 mapsi5 mogpl4 il3 
+11 mlbda4 lrc2 mapsi2 mogpl2 il1 
+12 mlbda1 lrc4 mogpl1 mapsi2 il5 
+13 mlbda3 lrc1 mapsi2 mogpl4 il1 
+14 mlbda4 lrc4 mogpl1 mapsi5 il2 
+15 mlbda4 lrc4 bima1 mapsi2 il1 
+16 mlbda4 lrc1 mapsi1 mogpl2 il3 
+17 mlbda1 lrc4 mapsi5 mogpl1 il3 
 18 mlbda4 lrc2 mapsi2 mogpl2 il1 
-19 mlbda2 lrc2 mogpl3 mapsi1 
-20 mlbda4 lrc1 mapsi1 il3 
-21 mlbda1 lrc1 model1 mapsi4 il5 
+19 mlbda2 lrc2 mogpl2 mapsi2 
+20 mlbda4 lrc1 mapsi1 il5 
+21 mlbda1 lrc2 model1 mapsi5 il3 
 22 complex1 mogpl2 
-23 mlbda2 lrc1 model1 complex2 mapsi2 
-24 mapsi1 mogpl4 
-25 mlbda4 il1 
-26 lrc4 mlbda4 bima1 mapsi4 il2 
-27 lrc1 mlbda3 mapsi2 mogpl2 il2 
-28 lrc4 mlbda1 mapsi2 mogpl1 il5 
+23 mlbda2 lrc2 model1 complex2 mapsi4 
+24 mapsi3 mogpl2 
+25 mlbda4 il3 
+26 lrc4 mlbda4 bima1 mapsi1 il3 
+27 lrc2 mlbda3 mapsi1 mogpl2 il3 
+28 lrc2 mlbda3 mapsi4 mogpl2 il1 
 29 lrc1 mlbda1 model1 mapsi5 il3 
-30 lrc1 mlbda1 complex1 mapsi4 mogpl2 
-31 lrc1 mlbda3 mapsi2 mogpl2 il1 
-32 mapsi1 mogpl3 
-33 lrc3 mlbda4 il5 
-34 lrc3 mlbda1 model1 mogpl3 il3 
-35 lrc2 mlbda4 mapsi2 mogpl2 il2 
-36 mlbda1 model1 mapsi2 il4 
-37 lrc2 mlbda3 mapsi3 mogpl2 il1 
+30 lrc2 mlbda1 complex1 mapsi4 mogpl2 
+31 lrc4 mlbda1 mapsi2 mogpl1 il5 
+32 mapsi3 mogpl3 
+33 lrc3 mlbda4 il3 
+34 lrc3 mlbda1 model1 mogpl1 il3 
+35 lrc4 mlbda4 mapsi2 mogpl1 il2 
+36 mlbda1 model1 mapsi4 il4 
+37 lrc2 mlbda3 mapsi1 mogpl2 il3 

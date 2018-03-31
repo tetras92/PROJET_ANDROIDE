@@ -25,20 +25,27 @@ class MainModel():
                 ModelGurobi : le modele Gurobi
                 DictUEs : dictionnaire des UEs; cle: intitule - valeur: Objet UE
                 ListeDesUEs : Liste des references vers les UEs indicees sur leur id
+                EnsIncompatibilites : ensemble des Incompatibilites
                 ListeDesParcours: Listes des parcours (des String)
-                EnsIncompatibilites : ensemble des incompatibilites
+                ListeEffectifDesParcours : Liste des Effectifs par parcours
+                ListeDesEffectifsCumules : Liste des Effectifs Cumules des Parcours pour retrouver les etudiants dans la grande liste
 
-
+                idModel : identifiant du modele dans le cas d'une simulation aleatoire
                 nbMaxVoeuxParEtudiant : int
-                nbMaxGroupeParUE
-                nbMaxUEObligatoires/parcours
-                nbMaxUEConseillees/parcours
-                nbMaxCoursParUE
-                nbCreneauxParSemaine
+                nbMaxGroupeParUE : int
+                nbMaxUEObligatoires/parcours : int
+                nbMaxUEConseillees/parcours : int
+                nbMaxCoursParUE : int
+                nbCreneauxParSemaine : int
                 nbUE : nombre total d'Ues du Master d'Informatique
-
+                charge : la charge (rapport du nombre de demandes d'inscriptions sur la capaciteMaximale
+                capaciteMaximale :  cumul des capacites d'accueil de tous les groupes de toutes les ues
+                proportionSatisfaction : pourcentage des inscriptions satisfaites
                 """
+  #TMP
     count = 0
+    JCVV = list()
+    #FIN TMP
 
 # Par defaut
     nbMaxVoeuxParEtudiant = 5
@@ -69,6 +76,7 @@ class MainModel():
     charge = 0
     capaciteMaximale = 0
     #Jeudi 15
+
     ListeDesEtudiantsParParcours = list()
     DictionnaireDesInsatisfactionsParParcours = dict()
     DictionnaireDistribUEInsatisfaitesParParcours = dict()
@@ -82,13 +90,14 @@ class MainModel():
     #Jeudi 22
     # DNbrUeContrat = dict()
     class Incompatibilite:
+        """Classe definissant une incompatibilite"""
         def __init__(self, idUEI, idGroupK, idUEJ, idGroupL):
             """Definit une incompatiblite de type ((idUEI, idGroupK),(idUEJ, idGroupL))"""
 
-            self.ueGroup1 = idUEI, idGroupK
-            self.ueGroup2 = idUEJ, idGroupL
-            self.ensEtuConcernes =  MainModel.ListeDesUEs[idUEI].getEnsEtu() & MainModel.ListeDesUEs[idUEJ].getEnsEtu()  #getEnsEtu  a definir dans UE
-            self.vide = (len(self.ensEtuConcernes) == 0)
+            self.ueGroup1 = idUEI, idGroupK      #Un couple (UE, Group)
+            self.ueGroup2 = idUEJ, idGroupL      #Un couple (UE, Group)
+            self.ensEtuConcernes =  MainModel.ListeDesUEs[idUEI].getEnsEtu() & MainModel.ListeDesUEs[idUEJ].getEnsEtu()  #L'ensemble des etudiants auxquels s'applique l'incompatibilite (Etudiant sous la forme x_Parcous_idRelatif (des strings))
+            self.vide = (len(self.ensEtuConcernes) == 0)    #Un booleen
             MainModel.nbTotalIncompatibilites += 1
             if self.vide:
                 MainModel.nbTotalIncompatibilitesVides += 1
@@ -109,7 +118,7 @@ class MainModel():
 
 
     class UE:
-
+        """Classe definissant une UE"""
         def __init__(self,csv_line):
             self.id =int(csv_line["id_ue"])
             self.intitule = csv_line["intitule"]
@@ -135,6 +144,7 @@ class MainModel():
                     MainModel.EDT[int(creneauTdTme[1])][gr_i].add(self.id)      #tme
                 except:
                     pass
+
         def get_id(self):
             return self.id
 
@@ -152,6 +162,7 @@ class MainModel():
             return self.EnsEtuInteresses
 
         def ajouterContrainteCapaciteModelGurobi(self, modelGurobi):
+            """ajoute toutes les contraintes de  capacites de groupe au modele"""
             for idGroup in range(1, self.nb_groupes+1):
                 modelGurobi.addConstr(quicksum(modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup) for etu in self.EnsEtuInteresses) <= self.ListeCapacites[idGroup-1])
             modelGurobi.update()
@@ -211,6 +222,7 @@ class MainModel():
             return s
 
     class Etudiant:
+        """ Classe representant un etudiant"""
         def __init__(self,csv_line, parcours, indexParcours):
             self.idRelatif = int(csv_line["num"])
             self.parcours = parcours
@@ -231,6 +243,7 @@ class MainModel():
             self.ListeDesInscriptions = list()
 
         def gerer_variables_contraintes_ue_obligatoires(self,modelGurobi):
+            """ajoute les contraintes relatives aux ue obligatoires"""
             objectif = modelGurobi.getObjective()
 
             for id_ue in self.ue_obligatoires:
@@ -249,6 +262,7 @@ class MainModel():
             modelGurobi.update()
 
         def gerer_variables_contraintes_ue_non_obligatoires(self, modelGurobi):
+            """ajoute les contraintes relatives aux ue non obligatoires"""
             objectif = modelGurobi.getObjective()
 
             for id_ue in self.ue_non_obligatoires:
@@ -303,6 +317,7 @@ class MainModel():
                 self.ListeDesInscriptions.append(chaine)
 
         def enregistrer_affectation(self, file):
+            """enregistre l'etat des inscriptions de l'etudiant dans le fichier des affectations corresopondant a son parcours"""
             file.write(str(self.idRelatif)+" ")
             for aff in self.ListeDesInscriptions:
                 file.write(aff + " ")
@@ -333,10 +348,10 @@ class MainModel():
         #initialisations
 
         #Modele d'un dictionnaire Creneau
-        modelDict = dict()
-        modelDict[0] = set()
-        for k in range(self.nbMaxGroupeParUE):
-            modelDict[k+1] = set()
+        # modelDict = dict()
+        # modelDict[0] = set()
+        # for k in range(self.nbMaxGroupeParUE):              A SUPPRIMER CE 31 MARS
+        #     modelDict[k+1] = set()
         #Fin Modele
 
         #TRAITEMENT UE : GENERATION DE L'EDT ET DES OBJETS UE
@@ -345,12 +360,12 @@ class MainModel():
         f_ue = open(fileUE)
         data = csv.DictReader(f_ue)
         for ligneUE in data:
-            currentUE = MainModel.UE(ligneUE)
+            currentUE = MainModel.UE(ligneUE) #Generation de l'objet UE
             currentUE.actualiseEDT()
             MainModel.ListeDesUEs[currentUE.get_id()] = currentUE             #Rajout a la listeUe
             MainModel.DictUEs[currentUE.intitule] = currentUE                  #Rajout au DictUe
 
-            #NETTOYER EDT
+            #NETTOYER EDT : supprimer les associations de numeros de groupe avec des ensembles vides
         for creneau in range(1, len(MainModel.EDT)):
             dictCopy = MainModel.EDT[creneau].copy()
             for id in dictCopy:
@@ -365,7 +380,7 @@ class MainModel():
         for fichierVoeux in os.listdir(dossierVoeux):
 
 
-            # try: #POUR EVITER LES ERREURS DE SPLIT SUR LE DOSSIER AFFECTATION PAR PARCOURS
+            # try: #POUR EVITER LES ERREURS DE SPLIT SUR LE DOSSIER DE VOEUX PAR PARCOURS
             parcours = fichierVoeux.split('.')[1]
             path = dossierVoeux+"/"+fichierVoeux
             f_voeux = open(path)
@@ -385,7 +400,7 @@ class MainModel():
 
             effectif = 0
             for ligneEtu in data:
-                currentEtu = MainModel.Etudiant(ligneEtu, parcours, indexParcours)
+                currentEtu = MainModel.Etudiant(ligneEtu, parcours, indexParcours) #generation de l'objet etudiant
                 effectif += 1
                 MainModel.ListeDesEtudiants.append(currentEtu)
                 #rajout des variables et contraintes s'appliquant a currentEtu
@@ -393,14 +408,15 @@ class MainModel():
                 currentEtu.gerer_variables_contraintes_ue_obligatoires(MainModel.modelGurobi)
                 #Enregistrement de l'interet pour l'ensemble de ses UE
                 currentEtu.enregistrer_interet_pour_UE()
-            MainModel.ListeEffectifDesParcours.append(effectif)
+            MainModel.ListeEffectifDesParcours.append(effectif)                     #STOCKAGE DE L'EFFECTIF DU PARCOURS
             MainModel.ListeDesParcours.append(parcours)
             indexParcours += 1
         MainModel.edtInitialise = True
+         #CALCUL DES EFFECTIFS CUMULES
         MainModel.ListeDesEffectifsCumules = [0] + [val for val in MainModel.ListeEffectifDesParcours]
         for l in range(1, len(MainModel.ListeEffectifDesParcours)):
             MainModel.ListeDesEffectifsCumules[l] += MainModel.ListeDesEffectifsCumules[l-1]
-
+         #FIN CALCUL DES EFFECTIFS CUMULES
         #FIN TRAITEMENT VOEUX ETUDIANTS
 
         #GERER LES INCOMPATIBILITES
@@ -498,16 +514,35 @@ class MainModel():
                 currentEtudiant = MainModel.ListeDesEtudiants[MainModel.ListeDesEffectifsCumules[int(parcours)] + int(idRelatif)]
                 currentEtudiant.entrer_inscription(int(ue), 0)
 
+                # L = currentEtudiant.ue_obligatoires + currentEtudiant.ue_non_obligatoires
+                # S = set(L)
+                # DD = [el.copy() for el in MainModel.JCVV]
+                #
+                # entree = False
+                # for el in DD:
+                #     if len(el & S) == len(el):
+                #         entree = True
+                #         break
+                #     if len(S & el) == len(S) and len(S) != len(el):                           DETECTION PROBABILISTE DES INCOMPATIBILITES
+                #         entree = True
+                #         # for e in MainModel.JCVV:
+                #         #     if e == S:
+                #         MainModel.JCVV.remove(el)
+                #         MainModel.JCVV.append(S)
+                #
+                # if not entree:
+                #     MainModel.JCVV.append(S)
+
         MainModel.proportionSatisfaction = round(100.0*MainModel.nbInscriptionsSatisfaites/len(MainModel.ListedesVarY),2)
         try:
-            # os.mkdir("../AFFECTATIONS PAR PARCOURS")
+            os.mkdir("../AFFECTATIONS PAR PARCOURS")
             affectationDirectory = "/Vrac/DAK/RAND_VOEUX"+str(MainModel.idModel)+"_AFFECTATIONS PAR PARCOURS"
-            os.mkdir(affectationDirectory)
+            # os.mkdir(affectationDirectory)
         except:
             pass
         for parcours in range(len(MainModel.ListeDesParcours)):
-            # f = open("../AFFECTATIONS PAR PARCOURS/affectations.{}".format(MainModel.ListeDesParcours[parcours]), "w")
-            f = open("/Vrac/DAK/RAND_VOEUX"+str(MainModel.idModel)+"_AFFECTATIONS PAR PARCOURS/affectations.{}".format(MainModel.ListeDesParcours[parcours]), "w")
+            f = open("../AFFECTATIONS PAR PARCOURS/affectations.{}".format(MainModel.ListeDesParcours[parcours]), "w")
+            # f = open("/Vrac/DAK/RAND_VOEUX"+str(MainModel.idModel)+"_AFFECTATIONS PAR PARCOURS/affectations.{}".format(MainModel.ListeDesParcours[parcours]), "w")
             f.write("LES AFFECTATIONS\n")
             for idRelatif in range(1, MainModel.ListeEffectifDesParcours[parcours]+1):
                 MainModel.ListeDesEtudiants[MainModel.ListeDesEffectifsCumules[parcours] + int(idRelatif)].enregistrer_affectation(f)
@@ -617,15 +652,15 @@ class MainModel():
 
 
     
-# m = MainModel("../VOEUX", "edt.csv")
+m = MainModel("../VOEUX", "edt.csv")
 # # m = MainModel("RAND_VOEUX1", "edt.csv")
-# m.resoudre()
+m.resoudre()
 #
 #
-# f = open("inscription2017_2018.txt", "w")
+f = open("inscription2017_2018_mapsiCorrection.txt", "w")
 # # f = open("R1inscription2017_2018.txt", "w")
 #
-# f.write(str(m))
+f.write(str(m))
 # # f.write("\n\n"+str(analyses))
 # f.close()
 
