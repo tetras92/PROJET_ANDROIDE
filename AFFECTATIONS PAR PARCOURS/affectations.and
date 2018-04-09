@@ -1,49 +1,56 @@
 LES AFFECTATIONS
-1 mogpl3 lrc2 complex2 mlbda2 mapsi3 
-2 mogpl3 lrc1 complex2 mapsi3 mlbda2 
-3 mogpl4 lrc1 bima1 complex1 mapsi1 
-4 mogpl4 lrc1 bima1 complex1 mapsi1 
-5 mogpl2 lrc1 mapsi4 mlbda3 il1 
-6 mogpl4 lrc1 complex1 mapsi5 mlbda1 
-7 mogpl3 lrc2 complex1 mlbda4 mapsi1 
-8 mogpl1 lrc4 aagb1 mapsi5 il3 
-9 mogpl4 lrc4 aagb1 mapsi2 il5 
-10 mogpl4 lrc2 complex1 mlbda1 mapsi4 
-11 mogpl2 lrc1 complex1 mapsi1 mlbda4 
-12 mogpl3 lrc1 aagb1 complex1 mapsi2 
-13 mogpl3 lrc1 mapsi4 mlbda3 il2 
-14 mogpl3 lrc2 mapsi2 mlbda3 il1 
-15 mogpl4 lrc4 bima1 mapsi1 il3 
-16 mogpl4 lrc4 bima1 mapsi4 il1 
-17 mogpl4 lrc1 bima1 complex1 mlbda1 
-18 mogpl3 lrc1 mapsi2 mlbda3 il1 
-19 mogpl1 lrc4 mapsi3 mlbda1 il5 
-20 mogpl2 lrc1 complex1 mapsi3 mlbda1 
-21 mogpl2 lrc2 complex2 mapsi3 mlbda2 
-22 mogpl3 lrc2 mapsi3 mlbda3 il1 
-23 mogpl4 lrc4 bima1 mapsi1 il3 
-24 mogpl4 lrc1 bima1 complex1 mapsi1 
-25 mogpl3 lrc1 complex1 mapsi4 mlbda1 
-26 mogpl2 lrc1 complex1 mapsi2 mlbda4 
-27 lrc3 mlbda4 il1 
-28 mogpl3 lrc2 complex2 mapsi3 mlbda2 
-29 mlbda1 il3 
-30 mogpl1 aagb1 complex1 mapsi5 
-31 mogpl1 lrc4 mapsi4 mlbda2 
-32 mogpl3 lrc1 complex2 mapsi3 mlbda2 
-33 mogpl4 lrc4 aagb1 mapsi2 
-34 mogpl3 mlbda2 mapsi4 
-35 mogpl2 lrc2 complex2 mlbda2 mapsi4 
-36 mogpl4 lrc2 complex1 mapsi1 
-37 mogpl3 lrc1 complex1 mapsi1 mlbda4 
-38 lrc1 mogpl2 ilX complex2 mapsi4 
-39 lrc4 mogpl1 complexX mapsi5 il3 
-40 lrc1 mogpl4 complex1 mapsi5 
-41 mogpl1 mlbda2 mapsi5 
-42 lrc2 mogpl3 mapsiX complex2 il3 
-43 lrc1 mogpl4 bima1 complex1 mapsi1 
-44 mapsi5 il3 
-45 lrc2 mogpl3 complex2 mapsi4 mlbda2 
-46 lrc1 mogpl3 complex1 mapsi1 mlbda4 
-47 lrc2 mogpl4 complex1 mlbda1 mapsi5 
-48 lrc2 mogpl4 complexX bima1 il3 
+1 lrc1 mogpl2 mapsi2 complex1 aagb1 
+2 mogpl4 lrc4 mapsi5 il3 aagb1 
+3 mogpl1 lrc3 mlbdaX complex2 il5 
+4 mogpl2 lrc2 mapsi2 complex1 aagb1 
+5 lrc4 mogpl4 aagb1 mapsi2 bima1 
+6 mogpl1 lrc4 mapsi1 mlbda2 bima1 
+7 lrc1 mogpl2 mapsi3 mlbda2 complex2 
+8 mogpl1 lrc4 complexX mapsi3 il5 
+9 lrc4 mogpl1 complexX mapsi1 il3 
+10 mogpl4 lrc4 aagb1 mapsi2 il5 
+11 lrc2 mogpl4 complexX mapsi2 il5 
+12 mogpl4 lrc1 complex1 bima1 mapsi1 
+13 mogpl2 lrc2 mapsiX complex2 il3 
+14 lrc2 il5 mapsi2 mlbda3 
+15 mogpl2 lrc1 mapsi4 complex1 mlbda1 
+16 lrc1 mogpl4 complex1 mlbda1 bima1 
+17 mogpl4 lrc2 il5 mapsi2 aagb1 
+18 mogpl3 lrc3 mlbdaX il3 complex2 
+19 lrc4 mogpl1 bimaX mlbda1 il3 
+20 lrc2 mapsi4 mlbda4 il1 
+21 lrc2 complex1 mapsi5 mlbda4 
+22 mogpl4 lrc1 complex1 mapsi5 mlbda1 
+23 lrc2 mogpl3 mlbda4 mapsi4 complex1 
+24 mogpl1 mapsi1 mlbda2 
+25 mogpl2 lrc1 mapsi4 mlbda3 il2 
+26 lrc4 mapsi2 aagb1 
+27 lrc1 mogpl4 bima1 mlbda2 mapsi1 
+28 mogpl4 lrc1 mapsi1 mlbda3 il5 
+29 mogpl3 mlbda2 
+30 lrc1 mapsi5 complex1 
+31 lrc1 mogpl2 mlbda3 mapsi1 il3 
+32 lrc1 mogpl4 mlbda1 complex1 mapsi3 
+33 lrc1 mogpl3 mapsi3 mlbda2 complex2 
+34 lrc1 mogpl3 mlbda3 il1 mapsi3 
+35 lrc1 mogpl4 complex1 mapsi4 mlbda1 
+36 mogpl4 lrc4 bima1 il1 mapsi2 
+37 lrc4 mogpl4 il1 mapsi4 bima1 
+38 lrc1 mogpl4 bima1 mapsi1 mlbda2 
+39 mogpl4 lrc1 complex1 mapsi5 mlbda1 
+40 mogpl1 lrc3 bimaX il3 complex2 
+41 mogpl1 lrc3 bimaX complex1 mlbda1 
+42 lrc1 mogpl3 mlbda4 mapsi1 complex1 
+43 lrc3 mogpl1 mlbdaX complex1 aagb1 
+44 lrc1 mogpl3 complex1 mapsi1 mlbda4 
+45 mogpl3 lrc2 complex1 mlbda4 mapsi3 
+46 mogpl2 lrc2 mapsi2 complex1 aagb1 
+47 lrc3 mogpl1 bimaX il3 complex2 
+48 lrc2 mogpl2 bimaX complex1 mlbda1 
+49 lrc2 mogpl4 mlbda3 mapsi5 il2 
+50 mogpl3 lrc2 bimaX complex1 mapsi2 
+51 mogpl1 lrc4 complexX mapsi2 il5 
+52 mogpl3 complex1 mapsi1 
+53 mogpl3 complex1 
+54 lrc2 mogpl2 mlbda4 mapsi1 complex1 
+55 mogpl2 lrc2 mlbda4 mapsi1 complex1 

@@ -56,6 +56,7 @@ class MainModel():
     nbCreneauxParSemaine = 25
     nbUE = 21
     edtInitialise = False
+    tauxEquilibre = 0.05
 # Fin Defaut
 
 
@@ -132,6 +133,7 @@ class MainModel():
             self.ListeNonInscrits = list()
             self.ListeEtudiantsGroupes = [list() for kk in range(self.nb_groupes+1)]
             self.capaciteTotale = sum(self.ListeCapacites)
+            self.equilibre = True
 
         def actualiseEDT(self):
             """MAJ de l'EDT"""
@@ -167,6 +169,15 @@ class MainModel():
                 modelGurobi.addConstr(quicksum(modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup) for etu in self.EnsEtuInteresses) <= self.ListeCapacites[idGroup-1])
             modelGurobi.update()
 
+        def ajouterContraintesEquilibre(self, modelGurobi):
+            for idGroup1 in range(1, self.nb_groupes+1):
+                for idGroup2 in range(idGroup1+1, self.nb_groupes+1):
+                    modelGurobi.addConstr(quicksum((1./self.ListeCapacites[idGroup1-1])*modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup1) for etu in self.EnsEtuInteresses) + quicksum((-1./self.ListeCapacites[idGroup2-1])*modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup2) for etu in self.EnsEtuInteresses) <= MainModel.tauxEquilibre)
+                    modelGurobi.addConstr(quicksum((1./self.ListeCapacites[idGroup1-1])*modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup1) for etu in self.EnsEtuInteresses) + quicksum((-1./self.ListeCapacites[idGroup2-1])*modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup2) for etu in self.EnsEtuInteresses) >= -1.*MainModel.tauxEquilibre)
+            modelGurobi.update()
+
+                    #TO BE CONTINUED
+
         def affecterEtuGroup(self, parcours, idRelatif, idGroup):
             self.ResumeDesAffectations[idGroup].add((parcours, idRelatif))
 
@@ -191,10 +202,16 @@ class MainModel():
         def get_nbInteresses(self):
             return len(self.EnsEtuInteresses)
 
-
+        def set_equilibre(self):
+            for idL1 in range(1, self.nb_groupes+1):
+                for idL2 in range(idL1+1, self.nb_groupes+1):
+                    if abs(len(self.ListeEtudiantsGroupes[idL1])/self.ListeCapacites[idL1-1]- len(self.ListeEtudiantsGroupes[idL2])/self.ListeCapacites[idL2-1]) > MainModel.tauxEquilibre:
+                        self.equilibre = False
+            #AJOUTER LA CARACTERISTIQUE DE COULEUR PASTILLE L'IDEE D'UN MAX
         def __str__(self):
             """ Retourne la chaine representant une UE"""
-            s = "UE {} ({}) :\n\tNombre de groupes : {}\n\tCapacite totale d'accueil: {}\n".format(self.intitule, self.id, self.nb_groupes, sum(self.ListeCapacites))
+            s = "UE {} ({}) :\n\tNombre de groupes : {}\n\tCapacite totale d'accueil: {}\n\t".format(self.intitule, self.id, self.nb_groupes, sum(self.ListeCapacites))
+            s += "Equilibre? : {}\n\t".format(self.equilibre)
             #CRENEAUX
             # s += "\tLes Creneaux\n\t"
             # for cours in self.ListeCreneauxCours:
@@ -333,7 +350,7 @@ class MainModel():
 
 
 
-    def __init__(self, dossierVoeux, fileUE):
+    def __init__(self, dossierVoeux, fileUE, equilibre=False):
         """Initialise le model principal A COMPLeTER"""
         # Par defaut
         self.nbMaxVoeuxParEtudiant = 5
@@ -488,6 +505,13 @@ class MainModel():
             UE.ajouterContrainteCapaciteModelGurobi(MainModel.modelGurobi)
         #FIN CONTRAINTES DE CAPACITE
 
+        #GERER LES CONTRAINTES D'EQUILIBRAGE EFFECTIF DE GROUPE
+        if equilibre :
+            for UE in MainModel.ListeDesUEs[1:]:
+                UE.ajouterContraintesEquilibre(MainModel.modelGurobi)
+        #FIN GESTION DES CONTRAINTES D'EQUILIBRAGE EFFECTIF DE GROUPE
+
+
 
     def resoudre(self):
         # print (MainModel.modelGurobi.getObjective())
@@ -495,6 +519,7 @@ class MainModel():
         MainModel.modelGurobi.setParam( 'OutputFlag', False )
         MainModel.modelGurobi.optimize()
         for varName in MainModel.ListedesVarY:
+            # print (varName)
             if MainModel.modelGurobi.getVarByName(varName).x == 1:
                 MainModel.nbInscriptionsSatisfaites += 1
                 parcours, idRelatif, ue = varName[2:].split('_')
@@ -532,6 +557,8 @@ class MainModel():
                 #
                 # if not entree:
                 #     MainModel.JCVV.append(S)
+        # for UE in MainModel.ListeDesUEs[1:]:
+        #     UE.set_equilibre()
 
         MainModel.proportionSatisfaction = round(100.0*MainModel.nbInscriptionsSatisfaites/len(MainModel.ListedesVarY),2)
         try:
@@ -556,6 +583,10 @@ class MainModel():
         #     MainModel.DNbrUeContrat[p] = np.bincount(MainModel.DNbrUeContrat[p])
         # print(MainModel.DNbrUeContrat)
         MainModel.idModel += 1
+        #VERIFIER L'EQUILIBRE DES GROUPES
+        for UE in MainModel.ListeDesUEs[1:]:
+            UE.set_equilibre()
+        #FIN VERIFICATION EQUILIBRE
         return MainModel.charge, MainModel.proportionSatisfaction
             # [37, 12, 51, 27, 59, 25, 48, 33, 50]
             # [0, 37, 49, 100, 127, 186, 211, 259, 292, 50]
@@ -609,7 +640,8 @@ class MainModel():
         s += "\nNombre total d'incompatibilites: {}\nNombre total d'incompatibilites vides: {}\n\n".format(MainModel.nbTotalIncompatibilites, MainModel.nbTotalIncompatibilitesVides)
         s += "Nombre Total d'inscriptions a satisfaire : {} \n".format(len(MainModel.ListedesVarY))
         s += "Nombre Maximal d'inscriptions pouvant etre satisfaites : {} \n".format(MainModel.capaciteMaximale)
-        s += "Charge : {}% \n\n\t\t\t*LES RESULTATS D'AFFECTATION*\n\n".format(MainModel.charge)
+        s += "Charge : {}% \nDesequilibre maximal autorise : {} %\n\n\t\t\t*LES RESULTATS D'AFFECTATION*\n".format(MainModel.charge, MainModel.tauxEquilibre*100)
+
         # proportionSatisfaction = round(100.0*MainModel.nbInscriptionsSatisfaites/len(MainModel.ListedesVarY),2)
         s += "Nombre d'inscriptions satisfaites : {} soit {}%\n".format(MainModel.nbInscriptionsSatisfaites, MainModel.proportionSatisfaction)
         s += "Detail des inscriptions non satisfaites : \n\t\tNombre de demandes non satisfaites par parcours : {}\n".format(self.strDictionnaireDesInsatisfactions())
@@ -652,15 +684,15 @@ class MainModel():
 
 
     
-m = MainModel("../VOEUX", "edt.csv")
+# m = MainModel("../VOEUX", "edt.csv", equilibre=True)
 # # m = MainModel("RAND_VOEUX1", "edt.csv")
-m.resoudre()
+# m.resoudre()
 #
 #
-f = open("inscription2017_2018_mapsiCorrection.txt", "w")
+# f = open("inscription2017_2018_equilibre.txt", "w")
 # # f = open("R1inscription2017_2018.txt", "w")
 #
-f.write(str(m))
+# f.write(str(m))
 # # f.write("\n\n"+str(analyses))
 # f.close()
 

@@ -8,7 +8,7 @@ Created on Sun Mar 11 13:06:08 2018
 import random
 import csv
 import numpy as np
-import scipy.stats as stat
+# import scipy.stats as stat
 import math
 
 
