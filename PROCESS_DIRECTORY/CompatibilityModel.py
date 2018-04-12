@@ -7,8 +7,35 @@ import os
 import random
 from gurobipy import *
 import itertools
+from gurobipy import *
+
+def produit_cartesien(L1, L2):
+    def f(a, L):
+        if len(L) == 1:
+            return [[a, L[0]]]
+        return [[a, L[0]]] + f(a, L[1:])
+    return [u for a in L1 for u in f(a, L2)]
 
 
+L1 = [1, 2, 3]
+L2 = [2,0]
+
+L3 = [4]
+L4 = [5,1]
+
+def produit_cartesien_mult(LL):
+    if len(LL) < 2:
+        return []
+
+    PC = produit_cartesien(LL[0], LL[1])
+
+    def final(PC, LLR):
+        if len(LLR) == 0:
+            return PC
+        PC = [couple+[elem] for couple in PC for elem in LLR[0]]
+        return final(PC, LLR[1:])
+
+    return final(PC, LL[2:])
 
 #Modele d'un dictionnaire Creneau
 def generer_model_dict_creneau(nbMaxGroupeParUE):
@@ -84,7 +111,7 @@ class CompatibilityModel():
     DictionnaireDesInsatisfactionsParParcours = dict()
     DictionnaireDistribUEInsatisfaitesParParcours = dict()
 
-    modelGurobi = Model("OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK)")
+    modelGurobi = Model("OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK) COMPATIBILITE")
     idModel = 1
     #Vendredi 16
     proportionSatisfaction = 0
@@ -97,8 +124,8 @@ class CompatibilityModel():
         def __init__(self, idUEI, idGroupK, idUEJ, idGroupL):
             """Definit une incompatiblite de type ((idUEI, idGroupK),(idUEJ, idGroupL))"""
 
-            self.ueGroup1 = idUEI, idGroupK      #Un couple (UE, Group)
-            self.ueGroup2 = idUEJ, idGroupL      #Un couple (UE, Group)
+            self.ueGroup1 = idGroupK, idUEI      #Un couple (UE, Group)
+            self.ueGroup2 = idGroupL, idUEJ      #Un couple (UE, Group)
             self.ensEtuConcernes =  CompatibilityModel.ListeDesUEs[idUEI].getEnsEtu() & CompatibilityModel.ListeDesUEs[idUEJ].getEnsEtu()  #L'ensemble des etudiants auxquels s'applique l'incompatibilite (Etudiant sous la forme x_Parcous_idRelatif (des strings))
             self.vide = (len(self.ensEtuConcernes) == 0)    #Un booleen
             CompatibilityModel.nbTotalIncompatibilites += 1
@@ -352,7 +379,7 @@ class CompatibilityModel():
 
 
 
-    def __init__(self, dossierVoeux, fileUE, equilibre=False):
+    def __init__(self, fileUE, ListeVoeux):
         """Initialise le model principal A COMPLeTER"""
         # Par defaut
         self.nbMaxVoeuxParEtudiant = 5
@@ -365,6 +392,7 @@ class CompatibilityModel():
         # Fin Defaut
 
         #initialisations
+        self.ListeVoeux = ListeVoeux
 
         #Modele d'un dictionnaire Creneau
         # modelDict = dict()
@@ -375,7 +403,7 @@ class CompatibilityModel():
 
         #TRAITEMENT UE : GENERATION DE L'EDT ET DES OBJETS UE
         # if not (CompatibilityModel.edtInitialise): CompatibilityModel.edtInitialise = True
-
+        self.ListeVarObj = list()
         f_ue = open(fileUE)
         data = csv.DictReader(f_ue)
         for ligneUE in data:
@@ -393,8 +421,13 @@ class CompatibilityModel():
             # FIN NETTOYAGE EDT
 
         #FIN TRAITEMENT UE
+        self.ListeVoeux = [CompatibilityModel.DictUEs[voeu].get_id() for voeu in self.ListeVoeux]
+        #AJOUT ARTIFICIEL DE L'ETUDIANT [Se restreindre au ue des voeux provoque une erreur : 12 Avril ]
+        for ue_ in self.ListeVoeux:#range(1, len(CompatibilityModel.ListeDesUEs)):
+            CompatibilityModel.ListeDesUEs[ue_].EnsEtuInteresses.add("x")
 
-        
+        #
+        self.traiter_voeu_anonyme(self.ListeVoeux)
 
         #GERER LES INCOMPATIBILITES
         for creneauId in range(1, len(CompatibilityModel.EDT)):
@@ -460,32 +493,84 @@ class CompatibilityModel():
                 pass
 
         #FIN GESTION DES INCOMPATIBILITES
-        
+
     def traiter_voeu_anonyme(self, ListeVoeux):
         for voeuUE in ListeVoeux:
             LVarXij = list()
             for idG in range(1, CompatibilityModel.ListeDesUEs[voeuUE].get_nb_groupes()+1):
                 #cREATION DES VARIABLES XIJ
+                # print (idG, voeuUE)
                 var = CompatibilityModel.modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name="x_%d"%idG+"_%d"%voeuUE)
                 LVarXij.append(var)
             #CONTRAINTE D'INSCRIPTION OBLIGATOIRE DANS TOUTES LES UE
-            CompatibilityModel.modelGurobi.addConstr(quicksum(xij for xij in LVarXij) == 1)
+            # CompatibilityModel.modelGurobi.addConstr(quicksum(xij for xij in LVarXij) == 1)
+            CompatibilityModel.modelGurobi.update()
 
         #CREATION DE VARIABLES N_IJKLm
 
             #INSTANCIATION DE TOUTES LES COMBINAISONS
-def produit_cartesien(L1, L2):
-    def mix(L3, L4):
-        return L3 + L4
-    if len(L2) == 0:
-        return L1
+        L_Combi = [[i + 1 for i in range(CompatibilityModel.ListeDesUEs[ueId].get_nb_groupes())] for ueId in ListeVoeux]
+        # print L_Combi
+        L_Combi = produit_cartesien_mult(L_Combi)
+        # print L_Combi
 
-    return produit_cartesien([mix([L1[i]],[L2[0]]) for i in range(len(L1))], L2[1:])
+        for L_gr_combi in L_Combi:
+            #cREATION DES VARIABLES XIJ
+            varname = "n"
+            for idG in L_gr_combi:
+                varname = varname + "_" + str(idG)
+            var = CompatibilityModel.modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name=varname)
+            self.ListeVarObj.append(var)
 
-print (produit_cartesien([1,2], [0,1]))
+            Z = zip(L_gr_combi, ListeVoeux)
+            # print Z
+            CompatibilityModel.modelGurobi.addConstr(quicksum(CompatibilityModel.modelGurobi.getVarByName("x_%d"%gr+"_%d"%ue) for gr,ue in Z) >= len(ListeVoeux)*var)
+        CompatibilityModel.modelGurobi.update()
 
+    def resoudre(self):
+        objectif = CompatibilityModel.modelGurobi.getObjective()
+        for varN in self.ListeVarObj:
+            objectif += varN
+        CompatibilityModel.modelGurobi.setObjective(objectif,GRB.MAXIMIZE)
+        CompatibilityModel.modelGurobi.update()
+        CompatibilityModel.modelGurobi.setParam( 'OutputFlag', False )
+        CompatibilityModel.modelGurobi.optimize()
+        # for varName in self.ListeVarObj:
+        #     if varName.x == 1:
+        #         print varName
+        # self.ListeVoeux.sort()
+        ListeVoeux = [CompatibilityModel.ListeDesUEs[ueI].get_intitule() for ueI in self.ListeVoeux]
+        return ListeVoeux , CompatibilityModel.modelGurobi.getObjective().getValue()
+# modelGurobi.addConstr(quicksum((1./self.ListeCapacites[idGroup1-1])*modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup1) for etu in self.EnsEtuInteresses) + quicksum((-1./self.ListeCapacites[idGroup2-1])*modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup2) for etu in self.EnsEtuInteresses) >= -1.*CompatibilityModel.tauxEquilibre)
+    def remise_a_zero(self):
+        CompatibilityModel.EDT = [dict()] + [generer_model_dict_creneau(CompatibilityModel.nbMaxGroupeParUE) for i in range(0, CompatibilityModel.nbCreneauxParSemaine)]
+        CompatibilityModel.ListeDesUEs = ["null"] + ["null"]*CompatibilityModel.nbUE
+        CompatibilityModel.DictUEs = dict()
 
+        CompatibilityModel.ListeDesEtudiants = ["null"]
+        CompatibilityModel.ListeDesParcours = list()
+        CompatibilityModel.ListeEffectifDesParcours = list()
+        CompatibilityModel.ListeDesEffectifsCumules = list()
+        CompatibilityModel.EnsIncompatibilites = set()
+        CompatibilityModel.nbTotalIncompatibilites = 0
+        CompatibilityModel.nbTotalIncompatibilitesVides = 0
+        CompatibilityModel.nbInscriptionsSatisfaites = 0
+        CompatibilityModel.ListedesVarY = list()
+        #Jeudi 15
+        CompatibilityModel.charge = 0
+        CompatibilityModel.capaciteMaximale = 0
+        #Jeudi 15
+        CompatibilityModel.ListeDesEtudiantsParParcours = list()
+        # for parcours, List in Compatibility.DictionnaireDesInsatisfactionsParParcours.items():
+        #     print (parcours + " " + str(len(List)))
+        CompatibilityModel.DictionnaireDesInsatisfactionsParParcours = dict() #MARDI 20 MARS :  non remise a zero du dictionnaire des insat par parcours idee connaitre les parcours qui rejette le plus
+        CompatibilityModel.DictionnaireDistribUEInsatisfaitesParParcours = dict()
 
-    
+        CompatibilityModel.modelGurobi = Model("OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK)")
+# L = zip([1,2], [3,4])
+# print L
 
-    
+# cM = CompatibilityModel("edt.csv", [11,10])
+
+# cM = CompatibilityModel("edt.csv", [3,7,16])
+# print (cM.resoudre())

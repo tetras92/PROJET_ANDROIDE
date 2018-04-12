@@ -9,7 +9,7 @@ if __name__ == "__main__":
     Liste_ProportionSatis = list()
     Liste_chargeE = list()
     Liste_ProportionSatisE = list()
-    nbExecutions = 300
+    nbExecutions = 1
     # I = set()
     for i in range(nbExecutions):
         dossierVoeux, ListeParcours = generateur.generer()

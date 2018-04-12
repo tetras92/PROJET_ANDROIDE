@@ -27,7 +27,8 @@ class Generateur_Voeux:
             nb_groupes = int(csv_line["nb_groupes"])
             ListeCapacites = [int(csv_line["capac"+str(i)]) for i in range(1,int(nb_groupes)+1)]
             self.DictCapaciteTotaleUE[intitule] = sum(ListeCapacites)
-
+        self.DicoNbConfig = dict() #dico de dico : cle nom des parcours
+        self.calculer_config()
         # print(self.DictCapaciteTotaleUE)
         
     def generer(self):
@@ -41,14 +42,45 @@ class Generateur_Voeux:
             pass
         
         for parcoursCsvLine in parcoursreader:
-            current_parcours = Parcours(parcoursCsvLine, self.DictCapaciteTotaleUE)
+            current_parcours = Parcours(parcoursCsvLine, self.DicoNbConfig)
             self.ListeDesParcours.append(current_parcours)
             path = Generateur_Voeux.directoryName+str(self.nbDossiersGeneres)
             current_parcours.generer_csv_aleatoires(path)
+            # current_parcours.generer_dico_Nbconfig()
+            # f = open("config."+current_parcours.nom, "w")
+            # for contrat, nbConfig in  current_parcours.DicoConfigurations.items():
+            #     f.write(str(contrat) + " : " + str(nbConfig) +"\n")
+            # f.close()
+            # print(current_parcours.nom, len(current_parcours.DicoConfigurations),current_parcours.DicoConfigurations)
         csvfile.close()
 
         return path, self.ListeDesParcours
 
+    def calculer_config(self):
+        # self.ListeDesParcours = list() #Vider à chaque fois la listeDesParcours
+        csvfile = open(self.fichierDescParcours, 'r')
+        parcoursreader = csv.DictReader(csvfile, delimiter=',')
+        # self.nbDossiersGeneres += 1
+        try:
+            os.mkdir(Generateur_Voeux.directoryName+str(self.nbDossiersGeneres))
+        except:
+            pass
+
+        for parcoursCsvLine in parcoursreader:
+            current_parcours = Parcours(parcoursCsvLine, self.DicoNbConfig)
+            # self.ListeDesParcours.append(current_parcours)
+            # path = Generateur_Voeux.directoryName+str(self.nbDossiersGeneres)
+            # current_parcours.generer_csv_aleatoires(path)
+            dicoNBConfig = current_parcours.generer_dico_Nbconfig()
+            self.DicoNbConfig[current_parcours.nom] = dicoNBConfig
+            f = open("config."+current_parcours.nom, "w")
+            for contrat, nbConfig in  current_parcours.DicoConfigurations.items():
+                f.write(str(contrat) + " : " + str(nbConfig) +"\n")
+            f.close()
+            # print(current_parcours.nom, len(current_parcours.DicoConfigurations),current_parcours.DicoConfigurations)
+        csvfile.close()
 
 
                 
+# generateur = Generateur_Voeux("parcours8PC_1.csv", "edt.csv")
+# generateur.generer()

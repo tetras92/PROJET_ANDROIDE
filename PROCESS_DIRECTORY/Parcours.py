@@ -10,12 +10,13 @@ import csv
 import numpy as np
 # import scipy.stats as stat
 import math
-
-
+import itertools as it
+# import CompatibilityModel
+from CompatibilityModel import *
 class Parcours:
 
 
-        def __init__(self, csvLine, DictCapaciteUE):
+        def __init__(self, csvLine, DictNbConfig):
             self.nom = csvLine["parcours"]
             self.effectifMin = int(csvLine["effectif_min"])
             self.effectifMax = int(csvLine["effectif_max"])
@@ -33,7 +34,8 @@ class Parcours:
             # self.ListeProbaUEConseillees = [1.0*valeur/sum(self.ListeCapaciteUEConseillees) for valeur in self.ListeCapaciteUEConseillees]
             self.ListeProbaUEConseillees = [float(csvLine["Pcons"+str(i)]) for i in range(1, 8+1) if csvLine["Pcons"+str(i)] != ""]
             # print("somme" + self.nom , self.ListeProbaUEConseillees)
-
+            self.DicoConfigurations = dict()
+            self.DictNbConfig = DictNbConfig
 
 
         def constituer_voeu(self, k):
@@ -56,7 +58,11 @@ class Parcours:
 
             contratUEObligatoires = [self.ListeUEObligatoires[ue_oblig] for ue_oblig in ListeChoixUEObligatoires]
             contratUEConseillees = [self.ListeUEConseilles[ue_cons] for ue_cons in ListeChoixUEConseillees]
-
+            contrat = contratUEObligatoires + contratUEConseillees
+            contrat.sort()
+            if self.DictNbConfig[self.nom][tuple(contrat)] == 0.0: #l'orde oblig avant conseilles importants
+                    # print("incompatible cree")
+                    return self.constituer_voeu(k)
             return contratUEObligatoires, contratUEConseillees
 
         def generer_csv_aleatoires(self, directoryName):
@@ -69,6 +75,7 @@ class Parcours:
             effectif = random.randint(self.effectifMin, self.effectifMax)
             self.set_effectif(effectif)
             # print(self.Proportions)
+
             s = np.random.multinomial(effectif, self.Proportions, size=1)[0]
 
             s = [v for i in range(len(s)) for v in [i+1]*s[i]]
@@ -95,3 +102,35 @@ class Parcours:
             
         def set_effectif(self, effectif):
             self.effectif = effectif
+
+        def generer_dico_Nbconfig(self):
+            for taille_voeu in range(2,6): #A elargir a toutes les tailles
+                nbMaxUEObligatoiresDuVoeu = min(self.nbUEObligatoires, taille_voeu)
+                nbMinUEObligatoiresDuVoeu = max(0, self.nbUEObligatoires - (5 - taille_voeu))
+                # print(nbMaxUEObligatoiresDuVoeu, nbMinUEObligatoiresDuVoeu)
+                # if nbMinUEObligatoiresDuVoeu < 0:
+                #     nbMinUEObligatoiresDuVoeu = 0
+                for nbUEOblig in range(nbMinUEObligatoiresDuVoeu, nbMaxUEObligatoiresDuVoeu+1):
+                    nbUECons = taille_voeu - nbUEOblig
+                    # print(list(it.combinations(self.ListeUEObligatoires, nbUEOblig)))
+                    for combiO in it.combinations(self.ListeUEObligatoires, nbUEOblig):
+                        ss_ContratOblig = list(combiO)
+                        # print(ss_ContratOblig)
+                        # print(list(it.combinations(self.ListeUEConseilles, nbUECons)))
+                        for combiC in it.combinations(self.ListeUEConseilles, nbUECons):
+                            ss_ContratCons = list(combiC)
+                            Contrat = ss_ContratOblig + ss_ContratCons
+                            Contrat.sort()
+                            # print(Contrat)
+                            cM = CompatibilityModel("edt.csv", Contrat)
+                            ContratStr , nb_config = cM.resoudre()
+                            # print(ContratStr)
+                            cM.remise_a_zero()
+                            ContratStr = tuple(ContratStr)
+                            nb_config = int(nb_config)
+                            self.DicoConfigurations[ContratStr] = nb_config
+            return self.DicoConfigurations
+
+
+# L = [1,2,3,4]
+# print(list(it.combinations(L, 2)))

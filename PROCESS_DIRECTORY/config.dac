@@ -1,0 +1,159 @@
+('il', 'mapsi', 'model') : 12
+('il', 'lrc', 'mapsi', 'mogpl') : 54
+('complex', 'mapsi') : 8
+('lrc', 'mlbda') : 12
+('bima', 'complex', 'lrc', 'mlbda', 'model') : 2
+('il', 'mogpl') : 16
+('bima', 'il', 'mlbda', 'mogpl') : 8
+('il', 'model') : 5
+('bima', 'il', 'lrc', 'model') : 6
+('il', 'lrc', 'mlbda', 'model', 'mogpl') : 6
+('il', 'mapsi', 'mlbda', 'model') : 6
+('lrc', 'mapsi', 'model', 'mogpl') : 16
+('complex', 'il', 'mlbda', 'model') : 0
+('complex', 'lrc', 'model', 'mogpl') : 12
+('lrc', 'mapsi', 'mlbda', 'model') : 16
+('il', 'mlbda', 'mogpl') : 24
+('complex', 'il', 'mlbda', 'mogpl') : 0
+('complex', 'mapsi', 'mlbda') : 8
+('bima', 'lrc', 'model', 'mogpl') : 0
+('bima', 'lrc', 'mapsi', 'model') : 6
+('complex', 'lrc', 'model') : 6
+('bima', 'il', 'mogpl') : 8
+('il', 'lrc') : 16
+('il', 'mapsi', 'mogpl') : 36
+('mapsi', 'model', 'mogpl') : 12
+('bima', 'complex') : 2
+('complex', 'il', 'mapsi', 'mlbda') : 0
+('complex', 'mlbda') : 2
+('bima', 'lrc', 'mapsi', 'mlbda', 'mogpl') : 12
+('bima', 'il', 'mlbda', 'model') : 2
+('complex', 'il') : 3
+('bima', 'il', 'mapsi') : 6
+('bima', 'complex', 'lrc') : 4
+('complex', 'mapsi', 'mlbda', 'model') : 4
+('bima', 'complex', 'il', 'lrc', 'mlbda') : 0
+('lrc', 'mlbda', 'mogpl') : 27
+('mapsi', 'mlbda', 'model', 'mogpl') : 18
+('il', 'lrc', 'mapsi', 'mlbda') : 36
+('il', 'lrc', 'mapsi', 'mlbda', 'model') : 6
+('lrc', 'mapsi', 'mlbda') : 36
+('mlbda', 'mogpl') : 12
+('complex', 'il', 'model') : 3
+('bima', 'il', 'lrc', 'mlbda', 'model') : 2
+('bima', 'il', 'lrc', 'mapsi', 'mlbda') : 16
+('bima', 'lrc', 'mapsi', 'mlbda') : 18
+('bima', 'il', 'mlbda') : 8
+('bima', 'model') : 1
+('bima', 'lrc', 'mlbda', 'model', 'mogpl') : 0
+('bima', 'il', 'lrc', 'mlbda') : 12
+('bima', 'complex', 'mogpl') : 2
+('complex', 'il', 'lrc', 'mlbda', 'model') : 0
+('bima', 'complex', 'mlbda', 'model') : 1
+('mapsi', 'mlbda', 'mogpl') : 36
+('mapsi', 'mogpl') : 16
+('complex', 'lrc', 'mlbda', 'model') : 3
+('bima', 'complex', 'mapsi') : 4
+('bima', 'complex', 'lrc', 'mapsi') : 8
+('bima', 'lrc', 'mlbda', 'model') : 4
+('lrc', 'mlbda', 'model', 'mogpl') : 12
+('lrc', 'mapsi', 'mogpl') : 36
+('complex', 'il', 'lrc', 'mapsi') : 6
+('complex', 'lrc', 'mapsi', 'model') : 16
+('mapsi', 'model') : 5
+('bima', 'complex', 'lrc', 'mlbda', 'mogpl') : 2
+('bima', 'mapsi', 'mlbda', 'model') : 4
+('complex', 'model', 'mogpl') : 6
+('lrc', 'mapsi', 'mlbda', 'mogpl') : 54
+('mapsi', 'mlbda') : 16
+('bima', 'complex', 'lrc', 'mogpl') : 2
+('bima', 'il', 'lrc', 'mogpl') : 9
+('bima', 'mlbda', 'model', 'mogpl') : 2
+('bima', 'lrc', 'model') : 2
+('bima', 'complex', 'lrc', 'model') : 4
+('il', 'lrc', 'mlbda', 'model') : 6
+('bima', 'mlbda', 'mogpl') : 6
+('il', 'mlbda') : 10
+('bima', 'lrc', 'mapsi') : 9
+('bima', 'complex', 'lrc', 'mapsi', 'mlbda') : 8
+('mlbda', 'model') : 2
+('complex', 'mapsi', 'mogpl') : 18
+('lrc', 'model') : 3
+('complex', 'il', 'mapsi') : 6
+('lrc', 'mapsi', 'mlbda', 'model', 'mogpl') : 24
+('complex', 'lrc', 'mlbda') : 6
+('bima', 'lrc', 'mlbda', 'mogpl') : 6
+('complex', 'il', 'lrc', 'mapsi', 'mlbda') : 0
+('il', 'lrc', 'model') : 12
+('bima', 'il', 'lrc', 'mlbda', 'mogpl') : 6
+('complex', 'il', 'lrc') : 6
+('complex', 'il', 'lrc', 'mlbda', 'mogpl') : 0
+('bima', 'mapsi', 'mogpl') : 6
+('bima', 'mlbda', 'model') : 2
+('bima', 'mapsi', 'mlbda') : 9
+('complex', 'mlbda', 'mogpl') : 6
+('lrc', 'mapsi', 'model') : 10
+('complex', 'mogpl') : 6
+('complex', 'mapsi', 'model') : 8
+('bima', 'mapsi', 'model') : 3
+('bima', 'complex', 'il', 'lrc') : 2
+('il', 'mapsi') : 12
+('bima', 'complex', 'il') : 2
+('complex', 'mlbda', 'model') : 1
+('bima', 'complex', 'mapsi', 'mlbda') : 4
+('il', 'lrc', 'mogpl') : 36
+('bima', 'mapsi', 'mlbda', 'mogpl') : 12
+('complex', 'lrc', 'mapsi', 'mlbda') : 16
+('il', 'mapsi', 'mlbda') : 24
+('il', 'lrc', 'mapsi', 'model') : 18
+('bima', 'lrc') : 3
+('bima', 'il', 'mapsi', 'mlbda') : 12
+('complex', 'mapsi', 'mlbda', 'mogpl') : 18
+('bima', 'il', 'lrc', 'mapsi') : 12
+('il', 'lrc', 'model', 'mogpl') : 18
+('lrc', 'mlbda', 'model') : 6
+('lrc', 'model', 'mogpl') : 6
+('il', 'mlbda', 'model', 'mogpl') : 6
+('bima', 'il') : 4
+('bima', 'lrc', 'mogpl') : 3
+('bima', 'mlbda') : 4
+('model', 'mogpl') : 3
+('complex', 'lrc', 'mlbda', 'model', 'mogpl') : 6
+('complex', 'lrc', 'mapsi', 'mlbda', 'mogpl') : 24
+('il', 'lrc', 'mlbda') : 24
+('il', 'lrc', 'mlbda', 'mogpl') : 36
+('il', 'model', 'mogpl') : 12
+('bima', 'complex', 'mlbda') : 2
+('il', 'lrc', 'mapsi') : 27
+('il', 'lrc', 'mapsi', 'mlbda', 'mogpl') : 48
+('complex', 'lrc', 'mapsi', 'mogpl') : 24
+('bima', 'complex', 'il', 'mlbda') : 0
+('bima', 'mogpl') : 2
+('bima', 'complex', 'model') : 2
+('complex', 'lrc') : 6
+('complex', 'lrc', 'mogpl') : 12
+('bima', 'lrc', 'mapsi', 'mogpl') : 9
+('complex', 'model') : 2
+('il', 'mapsi', 'mlbda', 'mogpl') : 54
+('mapsi', 'mlbda', 'model') : 8
+('bima', 'lrc', 'mlbda') : 9
+('lrc', 'mapsi') : 15
+('bima', 'lrc', 'mapsi', 'mlbda', 'model') : 8
+('complex', 'il', 'lrc', 'mogpl') : 6
+('complex', 'il', 'mogpl') : 6
+('bima', 'complex', 'mlbda', 'mogpl') : 2
+('bima', 'mapsi') : 3
+('il', 'mlbda', 'model') : 3
+('complex', 'il', 'mlbda') : 0
+('complex', 'il', 'lrc', 'mlbda') : 0
+('bima', 'il', 'lrc') : 9
+('complex', 'lrc', 'mapsi') : 16
+('complex', 'lrc', 'mlbda', 'mogpl') : 12
+('mlbda', 'model', 'mogpl') : 6
+('bima', 'il', 'model') : 4
+('lrc', 'mogpl') : 12
+('bima', 'complex', 'lrc', 'mlbda') : 4
+('bima', 'model', 'mogpl') : 1
+('complex', 'lrc', 'mapsi', 'mlbda', 'model') : 8
+('complex', 'mlbda', 'model', 'mogpl') : 3
+('complex', 'il', 'lrc', 'model') : 6

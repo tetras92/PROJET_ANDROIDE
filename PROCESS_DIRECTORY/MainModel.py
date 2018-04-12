@@ -56,7 +56,7 @@ class MainModel():
     nbCreneauxParSemaine = 25
     nbUE = 21
     edtInitialise = False
-    tauxEquilibre = 0.05
+    tauxEquilibre = 0.01
 # Fin Defaut
 
 
@@ -211,7 +211,7 @@ class MainModel():
         def __str__(self):
             """ Retourne la chaine representant une UE"""
             s = "UE {} ({}) :\n\tNombre de groupes : {}\n\tCapacite totale d'accueil: {}\n\t".format(self.intitule, self.id, self.nb_groupes, sum(self.ListeCapacites))
-            s += "Equilibre? : {}\n\t".format(self.equilibre)
+            s += "Equilibre? : {}\n".format(self.equilibre)
             #CRENEAUX
             # s += "\tLes Creneaux\n\t"
             # for cours in self.ListeCreneauxCours:
@@ -526,11 +526,11 @@ class MainModel():
                 MainModel.ListeDesUEs[int(ue)].ajouterUnInscrit()
                 currentEtudiant = MainModel.ListeDesEtudiants[MainModel.ListeDesEffectifsCumules[int(parcours)] + int(idRelatif)]
                 numGroup = 1
-                # print(currentEtudiant)
-                # print(parcours, idRelatif, ue)
+                print(currentEtudiant)
+                print(parcours, idRelatif, ue)
 
                 while MainModel.modelGurobi.getVarByName(currentEtudiant.get_varName()+"_%d"%int(ue)+"_%d"%numGroup).x == 0:
-                    # print(numGroup)
+                    print(numGroup)
                     numGroup += 1
                 currentEtudiant.entrer_inscription(int(ue), numGroup)
             else:
@@ -684,15 +684,15 @@ class MainModel():
 
 
     
-# m = MainModel("../VOEUX", "edt.csv", equilibre=True)
+m = MainModel("../VOEUX", "edt.csv", equilibre=True)
 # # m = MainModel("RAND_VOEUX1", "edt.csv")
-# m.resoudre()
+m.resoudre()
 #
 #
-# f = open("inscription2017_2018_equilibre.txt", "w")
+f = open("inscription2017_2018_equilibre(1%).txt", "w")
 # # f = open("R1inscription2017_2018.txt", "w")
 #
-# f.write(str(m))
+f.write(str(m))
 # # f.write("\n\n"+str(analyses))
-# f.close()
+f.close()
 
