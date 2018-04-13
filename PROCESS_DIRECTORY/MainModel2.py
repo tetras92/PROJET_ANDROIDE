@@ -83,7 +83,6 @@ class MainModel():
     DictionnaireDistribUEInsatisfaitesParParcours = dict()
 
     modelGurobi = Model("OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK)")
-
     idModel = 1
     #Vendredi 16
     proportionSatisfaction = 0
@@ -272,6 +271,9 @@ class MainModel():
 
             self.varName = "x_{}_{}".format(self.indexParcours, self.idRelatif)
             self.ListeDesInscriptions = list()
+
+
+        def gerer_variables_contraintes_
 
         def gerer_variables_contraintes_ue_obligatoires(self,modelGurobi):
             """ajoute les contraintes relatives aux ue obligatoires"""
@@ -672,7 +674,7 @@ class MainModel():
 
 
 
-    
+
 # m = MainModel("../VOEUX", "edt.csv")
 # # # # m = MainModel("RAND_VOEUX1", "edt.csv")
 # m.resoudre()

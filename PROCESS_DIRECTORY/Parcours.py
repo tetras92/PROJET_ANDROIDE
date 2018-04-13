@@ -58,9 +58,11 @@ class Parcours:
 
             contratUEObligatoires = [self.ListeUEObligatoires[ue_oblig] for ue_oblig in ListeChoixUEObligatoires]
             contratUEConseillees = [self.ListeUEConseilles[ue_cons] for ue_cons in ListeChoixUEConseillees]
+            contratUEConseillees.sort()
+            contratUEObligatoires.sort()
             contrat = contratUEObligatoires + contratUEConseillees
-            contrat.sort()
-            if self.DictNbConfig[self.nom][tuple(contrat)] == 0.0: #l'orde oblig avant conseilles importants
+            # contrat.sort()
+            if len(contrat) > 1 and self.DictNbConfig[self.nom][tuple(contrat)] == 0.0: #l'orde oblig avant conseilles importants
                     # print("incompatible cree")
                     return self.constituer_voeu(k)
             return contratUEObligatoires, contratUEConseillees
@@ -115,12 +117,14 @@ class Parcours:
                     # print(list(it.combinations(self.ListeUEObligatoires, nbUEOblig)))
                     for combiO in it.combinations(self.ListeUEObligatoires, nbUEOblig):
                         ss_ContratOblig = list(combiO)
+                        ss_ContratOblig.sort()
                         # print(ss_ContratOblig)
                         # print(list(it.combinations(self.ListeUEConseilles, nbUECons)))
                         for combiC in it.combinations(self.ListeUEConseilles, nbUECons):
                             ss_ContratCons = list(combiC)
+                            ss_ContratCons.sort()
                             Contrat = ss_ContratOblig + ss_ContratCons
-                            Contrat.sort()
+                            # Contrat.sort()
                             # print(Contrat)
                             cM = CompatibilityModel("edt.csv", Contrat)
                             ContratStr , nb_config = cM.resoudre()

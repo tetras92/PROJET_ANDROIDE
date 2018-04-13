@@ -131,6 +131,8 @@ class CompatibilityModel():
             CompatibilityModel.nbTotalIncompatibilites += 1
             if self.vide:
                 CompatibilityModel.nbTotalIncompatibilitesVides += 1
+            else:
+                print(self)
         def __str__(self):
             """Retourne la chaine d'affichage de l'incompatibilite et l'effectif des etudiants concernes"""
             s = "Incompatibilite entre l'UE/Groupe {} et l'UE/Groupe {}\n\tNombre d'etudiants concernes: {}\n\n".format(self.ueGroup1, self.ueGroup2, len(self.ensEtuConcernes))
@@ -236,142 +238,7 @@ class CompatibilityModel():
                 for idL2 in range(idL1+1, self.nb_groupes+1):
                     if abs(len(self.ListeEtudiantsGroupes[idL1])/self.ListeCapacites[idL1-1]- len(self.ListeEtudiantsGroupes[idL2])/self.ListeCapacites[idL2-1]) > CompatibilityModel.tauxEquilibre:
                         self.equilibre = False
-            #AJOUTER LA CARACTERISTIQUE DE COULEUR PASTILLE L'IDEE D'UN MAX
-        def __str__(self):
-            """ Retourne la chaine representant une UE"""
-            s = "UE {} ({}) :\n\tNombre de groupes : {}\n\tCapacite totale d'accueil: {}\n\t".format(self.intitule, self.id, self.nb_groupes, sum(self.ListeCapacites))
-            s += "Equilibre? : {}\n\t".format(self.equilibre)
-            #CRENEAUX
-            # s += "\tLes Creneaux\n\t"
-            # for cours in self.ListeCreneauxCours:
-            #     s += "\tCours: {}\n\t".format(cours)
-            #                                                                                     #LES CRENEAUX
-            # for i in range(1, len(self.ListeCreneauxTdTme)):                                     #LES CRENEAUX
-            #     td, tme = self.ListeCreneauxTdTme[i]                                            #LES CRENEAUX
-            #     s += "\tTD {} : {}\n\t".format(i, td)
-            #     s += "\tTME {} : {}\n\t".format(i, tme)
 
-            s += "\tNombre Etudiants interesses: {}\n\t".format(len(self.EnsEtuInteresses))
-            s += "Nombre Etudiants effectivement inscrits : {}\n\t".format(self.nbInscrits)
-            s += "Les Non-inscrits : "
-            for parcours, idRelatif in self.ListeNonInscrits:
-                s += str(idRelatif)+"("+CompatibilityModel.ListeDesParcours[int(parcours)]+") "
-            s += "\n\tLes Inscrits:\n"
-            for numGroup in range(1, len(self.ListeEtudiantsGroupes)):
-                s += "\t\tGroupe {} [{}/{}] : ".format(numGroup, len(self.ListeEtudiantsGroupes[numGroup]), self.ListeCapacites[numGroup-1])
-                for etu in self.ListeEtudiantsGroupes[numGroup]:
-                    s += etu + " "
-                s += "\n"
-            s+= "\n\n"
-
-
-            return s
-
-    class Etudiant:
-        """ Classe representant un etudiant"""
-        def __init__(self,csv_line, parcours, indexParcours):
-            self.idRelatif = int(csv_line["num"])
-            self.parcours = parcours
-            self.indexParcours = indexParcours
-            self.ue_obligatoires = [CompatibilityModel.DictUEs[csv_line["oblig"+str(id)]].get_id() for id in range(1, CompatibilityModel.nbMaxUEObligatoires+1) if csv_line["oblig"+str(id)] != ""]
-            self.ue_non_obligatoires = [CompatibilityModel.DictUEs[csv_line["cons"+str(id)]].get_id() for id in range(1, CompatibilityModel.nbMaxUEConseillees+1) if csv_line["cons"+str(id)] != ""]
-            # **
-            # L = CompatibilityModel.DDecisionEtuUE[parcours] + self.ue_non_obligatoires
-            # L.sort()
-            # CompatibilityModel.DDecisionEtuUE[parcours] = L
-            # ** bincount
-
-            self.nombreDeVoeux = len(self.ue_obligatoires) + len(self.ue_non_obligatoires)
-
-            # CompatibilityModel.DNbrUeContrat[parcours].append(self.nombreDeVoeux)
-
-            self.varName = "x_{}_{}".format(self.indexParcours, self.idRelatif)
-            self.ListeDesInscriptions = list()
-
-        def gerer_variables_contraintes_ue_obligatoires(self,modelGurobi):
-            """ajoute les contraintes relatives aux ue obligatoires"""
-            objectif = modelGurobi.getObjective()
-
-            for id_ue in self.ue_obligatoires:
-                var = modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name="y_%d"%self.indexParcours+"_%d"%self.idRelatif+"_%d"%id_ue)
-                CompatibilityModel.ListedesVarY.append("y_{}_{}_{}".format(self.indexParcours, self.idRelatif, id_ue))
-                contrainte = LinExpr()
-                for num_group in range(1, CompatibilityModel.ListeDesUEs[id_ue].get_nb_groupes()+1):
-                    contrainte += modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name=self.varName+"_%d"%id_ue+"_%d"%num_group)
-                contrainte -= var
-
-                objectif += var
-                modelGurobi.addConstr(var , GRB.EQUAL, 1)   #y_i_j = 1
-                modelGurobi.addConstr(contrainte, GRB.EQUAL, 0)
-
-            modelGurobi.setObjective(objectif,GRB.MAXIMIZE) # NE PEUt-ON PAS S'EN PASSER
-            modelGurobi.update()
-
-        def gerer_variables_contraintes_ue_non_obligatoires(self, modelGurobi):
-            """ajoute les contraintes relatives aux ue non obligatoires"""
-            objectif = modelGurobi.getObjective()
-
-            for id_ue in self.ue_non_obligatoires:
-                var = modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name="y_%d"%self.indexParcours+"_%d"%self.idRelatif+"_%d"%id_ue)
-                CompatibilityModel.ListedesVarY.append("y_{}_{}_{}".format(self.indexParcours, self.idRelatif, id_ue))
-                contrainte = LinExpr()
-                for num_group in range(1, CompatibilityModel.ListeDesUEs[id_ue].get_nb_groupes()+1):
-                    contrainte += modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name=self.varName+"_%d"%id_ue+"_%d"%num_group)
-                contrainte -= var
-
-                objectif += var
-
-                #VERIFIER LES CONTRAINTES DU MODELES
-                modelGurobi.addConstr(contrainte, GRB.EQUAL, 0)
-
-            modelGurobi.setObjective(objectif,GRB.MAXIMIZE) # NE PEUt-ON PAS S'EN PASSER
-            modelGurobi.update()
-
-        def enregistrer_interet_pour_UE(self):
-            for ue in self.ue_non_obligatoires + self.ue_obligatoires:
-                if ue == 11:
-                    CompatibilityModel.count += 1
-                CompatibilityModel.ListeDesUEs[ue].ajouterEtuInteresses(self.varName)
-
-        def get_nombreDeVoeux(self):
-            return self.nombreDeVoeux
-
-        def get_index_parcours(self):
-            return  self.indexParcours
-
-        def get_varName(self):
-            return self.varName
-
-        def entrer_inscription(self, ue, numeroGroup):
-            if numeroGroup != 0:  #numeroGroup 0 signifie non accepte
-                    chaine = CompatibilityModel.ListeDesUEs[ue].get_intitule()+str(numeroGroup)
-                    CompatibilityModel.ListeDesUEs[ue].inscrire(str(self), numeroGroup)
-            else:
-                    chaine = CompatibilityModel.ListeDesUEs[ue].get_intitule()+"X"
-
-                    pattern = ""
-                    ListeTrieeDesUE = self.ue_obligatoires + self.ue_non_obligatoires
-                    ListeTrieeDesUE.sort()
-                    # print(ListeTrieeDesUE)
-                    for ue in ListeTrieeDesUE:
-                        pattern += CompatibilityModel.ListeDesUEs[ue].get_intitule() + " "
-
-                    CompatibilityModel.DictionnaireDesInsatisfactionsParParcours[self.parcours].append([str(self),ListeTrieeDesUE]) #remplacer ListeTrieeDesUEs par pattern if pertinent
-            if ue in self.ue_obligatoires:
-                self.ListeDesInscriptions = [chaine] + self.ListeDesInscriptions
-            else:
-                self.ListeDesInscriptions.append(chaine)
-
-        def enregistrer_affectation(self, file):
-            """enregistre l'etat des inscriptions de l'etudiant dans le fichier des affectations corresopondant a son parcours"""
-            file.write(str(self.idRelatif)+" ")
-            for aff in self.ListeDesInscriptions:
-                file.write(aff + " ")
-            file.write("\n")
-
-        def __str__(self):
-            s = str(self.idRelatif)+"("+CompatibilityModel.ListeDesParcours[self.indexParcours]+")"
-            return s
 
     # DEBUT CompatibilityModel
 
@@ -495,13 +362,14 @@ class CompatibilityModel():
         #FIN GESTION DES INCOMPATIBILITES
 
     def traiter_voeu_anonyme(self, ListeVoeux):
+        self.LVarXij = list()
         for voeuUE in ListeVoeux:
-            LVarXij = list()
+
             for idG in range(1, CompatibilityModel.ListeDesUEs[voeuUE].get_nb_groupes()+1):
                 #cREATION DES VARIABLES XIJ
                 # print (idG, voeuUE)
                 var = CompatibilityModel.modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name="x_%d"%idG+"_%d"%voeuUE)
-                LVarXij.append(var)
+                self.LVarXij.append(var)
             #CONTRAINTE D'INSCRIPTION OBLIGATOIRE DANS TOUTES LES UE
             # CompatibilityModel.modelGurobi.addConstr(quicksum(xij for xij in LVarXij) == 1)
             CompatibilityModel.modelGurobi.update()
@@ -515,16 +383,21 @@ class CompatibilityModel():
         # print L_Combi
 
         for L_gr_combi in L_Combi:
-            #cREATION DES VARIABLES XIJ
+            #cREATION DES VARIABLES N_I
             varname = "n"
             for idG in L_gr_combi:
                 varname = varname + "_" + str(idG)
             var = CompatibilityModel.modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name=varname)
+            # CompatibilityModel.modelGurobi.update()
+
             self.ListeVarObj.append(var)
+            CompatibilityModel.modelGurobi.update()
 
             Z = zip(L_gr_combi, ListeVoeux)
             # print Z
-            CompatibilityModel.modelGurobi.addConstr(quicksum(CompatibilityModel.modelGurobi.getVarByName("x_%d"%gr+"_%d"%ue) for gr,ue in Z) >= len(ListeVoeux)*var)
+            cst = CompatibilityModel.modelGurobi.addConstr(quicksum(CompatibilityModel.modelGurobi.getVarByName("x_%d"%gr+"_%d"%ue) for gr,ue in Z) >= len(ListeVoeux)*var)
+            CompatibilityModel.modelGurobi.update()
+            # print(cst)
         CompatibilityModel.modelGurobi.update()
 
     def resoudre(self):
@@ -532,12 +405,18 @@ class CompatibilityModel():
         for varN in self.ListeVarObj:
             objectif += varN
         CompatibilityModel.modelGurobi.setObjective(objectif,GRB.MAXIMIZE)
+
         CompatibilityModel.modelGurobi.update()
+        # print(CompatibilityModel.modelGurobi.getObjective())
         CompatibilityModel.modelGurobi.setParam( 'OutputFlag', False )
+
         CompatibilityModel.modelGurobi.optimize()
         # for varName in self.ListeVarObj:
         #     if varName.x == 1:
         #         print varName
+        for varName in self.LVarXij:
+            if varName.x == 0:
+                print varName
         # self.ListeVoeux.sort()
         ListeVoeux = [CompatibilityModel.ListeDesUEs[ueI].get_intitule() for ueI in self.ListeVoeux]
         return ListeVoeux , CompatibilityModel.modelGurobi.getObjective().getValue()
@@ -570,7 +449,7 @@ class CompatibilityModel():
 # L = zip([1,2], [3,4])
 # print L
 
-# cM = CompatibilityModel("edt.csv", [11,10])
-
-# cM = CompatibilityModel("edt.csv", [3,7,16])
-# print (cM.resoudre())
+cM = CompatibilityModel("edt.csv", ['aagb','il','lrc','mapsi', 'mogpl'])
+#
+# # cM = CompatibilityModel("edt.csv", [3,7,16])
+print (cM.resoudre())

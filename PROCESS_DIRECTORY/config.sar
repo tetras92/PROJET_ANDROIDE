@@ -1,159 +1,159 @@
-('mlbda', 'noyau') : 12
+('noyau', 'pr', 'archi1', 'ares', 'dlp') : 4
+('noyau', 'ares', 'il') : 8
+('pr', 'archi1', 'ares') : 12
+('noyau', 'algav', 'archi1', 'dlp') : 8
 ('archi1', 'ares') : 9
-('algav', 'archi1', 'il', 'pr') : 16
-('archi1', 'pr') : 9
-('algav', 'dlp', 'mlbda', 'noyau') : 24
-('algav', 'archi1', 'pr') : 12
+('noyau', 'pr', 'algav', 'archi1', 'mlbda') : 8
+('noyau', 'ares', 'dlp') : 18
+('noyau', 'pr', 'archi1', 'dlp') : 4
+('noyau', 'archi1', 'ares', 'il') : 4
+('pr', 'archi1', 'ares', 'dlp') : 4
+('noyau', 'dlp', 'mlbda') : 18
+('noyau', 'pr', 'algav', 'archi1', 'il') : 16
+('noyau', 'algav', 'ares', 'dlp') : 24
+('noyau', 'mlbda') : 12
 ('archi1', 'ares', 'il') : 4
 ('archi1', 'il', 'mlbda') : 12
-('dlp', 'il', 'noyau') : 18
-('archi1', 'dlp', 'noyau') : 4
+('noyau', 'pr', 'mlbda') : 18
+('noyau', 'pr', 'algav', 'ares', 'mlbda') : 2
+('pr', 'archi1', 'ares', 'il') : 4
 ('algav', 'archi1', 'dlp') : 6
-('algav', 'archi1', 'noyau', 'pr') : 16
-('algav', 'mlbda', 'noyau') : 18
+('noyau', 'archi1') : 6
 ('algav', 'mlbda') : 9
-('archi1', 'dlp', 'pr') : 4
-('algav', 'archi1', 'il', 'noyau', 'pr') : 16
-('archi1', 'ares', 'dlp', 'noyau') : 8
-('archi1', 'ares', 'mlbda', 'pr') : 4
-('algav', 'archi1', 'mlbda', 'noyau') : 8
+('pr', 'mlbda') : 6
+('noyau', 'pr', 'archi1', 'il') : 16
+('pr', 'il') : 12
 ('algav', 'dlp', 'il') : 27
-('ares', 'dlp', 'noyau') : 18
-('dlp', 'mlbda', 'noyau') : 18
-('algav', 'ares', 'il', 'noyau', 'pr') : 8
-('algav', 'archi1', 'dlp', 'noyau') : 8
 ('algav', 'il', 'mlbda') : 12
-('archi1', 'il', 'noyau') : 12
-('ares', 'dlp', 'pr') : 12
+('noyau', 'archi1', 'il') : 12
+('pr', 'archi1', 'dlp') : 4
+('pr', 'ares', 'mlbda') : 2
+('pr', 'ares', 'dlp', 'il') : 4
+('pr', 'algav', 'archi1', 'ares') : 8
 ('algav', 'dlp') : 9
-('il', 'noyau', 'pr') : 27
-('algav', 'ares', 'dlp', 'pr') : 24
+('pr', 'algav') : 12
+('pr', 'dlp', 'mlbda') : 12
 ('algav', 'ares', 'il') : 3
+('noyau', 'dlp', 'il', 'mlbda') : 24
+('noyau', 'archi1', 'ares', 'mlbda') : 4
+('noyau', 'algav', 'archi1', 'ares') : 8
 ('algav', 'archi1', 'ares') : 8
-('dlp', 'il', 'pr') : 12
-('ares', 'dlp', 'mlbda', 'noyau') : 8
-('il', 'mlbda', 'noyau', 'pr') : 24
+('noyau', 'pr', 'archi1', 'ares', 'il') : 4
+('noyau', 'pr', 'algav', 'archi1') : 16
+('pr', 'algav', 'ares', 'dlp') : 24
+('pr', 'algav', 'archi1', 'mlbda') : 8
+('noyau', 'dlp') : 9
 ('ares', 'mlbda') : 2
-('archi1', 'il', 'mlbda', 'noyau') : 12
-('archi1', 'dlp', 'il', 'pr') : 4
-('algav', 'archi1', 'mlbda', 'pr') : 8
-('algav', 'ares', 'il', 'pr') : 6
-('archi1', 'dlp', 'noyau', 'pr') : 4
-('ares', 'dlp', 'il', 'pr') : 4
-('ares', 'dlp', 'noyau', 'pr') : 24
-('archi1', 'dlp', 'il', 'noyau') : 8
+('noyau', 'pr', 'il', 'mlbda') : 24
+('noyau', 'pr', 'ares', 'il') : 16
+('noyau', 'ares', 'dlp', 'mlbda') : 8
+('noyau', 'pr', 'algav', 'il') : 36
+('noyau', 'pr', 'ares', 'dlp', 'il') : 8
+('noyau', 'pr', 'archi1', 'mlbda') : 16
+('pr', 'archi1', 'il') : 12
 ('algav', 'ares', 'dlp') : 18
-('algav', 'il', 'noyau') : 18
-('archi1', 'il', 'pr') : 12
-('mlbda', 'noyau', 'pr') : 18
-('algav', 'pr') : 12
+('noyau', 'pr', 'algav', 'archi1', 'dlp') : 8
+('noyau', 'algav', 'ares', 'mlbda') : 6
+('noyau', 'ares', 'il', 'mlbda') : 6
+('pr', 'algav', 'mlbda') : 12
+('noyau', 'pr', 'dlp', 'mlbda') : 24
+('noyau', 'algav', 'il') : 18
 ('algav', 'il') : 12
-('il', 'mlbda', 'noyau') : 24
-('algav', 'il', 'pr') : 27
-('algav', 'archi1', 'il', 'noyau') : 16
+('noyau', 'ares') : 9
+('noyau', 'algav', 'dlp') : 18
 ('ares', 'dlp') : 9
-('archi1', 'dlp', 'mlbda', 'noyau', 'pr') : 4
-('algav', 'il', 'mlbda', 'pr') : 12
-('algav', 'ares', 'dlp', 'noyau', 'pr') : 32
+('pr', 'ares', 'il') : 8
+('noyau', 'algav', 'il', 'mlbda') : 18
+('pr', 'algav', 'archi1') : 12
+('pr', 'ares', 'dlp') : 12
+('pr', 'algav', 'ares', 'il') : 6
 ('dlp', 'il', 'mlbda') : 12
 ('archi1', 'dlp', 'mlbda') : 6
-('algav', 'ares', 'mlbda', 'pr') : 2
-('algav', 'noyau', 'pr') : 24
-('ares', 'il', 'noyau') : 8
+('noyau', 'ares', 'dlp', 'il') : 6
+('noyau', 'il') : 12
+('pr', 'algav', 'archi1', 'dlp') : 8
+('noyau', 'pr', 'algav', 'ares', 'dlp') : 32
 ('ares', 'il') : 4
-('archi1', 'ares', 'il', 'noyau', 'pr') : 4
-('algav', 'dlp', 'noyau') : 18
-('algav', 'mlbda', 'noyau', 'pr') : 24
-('archi1', 'mlbda', 'noyau', 'pr') : 16
-('il', 'pr') : 12
+('noyau', 'pr', 'algav', 'dlp') : 36
+('noyau', 'pr', 'algav', 'ares', 'il') : 8
+('noyau', 'algav', 'ares', 'il') : 4
+('pr', 'archi1') : 9
 ('archi1', 'il') : 9
-('dlp', 'il', 'mlbda', 'noyau') : 24
-('algav', 'dlp', 'il', 'pr') : 36
+('noyau', 'pr', 'algav', 'dlp', 'mlbda') : 32
+('noyau', 'archi1', 'dlp', 'il') : 8
+('noyau', 'pr', 'dlp', 'il') : 24
 ('il', 'mlbda') : 10
 ('ares', 'dlp', 'mlbda') : 4
-('archi1', 'dlp', 'mlbda', 'pr') : 4
-('ares', 'noyau') : 9
-('archi1', 'noyau', 'pr') : 12
-('algav', 'archi1', 'ares', 'pr') : 8
+('pr', 'il', 'mlbda') : 12
+('noyau', 'il', 'mlbda') : 24
+('pr', 'algav', 'archi1', 'il') : 16
+('noyau', 'pr', 'algav', 'il', 'mlbda') : 16
+('noyau', 'pr', 'dlp', 'il', 'mlbda') : 24
+('noyau', 'pr', 'algav', 'ares') : 24
+('noyau', 'algav', 'ares') : 12
 ('noyau', 'pr') : 12
-('archi1', 'il', 'noyau', 'pr') : 16
-('algav', 'il', 'noyau', 'pr') : 36
-('algav', 'il', 'mlbda', 'noyau') : 18
-('ares', 'mlbda', 'pr') : 2
-('algav', 'dlp', 'mlbda', 'pr') : 24
-('ares', 'il', 'mlbda', 'noyau') : 6
-('ares', 'dlp', 'mlbda', 'pr') : 4
-('archi1', 'mlbda', 'pr') : 12
-('archi1', 'dlp', 'il', 'noyau', 'pr') : 4
-('algav', 'dlp', 'pr') : 24
-('archi1', 'ares', 'noyau', 'pr') : 16
+('noyau', 'algav') : 8
+('pr', 'algav', 'il', 'mlbda') : 12
+('noyau', 'pr', 'archi1', 'il', 'mlbda') : 12
+('pr', 'dlp', 'il') : 12
+('noyau', 'pr', 'algav', 'mlbda') : 24
 ('archi1', 'dlp') : 3
-('ares', 'il', 'pr') : 8
-('dlp', 'il', 'noyau', 'pr') : 24
-('algav', 'il', 'mlbda', 'noyau', 'pr') : 16
-('algav', 'ares', 'dlp', 'noyau') : 24
-('algav', 'ares', 'mlbda', 'noyau') : 6
-('ares', 'pr') : 6
-('dlp', 'il', 'mlbda', 'pr') : 12
-('algav', 'ares', 'noyau') : 12
-('archi1', 'ares', 'mlbda', 'noyau', 'pr') : 4
-('dlp', 'noyau') : 9
+('noyau', 'archi1', 'dlp', 'mlbda') : 6
+('noyau', 'pr', 'archi1', 'ares', 'mlbda') : 4
+('pr', 'algav', 'ares') : 12
 ('dlp', 'mlbda') : 9
 ('archi1', 'dlp', 'il') : 6
 ('algav', 'archi1') : 6
-('archi1', 'ares', 'dlp', 'noyau', 'pr') : 4
 ('dlp', 'il') : 9
-('il', 'noyau') : 12
-('algav', 'mlbda', 'pr') : 12
-('ares', 'il', 'mlbda', 'pr') : 0
-('archi1', 'il', 'mlbda', 'noyau', 'pr') : 12
-('archi1', 'ares', 'mlbda', 'noyau') : 4
-('algav', 'archi1', 'dlp', 'noyau', 'pr') : 8
-('algav', 'ares', 'noyau', 'pr') : 24
+('noyau', 'pr', 'ares') : 18
+('pr', 'ares') : 6
+('pr', 'archi1', 'dlp', 'il') : 4
+('noyau', 'pr', 'ares', 'dlp') : 24
+('noyau', 'algav', 'archi1') : 8
+('noyau', 'algav', 'mlbda') : 18
+('pr', 'algav', 'dlp', 'il') : 36
+('noyau', 'algav', 'dlp', 'il') : 36
+('noyau', 'dlp', 'il') : 18
 ('algav', 'archi1', 'mlbda') : 8
-('algav', 'dlp', 'il', 'noyau', 'pr') : 48
-('algav', 'ares', 'il', 'noyau') : 4
-('algav', 'archi1', 'dlp', 'pr') : 8
-('ares', 'il', 'noyau', 'pr') : 16
-('archi1', 'dlp', 'mlbda', 'noyau') : 6
+('pr', 'archi1', 'mlbda') : 12
+('pr', 'ares', 'dlp', 'mlbda') : 4
+('noyau', 'pr', 'ares', 'il', 'mlbda') : 0
 ('archi1', 'ares', 'mlbda') : 4
-('algav', 'archi1', 'mlbda', 'noyau', 'pr') : 8
-('ares', 'noyau', 'pr') : 18
-('dlp', 'pr') : 8
-('algav', 'dlp', 'noyau', 'pr') : 36
-('algav', 'archi1', 'ares', 'noyau', 'pr') : 8
 ('algav', 'ares') : 6
-('ares', 'mlbda', 'noyau') : 6
-('algav', 'ares', 'pr') : 12
-('ares', 'dlp', 'mlbda', 'noyau', 'pr') : 8
+('pr', 'ares', 'il', 'mlbda') : 0
+('noyau', 'archi1', 'il', 'mlbda') : 12
+('noyau', 'ares', 'mlbda') : 6
+('noyau', 'pr', 'archi1', 'ares') : 16
+('noyau', 'archi1', 'dlp') : 4
 ('ares', 'il', 'mlbda') : 3
-('archi1', 'il', 'mlbda', 'pr') : 12
-('dlp', 'noyau', 'pr') : 18
-('archi1', 'ares', 'il', 'noyau') : 4
+('noyau', 'pr', 'algav', 'dlp', 'il') : 48
 ('algav', 'dlp', 'mlbda') : 18
-('algav', 'noyau') : 8
-('ares', 'dlp', 'il', 'noyau', 'pr') : 8
+('pr', 'dlp') : 8
 ('ares', 'dlp', 'il') : 3
-('algav', 'archi1', 'noyau') : 8
-('archi1', 'mlbda', 'noyau') : 12
-('archi1', 'ares', 'noyau') : 12
-('archi1', 'noyau') : 6
+('noyau', 'algav', 'dlp', 'mlbda') : 24
+('noyau', 'pr', 'algav') : 24
+('noyau', 'archi1', 'ares') : 12
+('noyau', 'pr', 'dlp') : 18
+('noyau', 'pr', 'archi1', 'dlp', 'mlbda') : 4
+('noyau', 'pr', 'il') : 27
+('pr', 'archi1', 'ares', 'mlbda') : 4
 ('archi1', 'mlbda') : 9
-('ares', 'dlp', 'il', 'noyau') : 6
-('dlp', 'mlbda', 'pr') : 12
-('archi1', 'ares', 'dlp') : 6
-('archi1', 'ares', 'pr') : 12
-('algav', 'archi1', 'ares', 'noyau') : 8
-('ares', 'il', 'mlbda', 'noyau', 'pr') : 0
-('algav', 'ares', 'mlbda', 'noyau', 'pr') : 2
+('pr', 'algav', 'dlp', 'mlbda') : 24
+('pr', 'archi1', 'dlp', 'mlbda') : 4
+('noyau', 'pr', 'algav', 'archi1', 'ares') : 8
+('noyau', 'archi1', 'mlbda') : 12
+('pr', 'algav', 'ares', 'mlbda') : 2
+('noyau', 'algav', 'archi1', 'il') : 16
+('pr', 'dlp', 'il', 'mlbda') : 12
+('noyau', 'pr', 'archi1', 'dlp', 'il') : 4
 ('algav', 'archi1', 'il') : 12
-('algav', 'dlp', 'il', 'noyau') : 36
-('mlbda', 'pr') : 6
-('algav', 'dlp', 'mlbda', 'noyau', 'pr') : 32
-('dlp', 'il', 'mlbda', 'noyau', 'pr') : 24
-('archi1', 'ares', 'dlp', 'pr') : 4
-('dlp', 'mlbda', 'noyau', 'pr') : 24
+('pr', 'archi1', 'il', 'mlbda') : 12
+('noyau', 'pr', 'archi1') : 12
+('noyau', 'archi1', 'ares', 'dlp') : 8
+('noyau', 'pr', 'ares', 'dlp', 'mlbda') : 8
+('pr', 'algav', 'il') : 27
 ('algav', 'ares', 'mlbda') : 3
-('archi1', 'ares', 'il', 'pr') : 4
-('il', 'mlbda', 'pr') : 12
-('ares', 'mlbda', 'noyau', 'pr') : 6
+('archi1', 'ares', 'dlp') : 6
+('noyau', 'pr', 'ares', 'mlbda') : 6
+('pr', 'algav', 'dlp') : 24
+('noyau', 'algav', 'archi1', 'mlbda') : 8

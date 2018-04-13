@@ -1,65 +1,63 @@
 LES AFFECTATIONS
-1 algav3 dlp3 noyau1 il4 mlbda1 
-2 dlp2 algav1 mlbda3 il1 pr3 
-3 algav3 dlp2 mlbda1 pr1 mogpl4 
-4 dlp3 algav3 mlbda1 lrc1 il5 
-5 il5 
-6 dlp2 algav2 lrc3 pr3 mlbda2 
-7 dlp1 algav1 il4 complex2 prX 
-8 dlp3 algav2 il4 mlbda1 noyau4 
-9 algav2 dlp2 prX mlbda4 il4 
-10 dlp1 algav3 pr3 noyau2 mlbda2 
-11 dlp3 algav1 lrc4 mogplX mlbda2 
-12 algav3 dlp3 pr1 lrc3 mlbda1 
-13 dlp1 algav1 il4 complex2 prX 
-14 algav3 dlp3 il4 archi12 mlbda1 
-15 dlp2 algav3 pr4 il4 mogplX 
-16 dlp2 algav2 il4 noyau2 mogpl4 
-17 algav3 pr4 mlbda2 
-18 dlp2 algav1 il2 pr4 lrc4 
-19 dlp3 algav3 mlbda1 prX il5 
-20 algav3 dlp3 il5 
-21 algav3 dlp1 pr4 il2 lrc3 
-22 algav2 dlp1 mlbda2 noyau1 pr4 
-23 algav2 dlp1 pr4 il4 noyau1 
-24 dlp2 algav1 pr3 lrc4 mlbda2 
-25 algav2 dlp3 noyau3 lrcX il5 
-26 algav2 dlp3 lrc3 pr1 noyau4 
-27 algav2 dlp1 il1 pr2 mogpl4 
-28 algav3 dlp3 mogplX il5 mlbda1 
-29 algav1 dlp1 pr4 mlbda3 il4 
-30 dlp1 algav1 mlbda3 il1 pr3 
-31 dlp2 algav2 lrc3 mogpl4 pr1 
-32 algav1 dlp1 il4 pr3 mlbda3 
-33 dlp2 algav1 il2 pr4 lrc4 
-34 algav1 dlp1 pr4 mlbda3 il2 
-35 algav1 dlp3 lrc2 il5 mlbda1 
-36 dlp1 algav2 noyau1 mlbda4 il4 
-37 algav3 dlp2 pr2 mogpl4 il2 
-38 dlp1 algav2 pr4 noyau1 il4 
-39 dlp1 algav2 noyau2 il2 mlbda4 
-40 dlp2 algav1 lrc4 mlbda2 mogpl1 
-41 dlp1 algav2 mlbda4 il2 lrc2 
-42 dlp1 mlbda3 pr4 il2 
-43 algav1 dlp1 il2 lrc4 pr3 
-44 algav1 dlp3 il2 noyau4 mlbda3 
-45 algav3 dlp1 mlbda4 il1 lrc2 
-46 algav1 dlp2 complex1 lrcX pr3 
-47 algav3 dlp3 prX mogplX il5 
-48 dlp2 algav1 lrc2 complex1 mlbda4 
-49 algav2 dlp3 lrc3 noyau4 
-50 dlp2 algav3 mlbda2 pr4 lrc3 
-51 algav1 dlp2 il2 pr3 mlbda3 
-52 mogpl4 lrc4 noyau4 
-53 dlp1 algav2 il1 noyau3 mogplX 
-54 mogpl1 il5 
-55 dlp2 algav2 mlbda2 mogpl1 prX 
-56 dlp3 algav1 lrcX il4 prX 
-57 dlp2 noyau2 pr4 il4 
-58 dlp1 algav1 mlbda3 pr4 il2 
-59 algav2 dlp3 il1 lrc3 noyau4 
-60 algav1 complex1 
-61 mlbda4 lrc3 il5 
-62 dlp2 algav2 lrc1 
-63 dlp2 algav1 il4 pr3 mlbda3 
-64 dlp3 algav2 il2 noyau4 lrc3 
+1 dlp3 algav3 il2 lrc2 
+2 dlp3 algav3 il4 lrcX mogplX 
+3 dlp2 algav1 il4 lrcX mlbda1 
+4 dlp2 algav1 il2 lrcX pr4 
+5 dlp2 algav2 lrc3 
+6 dlp3 algav2 il2 lrc3 noyau4 
+7 dlp3 algav1 il1 mlbda3 prX 
+8 algav3 il5 
+9 dlp2 algav1 il4 mlbda1 pr3 
+10 dlp1 algav1 il2 lrcX mlbda3 
+11 dlp1 algav1 mlbda1 pr4 
+12 dlp3 algav2 il2 lrc3 noyau4 
+13 dlp2 mogpl1 
+14 dlp3 il4 lrcX 
+15 dlp1 algav2 il2 mlbdaX pr2 
+16 dlp1 algav1 il4 lrcX mogplX 
+17 dlp1 algav1 il2 mlbda3 pr3 
+18 dlp1 algav3 
+19 algav3 
+20 dlp3 algav2 archi12 lrc1 mlbda2 
+21 dlp1 algav3 il4 lrcX pr3 
+22 dlp3 algav2 il2 lrc3 noyau4 
+23 dlp1 algav1 il4 lrcX pr3 
+24 dlp2 algav2 lrc3 mlbda1 pr1 
+25 dlp2 algav1 il2 lrc2 mlbda3 
+26 dlp2 algav2 lrc3 mlbda2 pr3 
+27 dlp3 algav1 lrc4 mlbda2 noyau4 
+28 dlp1 algav3 il1 lrc3 mlbda4 
+29 dlp2 algav1 mlbda1 mogpl4 pr1 
+30 dlp2 algav3 lrc3 mogpl4 pr1 
+31 dlp1 algav3 il1 lrc3 mlbdaX 
+32 dlp2 algav2 il1 noyau1 pr2 
+33 dlp2 algav1 lrc4 mlbda2 mogpl4 
+34 dlp1 algav2 il4 noyau2 pr4 
+35 dlp2 algav1 mlbda2 
+36 dlp2 algav2 il1 noyau1 pr2 
+37 dlp3 algav1 il5 mlbda1 prX 
+38 dlp2 algav1 il2 mlbda3 pr3 
+39 dlp1 algav1 il1 lrc2 mlbda3 
+40 dlp1 algav3 mlbda2 noyau1 prX 
+41 dlp2 algav3 lrc3 mlbda1 pr1 
+42 dlp2 algav2 lrc3 mlbda2 mogplX 
+43 dlp1 algav1 il2 lrc4 pr4 
+44 dlp1 algav1 il4 lrcX mlbda1 
+45 dlp2 algav2 il1 lrc3 pr3 
+46 dlp3 algav2 lrc3 noyau4 pr1 
+47 dlp1 algav1 il4 lrcX mlbda3 
+48 dlp2 algav1 lrc2 mlbda4 
+49 dlp1 algav1 il1 mlbda3 pr3 
+50 dlp2 algav3 mlbda2 pr4 
+51 dlp2 algav2 lrc3 mogpl4 prX 
+52 dlp2 algav2 lrc3 mlbda2 pr3 
+53 dlp1 algav3 mlbda1 noyau1 pr1 
+54 dlp1 algav3 il1 lrc3 pr3 
+55 dlp3 algav2 archi13 noyau1 pr1 
+56 dlp3 algav2 il2 lrc3 noyau4 
+57 dlp3 algav2 il2 noyau4 pr2 
+58 dlp1 algav3 il1 lrc3 pr3 
+59 il5 mlbda4 noyau2 
+60 algav3 il5 
+61 dlp2 algav3 lrcX mogpl4 pr2 
+62 dlp2 algav3 

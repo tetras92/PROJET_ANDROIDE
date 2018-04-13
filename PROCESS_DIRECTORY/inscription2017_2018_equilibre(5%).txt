@@ -20,7 +20,7 @@ Detail des inscriptions non satisfaites :
 UE mobj (14) :
 	Nombre de groupes : 2
 	Capacite totale d'accueil: 32
-	Equilibre? : True
+	Equilibre? : Oui
 	Nombre Etudiants interesses: 28
 	Nombre Etudiants effectivement inscrits : 28
 	Les Non-inscrits : 
@@ -32,7 +32,7 @@ UE mobj (14) :
 UE rtel (19) :
 	Nombre de groupes : 2
 	Capacite totale d'accueil: 64
-	Equilibre? : True
+	Equilibre? : Oui
 	Nombre Etudiants interesses: 49
 	Nombre Etudiants effectivement inscrits : 49
 	Les Non-inscrits : 
@@ -44,7 +44,7 @@ UE rtel (19) :
 UE lrc (10) :
 	Nombre de groupes : 4
 	Capacite totale d'accueil: 128
-	Equilibre? : True
+	Equilibre? : Oui
 	Nombre Etudiants interesses: 137
 	Nombre Etudiants effectivement inscrits : 128
 	Les Non-inscrits : 12(ima) 2(res) 34(res) 39(res) 4(stl) 15(stl) 35(stl) 4(sar) 7(sesi) 
@@ -58,7 +58,7 @@ UE lrc (10) :
 UE mlbda (13) :
 	Nombre de groupes : 4
 	Capacite totale d'accueil: 128
-	Equilibre? : False
+	Equilibre? : Oui
 	Nombre Etudiants interesses: 126
 	Nombre Etudiants effectivement inscrits : 126
 	Les Non-inscrits : 
@@ -72,7 +72,7 @@ UE mlbda (13) :
 UE aagb (1) :
 	Nombre de groupes : 1
 	Capacite totale d'accueil: 32
-	Equilibre? : True
+	Equilibre? : Oui
 	Nombre Etudiants interesses: 26
 	Nombre Etudiants effectivement inscrits : 26
 	Les Non-inscrits : 
@@ -83,7 +83,7 @@ UE aagb (1) :
 UE mapsi (11) :
 	Nombre de groupes : 5
 	Capacite totale d'accueil: 144
-	Equilibre? : True
+	Equilibre? : Oui
 	Nombre Etudiants interesses: 126
 	Nombre Etudiants effectivement inscrits : 126
 	Les Non-inscrits : 
@@ -98,7 +98,7 @@ UE mapsi (11) :
 UE signal (20) :
 	Nombre de groupes : 2
 	Capacite totale d'accueil: 64
-	Equilibre? : True
+	Equilibre? : Oui
 	Nombre Etudiants interesses: 50
 	Nombre Etudiants effectivement inscrits : 50
 	Les Non-inscrits : 
@@ -110,7 +110,7 @@ UE signal (20) :
 UE algav (2) :
 	Nombre de groupes : 3
 	Capacite totale d'accueil: 96
-	Equilibre? : True
+	Equilibre? : Oui
 	Nombre Etudiants interesses: 69
 	Nombre Etudiants effectivement inscrits : 69
 	Les Non-inscrits : 
@@ -123,7 +123,7 @@ UE algav (2) :
 UE mogpl (16) :
 	Nombre de groupes : 4
 	Capacite totale d'accueil: 128
-	Equilibre? : True
+	Equilibre? : Oui
 	Nombre Etudiants interesses: 112
 	Nombre Etudiants effectivement inscrits : 112
 	Les Non-inscrits : 
@@ -137,7 +137,7 @@ UE mogpl (16) :
 UE pr (18) :
 	Nombre de groupes : 4
 	Capacite totale d'accueil: 128
-	Equilibre? : True
+	Equilibre? : Oui
 	Nombre Etudiants interesses: 110
 	Nombre Etudiants effectivement inscrits : 110
 	Les Non-inscrits : 
@@ -151,7 +151,7 @@ UE pr (18) :
 UE bima (5) :
 	Nombre de groupes : 1
 	Capacite totale d'accueil: 32
-	Equilibre? : True
+	Equilibre? : Oui
 	Nombre Etudiants interesses: 31
 	Nombre Etudiants effectivement inscrits : 31
 	Les Non-inscrits : 
@@ -162,7 +162,7 @@ UE bima (5) :
 UE vlsi1 (21) :
 	Nombre de groupes : 2
 	Capacite totale d'accueil: 64
-	Equilibre? : True
+	Equilibre? : Oui
 	Nombre Etudiants interesses: 42
 	Nombre Etudiants effectivement inscrits : 42
 	Les Non-inscrits : 
@@ -174,7 +174,7 @@ UE vlsi1 (21) :
 UE dlp (7) :
 	Nombre de groupes : 3
 	Capacite totale d'accueil: 96
-	Equilibre? : True
+	Equilibre? : Oui
 	Nombre Etudiants interesses: 81
 	Nombre Etudiants effectivement inscrits : 81
 	Les Non-inscrits : 
@@ -187,7 +187,7 @@ UE dlp (7) :
 UE archi1 (3) :
 	Nombre de groupes : 4
 	Capacite totale d'accueil: 128
-	Equilibre? : True
+	Equilibre? : Oui
 	Nombre Etudiants interesses: 76
 	Nombre Etudiants effectivement inscrits : 76
 	Les Non-inscrits : 
@@ -201,7 +201,7 @@ UE archi1 (3) :
 UE il (9) :
 	Nombre de groupes : 5
 	Capacite totale d'accueil: 160
-	Equilibre? : True
+	Equilibre? : Oui
 	Nombre Etudiants interesses: 142
 	Nombre Etudiants effectivement inscrits : 138
 	Les Non-inscrits : 14(stl) 39(and) 42(and) 48(and) 
@@ -216,7 +216,7 @@ UE il (9) :
 UE esa (8) :
 	Nombre de groupes : 2
 	Capacite totale d'accueil: 32
-	Equilibre? : True
+	Equilibre? : Oui
 	Nombre Etudiants interesses: 22
 	Nombre Etudiants effectivement inscrits : 22
 	Les Non-inscrits : 
@@ -228,7 +228,7 @@ UE esa (8) :
 UE noyau (17) :
 	Nombre de groupes : 4
 	Capacite totale d'accueil: 128
-	Equilibre? : True
+	Equilibre? : Oui
 	Nombre Etudiants interesses: 99
 	Nombre Etudiants effectivement inscrits : 99
 	Les Non-inscrits : 
@@ -242,7 +242,7 @@ UE noyau (17) :
 UE model (15) :
 	Nombre de groupes : 1
 	Capacite totale d'accueil: 50
-	Equilibre? : True
+	Equilibre? : Oui
 	Nombre Etudiants interesses: 36
 	Nombre Etudiants effectivement inscrits : 36
 	Les Non-inscrits : 
@@ -253,7 +253,7 @@ UE model (15) :
 UE complex (6) :
 	Nombre de groupes : 2
 	Capacite totale d'accueil: 82
-	Equilibre? : True
+	Equilibre? : Oui
 	Nombre Etudiants interesses: 76
 	Nombre Etudiants effectivement inscrits : 75
 	Les Non-inscrits : 38(and) 
@@ -265,7 +265,7 @@ UE complex (6) :
 UE maths4m062 (12) :
 	Nombre de groupes : 1
 	Capacite totale d'accueil: 32
-	Equilibre? : True
+	Equilibre? : Oui
 	Nombre Etudiants interesses: 19
 	Nombre Etudiants effectivement inscrits : 19
 	Les Non-inscrits : 
@@ -276,7 +276,7 @@ UE maths4m062 (12) :
 UE ares (4) :
 	Nombre de groupes : 3
 	Capacite totale d'accueil: 96
-	Equilibre? : True
+	Equilibre? : Oui
 	Nombre Etudiants interesses: 89
 	Nombre Etudiants effectivement inscrits : 89
 	Les Non-inscrits : 

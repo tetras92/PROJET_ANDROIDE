@@ -1,56 +1,53 @@
 LES AFFECTATIONS
-1 lrc4 mlbda4 complexX mapsi1 il5 
-2 mlbda4 lrc3 il3 complexX mogpl3 
-3 mlbda3 lrc2 mapsi1 mogpl3 il3 
-4 mlbda4 lrc4 il1 mapsi4 mogpl1 
-5 mlbda4 lrc2 mapsi1 mogpl3 il3 
-6 mlbda3 lrc1 mogpl3 mapsi2 il1 
-7 lrc4 mlbda4 mapsi4 il1 mogpl3 
-8 lrc2 mlbda3 mapsi1 mogpl4 il5 
-9 mlbda2 model1 
-10 mlbda3 lrc2 mapsi4 il1 mogpl2 
-11 complex1 model1 
-12 mlbda4 lrc2 il2 mapsi5 mogplX 
-13 mapsi5 model1 
-14 mlbda1 lrc3 bimaX model1 il5 
-15 lrc4 mapsi5 
-16 lrc1 il1 mapsi5 model1 
-17 lrc2 model1 
-18 mlbda2 lrc1 mapsi3 mogpl2 model1 
-19 lrc1 mlbda3 il1 mogpl4 mapsi5 
-20 mapsi2 il1 
-21 mlbda1 lrc3 mogpl1 model1 il3 
-22 mlbda1 lrc3 mogpl1 il5 model1 
-23 mlbda4 lrc1 il1 mapsi2 mogpl2 
-24 mlbda1 lrc4 bimaX il5 mogpl1 
-25 lrc1 mlbda4 il1 mapsi4 mogpl3 
-26 mlbda3 lrc1 mapsi1 mogpl3 il3 
-27 mlbda1 lrc2 mapsi5 il3 model1 
-28 mlbda4 lrc4 mogpl1 il2 mapsi5 
-29 lrc1 mlbda3 mogpl4 il5 mapsi1 
-30 mlbda1 lrc1 il3 mapsi5 model1 
-31 il4 mapsi3 
-32 lrc3 mlbda2 model1 
-33 mlbda3 il1 
-34 mlbda4 lrc1 bimaX mapsi5 il1 
-35 lrc1 mlbda2 mapsi1 mogpl3 model1 
-36 lrc4 mlbda4 mogpl1 mapsi2 il5 
-37 lrc3 mlbda1 il3 mogpl1 model1 
-38 lrc1 mlbda1 mogpl3 complex1 mapsi4 
-39 mlbda4 lrc1 mapsi3 il2 mogpl2 
-40 lrc2 mlbda4 mogpl2 il3 mapsi1 
-41 mogpl4 il2 
-42 lrc1 mogpl3 mapsi2 il1 
-43 mlbda1 il5 mogpl1 model1 
-44 mlbda3 lrc1 il1 mapsi4 mogpl3 
-45 lrc2 mlbda1 mapsi2 model1 il5 
-46 mlbda2 lrc3 
-47 lrc1 mogpl4 mapsi5 il3 
-48 lrc4 mlbda4 il1 mogpl3 
-49 mlbda3 lrc3 mogpl3 il3 complexX 
-50 lrc4 mlbda2 mapsi2 mogpl3 bimaX 
-51 mlbda2 lrc2 ilX complex2 mapsi4 
-52 lrc4 mlbda4 il5 
-53 lrc1 bima1 
-54 lrc3 mlbda2 
-55 lrc4 mlbda2 
+1 mlbda1 lrc3 il5 model1 
+2 mlbda3 il1 mapsi3 mogpl3 
+3 mlbda2 lrc1 mapsi1 model1 mogplX 
+4 mlbda1 lrc1 il5 mapsi4 model1 
+5 mlbda1 lrc1 il3 mapsi5 model1 
+6 mlbda2 lrc1 bimaX mapsi4 mogpl3 
+7 mlbda2 mapsi3 model1 mogpl1 
+8 mlbda1 lrc3 il3 model1 mogpl1 
+9 bima1 il2 
+10 mlbda4 lrc2 bimaX il5 mapsi1 
+11 mlbda1 lrc1 complex1 mapsi3 mogpl3 
+12 mlbda2 lrc1 bimaX mapsi4 mogpl3 
+13 mlbda1 lrc3 bimaX il5 mogplX 
+14 lrc3 il5 
+15 mlbda2 lrc3 mogpl2 
+16 mlbda3 lrc1 il1 mapsi3 mogpl2 
+17 mlbda3 lrc2 il3 mapsi1 mogpl2 
+18 mlbda4 lrc4 il1 mapsi2 mogpl3 
+19 mlbda4 lrc4 il1 mapsi5 mogpl1 
+20 mlbda4 lrc4 il3 mapsi1 mogpl3 
+21 mlbda2 lrc2 mapsi3 model1 mogpl3 
+22 mlbda3 lrc2 il1 mapsi4 mogpl3 
+23 mlbda1 lrc1 il5 mapsi2 model1 
+24 bima1 mogpl1 
+25 mlbda2 lrc1 mapsi3 model1 mogpl3 
+26 mlbda1 lrc4 il5 mapsi4 mogpl1 
+27 mlbda1 lrc4 il5 mapsi4 mogpl1 
+28 mlbda3 lrc1 il1 mapsi3 mogpl3 
+29 mlbda4 lrc2 bimaX il1 mapsi5 
+30 mlbda4 lrc2 il1 mapsi4 
+31 mlbda4 lrc2 il3 mapsi1 mogpl3 
+32 mlbda4 lrc4 bimaX il3 mapsi1 
+33 mlbda3 lrc1 il2 mapsi5 mogplX 
+34 mlbda1 lrc2 il5 mapsi4 model1 
+35 mlbda3 lrc2 il3 mapsi1 mogpl2 
+36 mlbda2 mapsi5 
+37 mlbda3 lrc3 
+38 mlbda1 lrc1 il5 mapsi4 model1 
+39 mlbda3 il4 mapsi1 mogpl2 
+40 mlbda4 lrc4 il5 mapsi1 mogpl1 
+41 mlbda1 lrc3 il3 mogpl1 
+42 mlbda3 lrc2 il1 mapsi5 mogplX 
+43 mlbda4 lrc4 il1 mapsi5 mogpl1 
+44 mlbda1 lrc4 il5 mapsi3 mogpl1 
+45 mlbda4 lrc2 bimaX il2 mapsi2 
+46 mlbda1 lrc3 il3 model1 mogpl2 
+47 mlbda2 lrc1 bimaX mapsi4 mogpl3 
+48 mlbda4 lrc2 bima1 il1 mapsi4 
+49 mlbda2 lrc3 
+50 mlbda2 lrc1 bima1 complex2 mapsi4 
+51 mlbda4 lrc2 il1 mapsi2 mogpl2 
+52 mlbda4 lrc4 bimaX il2 mapsi5 
