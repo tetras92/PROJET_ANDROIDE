@@ -547,18 +547,35 @@ class MainModel():
 
 
 
-    def resoudre(self):
+    def resoudre(self, Yprior=True):
         # print (MainModel.modelGurobi.getObjective())
         self.calculer_charge()
         MainModel.modelGurobi.NumObj = 2
-        MainModel.modelGurobi.setObjectiveN(MainModel.objectif1,0,0)
-        MainModel.modelGurobi.setObjectiveN(MainModel.objectif2,1,1)
-        MainModel.modelGurobi.modelSense = -1
+        if Yprior:
+            MainModel.modelGurobi.setObjectiveN(MainModel.objectif1,0,10)
+            MainModel.modelGurobi.setObjectiveN(MainModel.objectif2,1,1)
+        else:
+            MainModel.modelGurobi.setObjectiveN(MainModel.objectif1,0,0)
+            MainModel.modelGurobi.setObjectiveN(MainModel.objectif2,1,1)
+
 
         # MainModel.modelGurobi.setObjective(MainModel.objectif1, GRB.MAXIMIZE)
         # MainModel.modelGurobi.setObjective(MainModel.modelGurobi.getObjective(),GRB.MAXIMIZE)
         MainModel.modelGurobi.setParam( 'OutputFlag', False )
+        MainModel.modelGurobi.modelSense = -1
         MainModel.modelGurobi.optimize()
+        if Yprior:
+            MainModel.modelGurobi.setParam(GRB.Param.ObjNumber, 0)
+            print "Somme Yij", MainModel.modelGurobi.ObjNVal
+            MainModel.modelGurobi.setParam(GRB.Param.ObjNumber, 1)
+            print "Somme Ni", MainModel.modelGurobi.ObjNVal
+        else:
+            MainModel.modelGurobi.setParam(GRB.Param.ObjNumber, 0)
+            print "Somme Yij", MainModel.modelGurobi.ObjNVal
+            MainModel.modelGurobi.setParam(GRB.Param.ObjNumber, 1)
+            print "Somme Ni", MainModel.modelGurobi.ObjNVal
+            print "----------------------------------------------"
+
 
 
         for varName in MainModel.ListedesVarY:
@@ -643,6 +660,7 @@ class MainModel():
     def calculer_capaciteMaximale(self):
         capMax = 0
         for ue in range(1, len(MainModel.ListeDesUEs)):
+            # print (ue, MainModel.ListeDesUEs[ue])
             capMax += sum(MainModel.ListeDesUEs[ue].get_ListeDesCapacites())
         MainModel.capaciteMaximale = capMax
 
@@ -707,7 +725,7 @@ class MainModel():
 
 
 # m = MainModel("../VOEUX", "edt.csv", equilibre=True)
-# # # # # m = MainModel("RAND_VOEUX1", "edt.csv")
+# # # # # # m = MainModel("RAND_VOEUX1", "edt.csv")
 # m.resoudre()
 # # # #
 # # # #

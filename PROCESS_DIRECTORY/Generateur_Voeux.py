@@ -29,7 +29,7 @@ class Generateur_Voeux:
             self.DictCapaciteTotaleUE[intitule] = sum(ListeCapacites)
         self.DicoNbConfig = dict() #dico de dico : cle nom des parcours
         print("Initialisation ....")
-        self.calculer_config()
+        self.calculer_config()             #A DECOMMENTER
         # print(self.DictCapaciteTotaleUE)
         
     def generer(self):

@@ -4,26 +4,37 @@ import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
     # generateur = Generateur_Voeux("parcours8PC.csv", "edt.csv")
-    generateur = Generateur_Voeux("parcours8PC.csv", "edt.csv")
+    generateur = Generateur_Voeux("parcours8PC_1.csv", "edt.csv")
     Liste_charge = list()
     Liste_ProportionSatis = list()
     Liste_chargeE = list()
     Liste_ProportionSatisE = list()
-    nbExecutions = 50
+    nbExecutions = 5
     # I = set()
     # for i in range(nbExecutions):
     p = 0
     n = 0
-    while n < 3 :
+    # while n < 3 :
+    for i in range(nbExecutions):
         dossierVoeux, ListeParcours = generateur.generer()
         m = MainModel(dossierVoeux, "edt.csv",equilibre=True)
         charge, p = m.resoudre()
-        if p >= 100.:
-            print dossierVoeux
-            n += 1
+        # if p >= 100.:
+        #     print dossierVoeux
+        #     n += 1
         Liste_charge.append(charge)
         Liste_ProportionSatis.append(p)
         f = open(dossierVoeux+"_detail_affectation.txt", "w")
+        f.write(str(m))
+        f.close()
+        m.remise_a_zero()
+
+        m = MainModel(dossierVoeux, "edt.csv",equilibre=True)
+        charge, p = m.resoudre(False)
+
+        Liste_charge.append(charge)
+        Liste_ProportionSatis.append(p)
+        f = open(dossierVoeux+"_detail_affectation_.txt", "w")
         f.write(str(m))
         f.close()
         m.remise_a_zero()

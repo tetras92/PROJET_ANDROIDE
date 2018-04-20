@@ -288,8 +288,8 @@ class CompatibilityModel():
         for ue_ in self.ListeVoeux:#range(1, len(CompatibilityModel.ListeDesUEs)):
             CompatibilityModel.ListeDesUEs[ue_].EnsEtuInteresses.add("x")
 
-        #
-        self.traiter_voeu_anonyme(self.ListeVoeux)
+        #self.traiter_voeu_anonyme(self.ListeVoeux)
+        self.traiter_voeu_anonyme()
 
         #GERER LES INCOMPATIBILITES
         for creneauId in range(1, len(CompatibilityModel.EDT)):
@@ -373,6 +373,8 @@ class CompatibilityModel():
         #CREATION DE VARIABLES N_IJKLm
 
             #INSTANCIATION DE TOUTES LES COMBINAISONS
+
+    def resoudre(self):
         L_Combi = [[i + 1 for i in range(CompatibilityModel.ListeDesUEs[ueId].get_nb_groupes())] for ueId in self.ListeVoeux]
         # print L_Combi
         L_Combi = produit_cartesien_mult(L_Combi)
@@ -392,14 +394,14 @@ class CompatibilityModel():
 
             Z = zip(L_gr_combi, self.ListeVoeux)
             # print Z
-            cst = CompatibilityModel.modelGurobi.addConstr(quicksum(CompatibilityModel.modelGurobi.getVarByName("x_%d"%gr+"_%d"%ue) for gr,ue in Z) >= len(ListeVoeux)*var)
+            cst = CompatibilityModel.modelGurobi.addConstr(quicksum(CompatibilityModel.modelGurobi.getVarByName("x_%d"%gr+"_%d"%ue) for gr,ue in Z) >= len(self.ListeVoeux)*var)
             cst2 = CompatibilityModel.modelGurobi.addConstr(var, GRB.EQUAL, 1)
             CompatibilityModel.modelGurobi.update()
             CompatibilityModel.modelGurobi.optimize()
 
             status = CompatibilityModel.modelGurobi.Status
             if status == GRB.Status.INFEASIBLE:
-                print L_gr_combi
+                # print L_gr_combi
                 nbConfig -= 1
 
             CompatibilityModel.modelGurobi.reset()
@@ -410,28 +412,31 @@ class CompatibilityModel():
             CompatibilityModel.modelGurobi.update()
             # print(cst)
         CompatibilityModel.modelGurobi.update()
-        print nbConfig
-
-    def resoudre(self):
-        objectif = CompatibilityModel.modelGurobi.getObjective()
-        for varN in self.ListeVarObj:
-            objectif += varN
-        CompatibilityModel.modelGurobi.setObjective(objectif,GRB.MAXIMIZE)
-
-        CompatibilityModel.modelGurobi.update()
-        # print(CompatibilityModel.modelGurobi.getObjective())
-        CompatibilityModel.modelGurobi.setParam( 'OutputFlag', False )
-
-        CompatibilityModel.modelGurobi.optimize()
-        # for varName in self.ListeVarObj:
-        #     if varName.x == 1:
-        #         print varName
-        # for varName in self.LVarXij:
-        #     if varName.x == 0:
-        #         print varName
-        # self.ListeVoeux.sort()
         ListeVoeux = [CompatibilityModel.ListeDesUEs[ueI].get_intitule() for ueI in self.ListeVoeux]
-        return ListeVoeux , CompatibilityModel.modelGurobi.getObjective().getValue()
+        return ListeVoeux, nbConfig
+
+    # def resoudre(self):
+    #     ListeVoeux = [CompatibilityModel.ListeDesUEs[ueI].get_intitule() for ueI in self.ListeVoeux]
+    #     return ListeVoeux, self.traiter_voeu_anonyme()
+        # objectif = CompatibilityModel.modelGurobi.getObjective()
+        # for varN in self.ListeVarObj:
+        #     objectif += varN
+        # CompatibilityModel.modelGurobi.setObjective(objectif,GRB.MAXIMIZE)
+        #
+        # CompatibilityModel.modelGurobi.update()
+        # # print(CompatibilityModel.modelGurobi.getObjective())
+        # CompatibilityModel.modelGurobi.setParam( 'OutputFlag', False )
+        #
+        # CompatibilityModel.modelGurobi.optimize()
+        # # for varName in self.ListeVarObj:
+        # #     if varName.x == 1:
+        # #         print varName
+        # # for varName in self.LVarXij:
+        # #     if varName.x == 0:
+        # #         print varName
+        # # self.ListeVoeux.sort()
+        # ListeVoeux = [CompatibilityModel.ListeDesUEs[ueI].get_intitule() for ueI in self.ListeVoeux]
+        # return ListeVoeux , CompatibilityModel.modelGurobi.getObjective().getValue()
 # modelGurobi.addConstr(quicksum((1./self.ListeCapacites[idGroup1-1])*modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup1) for etu in self.EnsEtuInteresses) + quicksum((-1./self.ListeCapacites[idGroup2-1])*modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup2) for etu in self.EnsEtuInteresses) >= -1.*CompatibilityModel.tauxEquilibre)
     def remise_a_zero(self):
         CompatibilityModel.EDT = [dict()] + [generer_model_dict_creneau(CompatibilityModel.nbMaxGroupeParUE) for i in range(0, CompatibilityModel.nbCreneauxParSemaine)]
@@ -461,8 +466,8 @@ class CompatibilityModel():
 # L = zip([1,2], [3,4])
 # print L
 
-cM = CompatibilityModel("edt.csv", ['mapsi','ares','model','noyau', 'pr'])
-cM.traiter_voeu_anonyme(['aagb','il','lrc','mapsi', 'mogpl'])
+# cM = CompatibilityModel("edt.csv", ['mapsi','ares','model','noyau', 'pr'])
+# cM.traiter_voeu_anonyme(['aagb','il','lrc','mapsi', 'mogpl'])
 # #
 # # # cM = CompatibilityModel("edt.csv", [3,7,16])
 # print (cM.resoudre())
