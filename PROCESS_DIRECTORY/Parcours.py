@@ -33,6 +33,9 @@ class Parcours:
             # ANCIENNE METHODE CHOIX DES UES CONSEILLEES
             # self.ListeProbaUEConseillees = [1.0*valeur/sum(self.ListeCapaciteUEConseillees) for valeur in self.ListeCapaciteUEConseillees]
             self.ListeProbaUEConseillees = [float(csvLine["Pcons"+str(i)]) for i in range(1, 8+1) if csvLine["Pcons"+str(i)] != ""]
+            if self.nom == "and":
+                print self.ListeProbaUEConseillees
+                print self.ListeUEConseilles
             # print("somme" + self.nom , self.ListeProbaUEConseillees)
             self.DicoConfigurations = dict()
             self.DictNbConfig = DictNbConfig

@@ -28,6 +28,7 @@ class Generateur_Voeux:
             ListeCapacites = [int(csv_line["capac"+str(i)]) for i in range(1,int(nb_groupes)+1)]
             self.DictCapaciteTotaleUE[intitule] = sum(ListeCapacites)
         self.DicoNbConfig = dict() #dico de dico : cle nom des parcours
+        print("Initialisation ....")
         self.calculer_config()
         # print(self.DictCapaciteTotaleUE)
         
@@ -79,6 +80,7 @@ class Generateur_Voeux:
             f.close()
             # print(current_parcours.nom, len(current_parcours.DicoConfigurations),current_parcours.DicoConfigurations)
         csvfile.close()
+        print("Fin Initialisation")
 
 
                 

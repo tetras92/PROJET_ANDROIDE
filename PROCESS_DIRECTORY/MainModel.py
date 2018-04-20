@@ -83,7 +83,16 @@ class MainModel():
     DictionnaireDistribUEInsatisfaitesParParcours = dict()
 
     modelGurobi = Model("OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK)")
-
+    objectif1 = LinExpr()
+    objectif2 = LinExpr()
+    # modelGurobi.NumObj = 2
+    # modelGurobi.setObjectiveN(objectif1,0,0)
+    # modelGurobi.setObjectiveN(objectif2,1,1)
+    # modelGurobi.modelSense = -1
+    # self.model.NumObj = 2
+# self.model.setObjectiveN(obj1,0,0)
+# self.model.setObjectiveN(obj2,1,1)
+# self.model.modelSense= -1
     idModel = 1
     #Vendredi 16
     proportionSatisfaction = 0
@@ -273,9 +282,10 @@ class MainModel():
             self.varName = "x_{}_{}".format(self.indexParcours, self.idRelatif)
             self.ListeDesInscriptions = list()
 
+
         def gerer_variables_contraintes_ue_obligatoires(self,modelGurobi):
             """ajoute les contraintes relatives aux ue obligatoires"""
-            objectif = modelGurobi.getObjective()
+            # objectif = modelGurobi.getObjective()
 
             for id_ue in self.ue_obligatoires:
                 var = modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name="y_%d"%self.indexParcours+"_%d"%self.idRelatif+"_%d"%id_ue)
@@ -285,31 +295,39 @@ class MainModel():
                     contrainte += modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name=self.varName+"_%d"%id_ue+"_%d"%num_group)
                 contrainte -= var
 
-                objectif += var
+                # objectif += var
+                MainModel.objectif1 += var
+
                 modelGurobi.addConstr(var , GRB.EQUAL, 1)   #y_i_j = 1
                 modelGurobi.addConstr(contrainte, GRB.EQUAL, 0)
 
-            modelGurobi.setObjective(objectif,GRB.MAXIMIZE) # NE PEUt-ON PAS S'EN PASSER
+            # modelGurobi.setObjective(objectif,GRB.MAXIMIZE) # NE PEUt-ON PAS S'EN PASSER
             modelGurobi.update()
 
         def gerer_variables_contraintes_ue_non_obligatoires(self, modelGurobi):
             """ajoute les contraintes relatives aux ue non obligatoires"""
-            objectif = modelGurobi.getObjective()
+            # objectif = modelGurobi.getObjective()
+            varN = modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name="n_%d"%self.indexParcours+"_%d"%self.idRelatif)
+            MainModel.objectif2 += varN
 
+            ListeCouranteVarYij = list()
             for id_ue in self.ue_non_obligatoires:
                 var = modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name="y_%d"%self.indexParcours+"_%d"%self.idRelatif+"_%d"%id_ue)
+                ListeCouranteVarYij.append(var)
                 MainModel.ListedesVarY.append("y_{}_{}_{}".format(self.indexParcours, self.idRelatif, id_ue))
                 contrainte = LinExpr()
                 for num_group in range(1, MainModel.ListeDesUEs[id_ue].get_nb_groupes()+1):
                     contrainte += modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name=self.varName+"_%d"%id_ue+"_%d"%num_group)
                 contrainte -= var
 
-                objectif += var
-
+                # objectif += var
+                MainModel.objectif1 += var
                 #VERIFIER LES CONTRAINTES DU MODELES
                 modelGurobi.addConstr(contrainte, GRB.EQUAL, 0)
-
-            modelGurobi.setObjective(objectif,GRB.MAXIMIZE) # NE PEUt-ON PAS S'EN PASSER
+            #contrainte ETUDIANT ENTIEREMENT SATISFAIT
+            # if ListeCouranteVarYij != []:
+            modelGurobi.addConstr(quicksum(varYij for varYij in ListeCouranteVarYij) >= len(self.ue_non_obligatoires)*varN)
+            # modelGurobi.setObjective(objectif,GRB.MAXIMIZE) # NE PEUt-ON PAS S'EN PASSER
             modelGurobi.update()
 
         def enregistrer_interet_pour_UE(self):
@@ -387,6 +405,8 @@ class MainModel():
 
         #TRAITEMENT UE : GENERATION DE L'EDT ET DES OBJETS UE
         # if not (MainModel.edtInitialise): MainModel.edtInitialise = True
+
+
 
         f_ue = open(fileUE)
         data = csv.DictReader(f_ue)
@@ -530,8 +550,17 @@ class MainModel():
     def resoudre(self):
         # print (MainModel.modelGurobi.getObjective())
         self.calculer_charge()
+        MainModel.modelGurobi.NumObj = 2
+        MainModel.modelGurobi.setObjectiveN(MainModel.objectif1,0,0)
+        MainModel.modelGurobi.setObjectiveN(MainModel.objectif2,1,1)
+        MainModel.modelGurobi.modelSense = -1
+
+        # MainModel.modelGurobi.setObjective(MainModel.objectif1, GRB.MAXIMIZE)
+        # MainModel.modelGurobi.setObjective(MainModel.modelGurobi.getObjective(),GRB.MAXIMIZE)
         MainModel.modelGurobi.setParam( 'OutputFlag', False )
         MainModel.modelGurobi.optimize()
+
+
         for varName in MainModel.ListedesVarY:
             # print (varName)
             if MainModel.modelGurobi.getVarByName(varName).x == 1:
@@ -578,7 +607,7 @@ class MainModel():
         #FIN VERIFICATION EQUILIBRE
         return MainModel.charge, MainModel.proportionSatisfaction
             # [37, 12, 51, 27, 59, 25, 48, 33, 50]
-            # [0, 37, 49, 100, 127, 186, 211, 259, 292, 50]
+            # [0, 37, 49, 100, 127, 186, 211, 259, 292, 342]
 
     def strDictionnaireDesInsatisfactions(self):
         ListeParcoursStr = list()
@@ -668,20 +697,25 @@ class MainModel():
         MainModel.DictionnaireDistribUEInsatisfaitesParParcours = dict()
 
         MainModel.modelGurobi = Model("OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK)")
+        MainModel.objectif1 = LinExpr()
+        MainModel.objectif2 = LinExpr()
+
+
     #     STOP HERE
 
 
 
-    
-# m = MainModel("../VOEUX", "edt.csv")
-# # # # m = MainModel("RAND_VOEUX1", "edt.csv")
-# m.resoudre()
-# # #
-# # #
-# f = open("inscription2017_2018.txt", "w")
-# # # # f = open("R1inscription2017_2018.txt", "w")
-# # #
-# f.write(str(m))
-# # # # f.write("\n\n"+str(analyses))
-# f.close()
 
+# m = MainModel("../VOEUX", "edt.csv", equilibre=True)
+# # # # # m = MainModel("RAND_VOEUX1", "edt.csv")
+# m.resoudre()
+# # # #
+# # # #
+# f = open("inscription2017_2018_.txt", "w")
+# # # # # f = open("R1inscription2017_2018.txt", "w")
+# # # #
+# f.write(str(m))
+# # # # # f.write("\n\n"+str(analyses))
+# # f.close()
+#
+# #

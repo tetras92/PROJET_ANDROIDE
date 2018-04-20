@@ -4,17 +4,23 @@ import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
     # generateur = Generateur_Voeux("parcours8PC.csv", "edt.csv")
-    generateur = Generateur_Voeux("parcours8PC_1.csv", "edt.csv")
+    generateur = Generateur_Voeux("parcours8PC.csv", "edt.csv")
     Liste_charge = list()
     Liste_ProportionSatis = list()
     Liste_chargeE = list()
     Liste_ProportionSatisE = list()
     nbExecutions = 50
     # I = set()
-    for i in range(nbExecutions):
+    # for i in range(nbExecutions):
+    p = 0
+    n = 0
+    while n < 3 :
         dossierVoeux, ListeParcours = generateur.generer()
-        m = MainModel(dossierVoeux, "edt.csv")
+        m = MainModel(dossierVoeux, "edt.csv",equilibre=True)
         charge, p = m.resoudre()
+        if p >= 100.:
+            print dossierVoeux
+            n += 1
         Liste_charge.append(charge)
         Liste_ProportionSatis.append(p)
         f = open(dossierVoeux+"_detail_affectation.txt", "w")
@@ -23,14 +29,14 @@ if __name__ == "__main__":
         m.remise_a_zero()
         #
         #
-        mE = MainModel(dossierVoeux, "edt.csv", equilibre=True)
-        chargeE, pE = mE.resoudre()
-        Liste_chargeE.append(chargeE)
-        Liste_ProportionSatisE.append(pE)
-        f = open(dossierVoeux+"_detail_affectation_eq.txt", "w")
-        f.write(str(mE))
-        f.close()
-        mE.remise_a_zero()
+        # mE = MainModel(dossierVoeux, "edt.csv", equilibre=True)
+        # chargeE, pE = mE.resoudre()
+        # Liste_chargeE.append(chargeE)
+        # Liste_ProportionSatisE.append(pE)
+        # f = open(dossierVoeux+"_detail_affectation_eq.txt", "w")
+        # f.write(str(mE))
+        # f.close()
+        # mE.remise_a_zero()
 
 
 
@@ -39,15 +45,15 @@ if __name__ == "__main__":
 
 
     # print(I)
-    plt.scatter(Liste_charge, Liste_ProportionSatis)
-    plt.scatter(Liste_chargeE, Liste_ProportionSatisE,c='g')
-    #
-    for i in range(nbExecutions):
-        plt.annotate(str(i+1)+"O", (Liste_charge[i], Liste_ProportionSatis[i]))
-    for i in range(nbExecutions):
-        plt.annotate(str(i+1)+"#", (Liste_chargeE[i], Liste_ProportionSatisE[i]))
-    #
-    #
-    #
-    plt.show()
-    #
+    # plt.scatter(Liste_charge, Liste_ProportionSatis)
+    # plt.scatter(Liste_chargeE, Liste_ProportionSatisE,c='g')
+    # #
+    # for i in range(nbExecutions):
+    #     plt.annotate(str(i+1)+"O", (Liste_charge[i], Liste_ProportionSatis[i]))
+    # for i in range(nbExecutions):
+    #     plt.annotate(str(i+1)+"#", (Liste_chargeE[i], Liste_ProportionSatisE[i]))
+    # #
+    # #
+    # #
+    # plt.show()
+    # #

@@ -17,11 +17,6 @@ def produit_cartesien(L1, L2):
     return [u for a in L1 for u in f(a, L2)]
 
 
-L1 = [1, 2, 3]
-L2 = [2,0]
-
-L3 = [4]
-L4 = [5,1]
 
 def produit_cartesien_mult(LL):
     if len(LL) < 2:
@@ -131,8 +126,8 @@ class CompatibilityModel():
             CompatibilityModel.nbTotalIncompatibilites += 1
             if self.vide:
                 CompatibilityModel.nbTotalIncompatibilitesVides += 1
-            else:
-                print(self)
+            # else:
+            #     print(self)
         def __str__(self):
             """Retourne la chaine d'affichage de l'incompatibilite et l'effectif des etudiants concernes"""
             s = "Incompatibilite entre l'UE/Groupe {} et l'UE/Groupe {}\n\tNombre d'etudiants concernes: {}\n\n".format(self.ueGroup1, self.ueGroup2, len(self.ensEtuConcernes))
@@ -361,9 +356,10 @@ class CompatibilityModel():
 
         #FIN GESTION DES INCOMPATIBILITES
 
-    def traiter_voeu_anonyme(self, ListeVoeux):
+    def traiter_voeu_anonyme(self): #GREAT CE 20/04
+        CompatibilityModel.modelGurobi.setParam( 'OutputFlag', False )
         self.LVarXij = list()
-        for voeuUE in ListeVoeux:
+        for voeuUE in self.ListeVoeux:
 
             for idG in range(1, CompatibilityModel.ListeDesUEs[voeuUE].get_nb_groupes()+1):
                 #cREATION DES VARIABLES XIJ
@@ -377,11 +373,12 @@ class CompatibilityModel():
         #CREATION DE VARIABLES N_IJKLm
 
             #INSTANCIATION DE TOUTES LES COMBINAISONS
-        L_Combi = [[i + 1 for i in range(CompatibilityModel.ListeDesUEs[ueId].get_nb_groupes())] for ueId in ListeVoeux]
+        L_Combi = [[i + 1 for i in range(CompatibilityModel.ListeDesUEs[ueId].get_nb_groupes())] for ueId in self.ListeVoeux]
         # print L_Combi
         L_Combi = produit_cartesien_mult(L_Combi)
         # print L_Combi
 
+        nbConfig = len(L_Combi)
         for L_gr_combi in L_Combi:
             #cREATION DES VARIABLES N_I
             varname = "n"
@@ -393,12 +390,27 @@ class CompatibilityModel():
             self.ListeVarObj.append(var)
             CompatibilityModel.modelGurobi.update()
 
-            Z = zip(L_gr_combi, ListeVoeux)
+            Z = zip(L_gr_combi, self.ListeVoeux)
             # print Z
             cst = CompatibilityModel.modelGurobi.addConstr(quicksum(CompatibilityModel.modelGurobi.getVarByName("x_%d"%gr+"_%d"%ue) for gr,ue in Z) >= len(ListeVoeux)*var)
+            cst2 = CompatibilityModel.modelGurobi.addConstr(var, GRB.EQUAL, 1)
+            CompatibilityModel.modelGurobi.update()
+            CompatibilityModel.modelGurobi.optimize()
+
+            status = CompatibilityModel.modelGurobi.Status
+            if status == GRB.Status.INFEASIBLE:
+                print L_gr_combi
+                nbConfig -= 1
+
+            CompatibilityModel.modelGurobi.reset()
+            CompatibilityModel.modelGurobi.remove(var)
+            CompatibilityModel.modelGurobi.remove(cst)
+            CompatibilityModel.modelGurobi.remove(cst2)
+
             CompatibilityModel.modelGurobi.update()
             # print(cst)
         CompatibilityModel.modelGurobi.update()
+        print nbConfig
 
     def resoudre(self):
         objectif = CompatibilityModel.modelGurobi.getObjective()
@@ -414,9 +426,9 @@ class CompatibilityModel():
         # for varName in self.ListeVarObj:
         #     if varName.x == 1:
         #         print varName
-        for varName in self.LVarXij:
-            if varName.x == 0:
-                print varName
+        # for varName in self.LVarXij:
+        #     if varName.x == 0:
+        #         print varName
         # self.ListeVoeux.sort()
         ListeVoeux = [CompatibilityModel.ListeDesUEs[ueI].get_intitule() for ueI in self.ListeVoeux]
         return ListeVoeux , CompatibilityModel.modelGurobi.getObjective().getValue()
@@ -449,7 +461,8 @@ class CompatibilityModel():
 # L = zip([1,2], [3,4])
 # print L
 
-cM = CompatibilityModel("edt.csv", ['aagb','il','lrc','mapsi', 'mogpl'])
-#
-# # cM = CompatibilityModel("edt.csv", [3,7,16])
-print (cM.resoudre())
+cM = CompatibilityModel("edt.csv", ['mapsi','ares','model','noyau', 'pr'])
+cM.traiter_voeu_anonyme(['aagb','il','lrc','mapsi', 'mogpl'])
+# #
+# # # cM = CompatibilityModel("edt.csv", [3,7,16])
+# print (cM.resoudre())
