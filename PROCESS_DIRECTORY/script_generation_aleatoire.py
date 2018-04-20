@@ -28,6 +28,7 @@ if __name__ == "__main__":
         f.write(str(m))
         f.close()
         m.remise_a_zero()
+        # a
 
         m = MainModel(dossierVoeux, "edt.csv",equilibre=True)
         charge, p = m.resoudre(False)
