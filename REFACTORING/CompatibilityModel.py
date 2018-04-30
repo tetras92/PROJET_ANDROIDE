@@ -12,7 +12,7 @@ class CompatibilityModel():
 
 
         self.modelGurobi = Model("MODELE DE COMPATIBILITE (PAR DAK)")
-        for Ue in self.ListeDesUEs:
+        for Ue in self.ListeDesUEs[1:]:
             Ue.remise_a_zero()
 
         for Incompatibilite in self.EnsIncompatibilites:
@@ -23,7 +23,7 @@ class CompatibilityModel():
         self.ListeVoeux = [optimizer.DictUEs[voeu] for voeu in ListeVoeux]
         self.ListeVoeuxId = [Ue.get_id() for Ue in self.ListeVoeux]
 
-        for ue_ in self.ListeVoeux:#range(1, len(CompatibilityModel.ListeDesUEs)):
+        for ue_ in self.ListeVoeuxId:#range(1, len(CompatibilityModel.ListeDesUEs)):
             self.ListeDesUEs[ue_].EnsEtuInteresses.add("x")
 
         for Incompatibilite in self.EnsIncompatibilites:
@@ -43,7 +43,7 @@ class CompatibilityModel():
                 # print (idG, voeuUE)
                 var = self.modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name="x_%d"%idG+"_%d"%voeuUE.get_id())
                 self.LVarXij.append(var)
-            CompatibilityModel.modelGurobi.update()
+            self.modelGurobi.update()
 
         #CREATION DE VARIABLES N_IJKLm
 
@@ -63,12 +63,12 @@ class CompatibilityModel():
             # CompatibilityModel.modelGurobi.update()
 
             self.ListeVarObj.append(var)
-            CompatibilityModel.modelGurobi.update()
+            self.modelGurobi.update()
 
             Z = zip(L_gr_combi, self.ListeVoeuxId)
             # print Z
-            cst1 = CompatibilityModel.modelGurobi.addConstr(quicksum(self.modelGurobi.getVarByName("x_%d"%gr+"_%d"%ue) for gr,ue in Z) >= len(self.ListeVoeux)*var)
-            cst2 = CompatibilityModel.modelGurobi.addConstr(var, GRB.EQUAL, 1)
+            cst1 = self.modelGurobi.addConstr(quicksum(self.modelGurobi.getVarByName("x_%d"%gr+"_%d"%ue) for gr,ue in Z) >= len(self.ListeVoeux)*var)
+            cst2 = self.modelGurobi.addConstr(var, GRB.EQUAL, 1)
             #Pas d'objectif: juste un modele de realisabilite
             self.modelGurobi.update()
             self.modelGurobi.optimize()

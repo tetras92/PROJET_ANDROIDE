@@ -552,8 +552,8 @@ class MainModel():
         self.calculer_charge()
         MainModel.modelGurobi.NumObj = 2
         if Yprior:
-            MainModel.modelGurobi.setObjectiveN(MainModel.objectif1,0,10)
-            MainModel.modelGurobi.setObjectiveN(MainModel.objectif2,1,1)
+            MainModel.modelGurobi.setObjectiveN(MainModel.objectif1,0,1)
+            MainModel.modelGurobi.setObjectiveN(MainModel.objectif2,1,0)
         else:
             MainModel.modelGurobi.setObjectiveN(MainModel.objectif1,0,0)
             MainModel.modelGurobi.setObjectiveN(MainModel.objectif2,1,1)
@@ -724,16 +724,17 @@ class MainModel():
 
 
 
-# m = MainModel("../VOEUX", "edt.csv", equilibre=True)
+m = MainModel("../VOEUX", "edt.csv", equilibre=True)
+print len(m.EnsIncompatibilites)
 # # # # # # m = MainModel("RAND_VOEUX1", "edt.csv")
-# m.resoudre()
+m.resoudre()
 # # # #
 # # # #
-# f = open("inscription2017_2018_.txt", "w")
+f = open("inscription2017_2018_equilibre(10%).txt", "w")
 # # # # # f = open("R1inscription2017_2018.txt", "w")
 # # # #
-# f.write(str(m))
+f.write(str(m))
 # # # # # f.write("\n\n"+str(analyses))
-# # f.close()
+f.close()
 #
 # #

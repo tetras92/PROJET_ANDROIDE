@@ -1,316 +1,316 @@
 ('mlbda', 'noyau') : 12
-('model', 'archi1', 'complex', 'mlbda', 'noyau') : 2
-('complex', 'mapsi') : 8
-('archi1', 'ares') : 9
-('ares', 'mapsi', 'mlbda', 'noyau') : 6
-('model', 'archi1', 'ares', 'dlp', 'noyau') : 2
+('model', 'archi1', 'complex', 'mlbda', 'noyau') : 4
+('complex', 'mapsi') : 9
+('archi1', 'ares') : 11
+('ares', 'mapsi', 'mlbda', 'noyau') : 12
+('model', 'archi1', 'ares', 'dlp', 'noyau') : 3
 ('model', 'ares', 'mlbda', 'pr') : 0
-('ares', 'complex', 'dlp', 'pr') : 4
-('archi1', 'pr') : 9
-('complex', 'dlp', 'mapsi', 'mlbda') : 2
+('ares', 'complex', 'dlp', 'pr') : 8
+('archi1', 'pr') : 14
+('complex', 'dlp', 'mapsi', 'mlbda') : 3
 ('model', 'ares', 'complex', 'mapsi', 'mlbda') : 0
 ('ares', 'complex', 'dlp', 'mapsi') : 1
 ('model', 'ares', 'complex', 'mlbda', 'noyau') : 0
-('complex', 'dlp', 'mapsi', 'noyau') : 3
+('complex', 'dlp', 'mapsi', 'noyau') : 5
 ('mapsi', 'pr') : 20
-('complex', 'dlp', 'pr') : 6
+('complex', 'dlp', 'pr') : 11
 ('model', 'complex', 'dlp', 'mapsi', 'mlbda') : 1
 ('model', 'archi1', 'complex', 'dlp') : 2
-('model', 'ares', 'pr') : 2
+('model', 'ares', 'pr') : 4
 ('model', 'archi1', 'ares', 'dlp', 'mlbda') : 0
-('model', 'archi1', 'mlbda', 'pr') : 4
-('model', 'archi1', 'ares', 'pr') : 4
-('archi1', 'complex', 'mapsi', 'pr') : 10
+('model', 'archi1', 'mlbda', 'pr') : 6
+('model', 'archi1', 'ares', 'pr') : 9
+('archi1', 'complex', 'mapsi', 'pr') : 40
 ('ares', 'complex', 'mlbda', 'pr') : 0
-('model', 'ares', 'complex') : 2
-('archi1', 'ares', 'dlp', 'mapsi') : 4
-('archi1', 'dlp', 'noyau') : 4
-('model', 'mapsi', 'mlbda', 'noyau', 'pr') : 6
-('model', 'mapsi', 'noyau') : 8
+('model', 'ares', 'complex') : 3
+('archi1', 'ares', 'dlp', 'mapsi') : 5
+('archi1', 'dlp', 'noyau') : 6
+('model', 'mapsi', 'mlbda', 'noyau', 'pr') : 10
+('model', 'mapsi', 'noyau') : 9
 ('model', 'archi1', 'ares', 'mapsi', 'mlbda') : 0
-('model', 'complex', 'dlp', 'mapsi', 'noyau') : 3
-('model', 'dlp', 'mapsi', 'noyau', 'pr') : 4
+('model', 'complex', 'dlp', 'mapsi', 'noyau') : 5
+('model', 'dlp', 'mapsi', 'noyau', 'pr') : 8
 ('ares', 'complex', 'mapsi', 'mlbda') : 0
 ('archi1', 'complex') : 8
 ('archi1', 'ares', 'complex', 'mlbda') : 0
-('archi1', 'dlp', 'pr') : 4
-('model', 'ares', 'complex', 'dlp', 'pr') : 2
+('archi1', 'dlp', 'pr') : 5
+('model', 'ares', 'complex', 'dlp', 'pr') : 6
 ('ares', 'mapsi') : 12
-('complex', 'mapsi', 'mlbda') : 8
-('archi1', 'ares', 'mlbda', 'pr') : 4
+('complex', 'mapsi', 'mlbda') : 13
+('archi1', 'ares', 'mlbda', 'pr') : 12
 ('model', 'ares') : 2
 ('archi1', 'complex', 'dlp') : 3
 ('dlp', 'mapsi', 'mlbda', 'noyau') : 2
-('ares', 'dlp', 'noyau') : 18
+('ares', 'dlp', 'noyau') : 27
 ('model', 'pr') : 3
-('dlp', 'mlbda', 'noyau') : 18
+('dlp', 'mlbda', 'noyau') : 25
 ('model', 'archi1', 'mapsi', 'mlbda', 'noyau') : 0
 ('model', 'complex', 'mlbda', 'noyau', 'pr') : 3
 ('complex', 'noyau') : 8
-('archi1', 'mapsi', 'mlbda') : 12
-('model', 'archi1', 'dlp', 'noyau') : 2
-('model', 'archi1', 'ares', 'noyau') : 4
+('archi1', 'mapsi', 'mlbda') : 21
+('model', 'archi1', 'dlp', 'noyau') : 3
+('model', 'archi1', 'ares', 'noyau') : 8
 ('model', 'ares', 'dlp', 'mapsi', 'noyau') : 1
-('model', 'ares', 'dlp', 'noyau') : 12
-('model', 'ares', 'noyau') : 6
-('model', 'archi1', 'complex', 'mapsi', 'noyau') : 2
+('model', 'ares', 'dlp', 'noyau') : 17
+('model', 'ares', 'noyau') : 7
+('model', 'archi1', 'complex', 'mapsi', 'noyau') : 3
 ('model', 'dlp', 'mlbda') : 6
-('model', 'mapsi', 'noyau', 'pr') : 16
+('model', 'mapsi', 'noyau', 'pr') : 22
 ('model', 'ares', 'complex', 'mlbda') : 0
-('ares', 'complex', 'dlp') : 4
-('complex', 'mapsi', 'noyau', 'pr') : 16
-('ares', 'dlp', 'pr') : 12
+('ares', 'complex', 'dlp') : 7
+('complex', 'mapsi', 'noyau', 'pr') : 32
+('ares', 'dlp', 'pr') : 24
 ('model', 'complex', 'mlbda', 'pr') : 1
 ('model', 'mapsi', 'pr') : 15
 ('model', 'ares', 'dlp', 'mapsi') : 2
-('ares', 'mapsi', 'mlbda') : 8
-('mapsi', 'mlbda', 'noyau', 'pr') : 18
-('model', 'ares', 'dlp', 'mapsi', 'pr') : 1
-('complex', 'dlp', 'mapsi', 'pr') : 6
-('archi1', 'mapsi', 'mlbda', 'pr') : 16
-('complex', 'mapsi', 'noyau') : 12
-('model', 'ares', 'mapsi', 'pr') : 8
+('ares', 'mapsi', 'mlbda') : 16
+('mapsi', 'mlbda', 'noyau', 'pr') : 33
+('model', 'ares', 'dlp', 'mapsi', 'pr') : 2
+('complex', 'dlp', 'mapsi', 'pr') : 8
+('archi1', 'mapsi', 'mlbda', 'pr') : 38
+('complex', 'mapsi', 'noyau') : 16
+('model', 'ares', 'mapsi', 'pr') : 16
 ('model', 'mapsi') : 5
 ('model', 'archi1', 'complex', 'mlbda', 'pr') : 2
-('model', 'archi1', 'ares') : 4
+('model', 'archi1', 'ares') : 5
 ('model', 'ares', 'dlp', 'mlbda', 'noyau') : 0
-('model', 'archi1', 'ares', 'complex', 'pr') : 2
-('model', 'archi1', 'ares', 'mapsi') : 4
-('complex', 'dlp') : 4
-('ares', 'dlp', 'mlbda', 'noyau') : 8
-('model', 'archi1', 'ares', 'dlp', 'pr') : 1
-('model', 'complex', 'mapsi', 'noyau') : 12
-('ares', 'mlbda') : 2
-('ares', 'complex', 'mapsi', 'pr') : 8
-('model', 'complex', 'mapsi') : 8
-('archi1', 'dlp', 'noyau', 'pr') : 4
-('archi1', 'complex', 'mlbda', 'noyau') : 4
-('ares', 'complex', 'dlp', 'noyau') : 8
-('complex', 'pr') : 3
-('complex', 'mapsi', 'pr') : 15
-('ares', 'dlp', 'noyau', 'pr') : 24
-('model', 'archi1', 'complex', 'mapsi') : 8
+('model', 'archi1', 'ares', 'complex', 'pr') : 6
+('model', 'archi1', 'ares', 'mapsi') : 6
+('complex', 'dlp') : 5
+('ares', 'dlp', 'mlbda', 'noyau') : 22
+('model', 'archi1', 'ares', 'dlp', 'pr') : 2
+('model', 'complex', 'mapsi', 'noyau') : 16
+('ares', 'mlbda') : 4
+('ares', 'complex', 'mapsi', 'pr') : 16
+('model', 'complex', 'mapsi') : 9
+('archi1', 'dlp', 'noyau', 'pr') : 8
+('archi1', 'complex', 'mlbda', 'noyau') : 10
+('ares', 'complex', 'dlp', 'noyau') : 17
+('complex', 'pr') : 5
+('complex', 'mapsi', 'pr') : 23
+('ares', 'dlp', 'noyau', 'pr') : 63
+('model', 'archi1', 'complex', 'mapsi') : 12
 ('model', 'archi1') : 3
-('model', 'archi1', 'ares', 'complex') : 4
-('archi1', 'ares', 'mlbda', 'noyau') : 4
-('complex', 'noyau', 'pr') : 9
-('model', 'archi1', 'noyau', 'pr') : 8
-('dlp', 'mapsi', 'mlbda', 'pr') : 8
-('model', 'dlp', 'mapsi', 'mlbda') : 3
-('archi1', 'ares', 'dlp', 'noyau') : 8
-('archi1', 'mapsi', 'noyau') : 5
-('model', 'archi1', 'complex', 'mlbda') : 2
+('model', 'archi1', 'ares', 'complex') : 7
+('archi1', 'ares', 'mlbda', 'noyau') : 12
+('complex', 'noyau', 'pr') : 18
+('model', 'archi1', 'noyau', 'pr') : 14
+('dlp', 'mapsi', 'mlbda', 'pr') : 15
+('model', 'dlp', 'mapsi', 'mlbda') : 5
+('archi1', 'ares', 'dlp', 'noyau') : 14
+('archi1', 'mapsi', 'noyau') : 7
+('model', 'archi1', 'complex', 'mlbda') : 4
 ('model', 'archi1', 'ares', 'complex', 'mlbda') : 0
 ('model', 'archi1', 'dlp', 'mlbda', 'noyau') : 0
-('model', 'complex', 'dlp', 'noyau', 'pr') : 8
-('mlbda', 'noyau', 'pr') : 18
-('model', 'archi1', 'dlp', 'pr') : 2
-('archi1', 'mapsi') : 10
+('model', 'complex', 'dlp', 'noyau', 'pr') : 23
+('mlbda', 'noyau', 'pr') : 27
+('model', 'archi1', 'dlp', 'pr') : 3
+('archi1', 'mapsi') : 12
 ('model', 'ares', 'mlbda') : 0
-('archi1', 'mapsi', 'pr') : 20
+('archi1', 'mapsi', 'pr') : 38
 ('model', 'archi1', 'complex', 'dlp', 'mapsi') : 2
 ('model', 'ares', 'complex', 'dlp', 'mlbda') : 0
 ('ares', 'dlp') : 9
-('complex', 'dlp', 'mlbda') : 4
-('model', 'complex', 'dlp', 'mlbda', 'noyau') : 6
-('archi1', 'complex', 'mapsi') : 16
+('complex', 'dlp', 'mlbda') : 7
+('model', 'complex', 'dlp', 'mlbda', 'noyau') : 11
+('archi1', 'complex', 'mapsi') : 21
 ('complex', 'mapsi', 'mlbda', 'pr') : 8
-('ares', 'mapsi', 'noyau') : 12
+('ares', 'mapsi', 'noyau') : 17
 ('complex', 'mlbda', 'pr') : 2
-('mapsi', 'mlbda', 'noyau') : 12
-('archi1', 'complex', 'mapsi', 'mlbda') : 4
+('mapsi', 'mlbda', 'noyau') : 15
+('archi1', 'complex', 'mapsi', 'mlbda') : 12
 ('model', 'archi1', 'dlp', 'mapsi', 'pr') : 2
 ('model', 'archi1', 'complex', 'dlp', 'mlbda') : 1
-('model', 'complex', 'mapsi', 'mlbda', 'noyau') : 3
-('model', 'mapsi', 'mlbda') : 8
+('model', 'complex', 'mapsi', 'mlbda', 'noyau') : 6
+('model', 'mapsi', 'mlbda') : 9
 ('archi1', 'dlp', 'mlbda') : 6
 ('model', 'archi1', 'mapsi', 'noyau') : 2
-('model', 'ares', 'mapsi', 'noyau') : 6
+('model', 'ares', 'mapsi', 'noyau') : 10
 ('model', 'complex', 'noyau') : 8
-('model', 'mlbda', 'pr') : 2
-('model', 'complex', 'noyau', 'pr') : 6
+('model', 'mlbda', 'pr') : 3
+('model', 'complex', 'noyau', 'pr') : 14
 ('model', 'ares', 'mapsi', 'mlbda') : 0
-('model', 'ares', 'complex', 'noyau', 'pr') : 3
-('ares', 'complex', 'mapsi') : 8
-('archi1', 'mlbda', 'noyau', 'pr') : 16
+('model', 'ares', 'complex', 'noyau', 'pr') : 9
+('ares', 'complex', 'mapsi') : 12
+('archi1', 'mlbda', 'noyau', 'pr') : 28
 ('archi1', 'dlp', 'mapsi', 'noyau') : 2
-('ares', 'mapsi', 'pr') : 24
-('model', 'complex', 'mlbda', 'noyau') : 3
-('model', 'archi1', 'complex', 'dlp', 'noyau') : 2
-('model', 'mapsi', 'mlbda', 'pr') : 8
-('model', 'complex', 'pr') : 2
+('ares', 'mapsi', 'pr') : 40
+('model', 'complex', 'mlbda', 'noyau') : 6
+('model', 'archi1', 'complex', 'dlp', 'noyau') : 3
+('model', 'mapsi', 'mlbda', 'pr') : 13
+('model', 'complex', 'pr') : 4
 ('model', 'archi1', 'complex') : 6
-('archi1', 'ares', 'complex', 'pr') : 4
-('ares', 'dlp', 'mlbda') : 4
+('archi1', 'ares', 'complex', 'pr') : 11
+('ares', 'dlp', 'mlbda') : 10
 ('complex', 'mlbda', 'noyau', 'pr') : 6
-('model', 'complex', 'dlp', 'mapsi') : 3
-('archi1', 'ares', 'complex') : 6
+('model', 'complex', 'dlp', 'mapsi') : 4
+('archi1', 'ares', 'complex') : 10
 ('model', 'ares', 'dlp', 'mlbda', 'pr') : 0
-('model', 'ares', 'complex', 'pr') : 1
+('model', 'ares', 'complex', 'pr') : 3
 ('model', 'dlp') : 3
 ('model', 'ares', 'dlp', 'mapsi', 'mlbda') : 0
-('mapsi', 'mlbda') : 16
+('mapsi', 'mlbda') : 19
 ('ares', 'dlp', 'mapsi', 'noyau') : 2
-('ares', 'noyau') : 9
-('model', 'archi1', 'ares', 'dlp') : 2
-('dlp', 'mapsi') : 3
-('archi1', 'noyau', 'pr') : 12
+('ares', 'noyau') : 11
+('model', 'archi1', 'ares', 'dlp') : 3
+('dlp', 'mapsi') : 4
+('archi1', 'noyau', 'pr') : 28
 ('model', 'ares', 'complex', 'dlp', 'mapsi') : 1
 ('model', 'ares', 'mlbda', 'noyau', 'pr') : 0
-('model', 'archi1', 'ares', 'complex', 'noyau') : 4
-('model', 'complex', 'dlp', 'noyau') : 12
+('model', 'archi1', 'ares', 'complex', 'noyau') : 10
+('model', 'complex', 'dlp', 'noyau') : 16
 ('model', 'archi1', 'mapsi', 'noyau', 'pr') : 4
 ('model', 'archi1', 'dlp', 'mapsi', 'mlbda') : 0
-('noyau', 'pr') : 12
-('model', 'complex', 'dlp') : 4
-('model', 'archi1', 'dlp', 'noyau', 'pr') : 2
-('archi1', 'mapsi', 'noyau', 'pr') : 10
+('noyau', 'pr') : 15
+('model', 'complex', 'dlp') : 5
+('model', 'archi1', 'dlp', 'noyau', 'pr') : 3
+('archi1', 'mapsi', 'noyau', 'pr') : 16
 ('archi1', 'mapsi', 'mlbda', 'noyau') : 0
-('ares', 'mlbda', 'pr') : 2
-('ares', 'dlp', 'mapsi', 'pr') : 2
-('model', 'archi1', 'ares', 'noyau', 'pr') : 4
-('ares', 'mapsi', 'noyau', 'pr') : 24
-('model', 'mlbda', 'noyau', 'pr') : 6
-('model', 'ares', 'dlp', 'noyau', 'pr') : 8
+('ares', 'mlbda', 'pr') : 5
+('ares', 'dlp', 'mapsi', 'pr') : 4
+('model', 'archi1', 'ares', 'noyau', 'pr') : 12
+('ares', 'mapsi', 'noyau', 'pr') : 50
+('model', 'mlbda', 'noyau', 'pr') : 9
+('model', 'ares', 'dlp', 'noyau', 'pr') : 24
 ('model', 'archi1', 'ares', 'mlbda', 'noyau') : 0
-('archi1', 'ares', 'mapsi', 'mlbda') : 4
-('model', 'ares', 'complex', 'mapsi') : 8
-('mapsi', 'noyau', 'pr') : 24
-('model', 'complex', 'dlp', 'mlbda') : 3
-('archi1', 'dlp', 'mapsi', 'pr') : 4
-('ares', 'dlp', 'mlbda', 'pr') : 4
+('archi1', 'ares', 'mapsi', 'mlbda') : 12
+('model', 'ares', 'complex', 'mapsi') : 12
+('mapsi', 'noyau', 'pr') : 31
+('model', 'complex', 'dlp', 'mlbda') : 5
+('archi1', 'dlp', 'mapsi', 'pr') : 6
+('ares', 'dlp', 'mlbda', 'pr') : 10
 ('model', 'ares', 'dlp') : 6
-('archi1', 'ares', 'complex', 'mapsi') : 8
-('archi1', 'complex', 'noyau') : 12
-('archi1', 'mlbda', 'pr') : 12
-('model', 'archi1', 'mapsi', 'mlbda') : 2
-('model', 'complex', 'dlp', 'pr') : 4
+('archi1', 'ares', 'complex', 'mapsi') : 19
+('archi1', 'complex', 'noyau') : 18
+('archi1', 'mlbda', 'pr') : 23
+('model', 'archi1', 'mapsi', 'mlbda') : 3
+('model', 'complex', 'dlp', 'pr') : 9
 ('model', 'ares', 'mapsi', 'mlbda', 'noyau') : 0
-('model', 'complex', 'mapsi', 'noyau', 'pr') : 8
-('archi1', 'ares', 'noyau', 'pr') : 16
+('model', 'complex', 'mapsi', 'noyau', 'pr') : 23
+('archi1', 'ares', 'noyau', 'pr') : 57
 ('archi1', 'dlp') : 3
-('archi1', 'ares', 'dlp', 'mlbda') : 2
-('archi1', 'complex', 'pr') : 6
-('model', 'dlp', 'mapsi', 'pr') : 6
-('model', 'archi1', 'mlbda', 'noyau', 'pr') : 4
-('dlp', 'mapsi', 'mlbda') : 6
-('model', 'archi1', 'ares', 'complex', 'mapsi') : 4
-('model', 'archi1', 'mapsi', 'pr') : 10
-('ares', 'pr') : 6
-('complex', 'mapsi', 'mlbda', 'noyau') : 6
-('ares', 'complex', 'noyau') : 6
-('model', 'dlp', 'mapsi', 'noyau') : 3
-('complex', 'mlbda', 'noyau') : 6
+('archi1', 'ares', 'dlp', 'mlbda') : 4
+('archi1', 'complex', 'pr') : 17
+('model', 'dlp', 'mapsi', 'pr') : 10
+('model', 'archi1', 'mlbda', 'noyau', 'pr') : 6
+('dlp', 'mapsi', 'mlbda') : 11
+('model', 'archi1', 'ares', 'complex', 'mapsi') : 7
+('model', 'archi1', 'mapsi', 'pr') : 16
+('ares', 'pr') : 10
+('complex', 'mapsi', 'mlbda', 'noyau') : 10
+('ares', 'complex', 'noyau') : 10
+('model', 'dlp', 'mapsi', 'noyau') : 5
+('complex', 'mlbda', 'noyau') : 9
 ('archi1', 'complex', 'dlp', 'mlbda') : 2
 ('model', 'archi1', 'complex', 'dlp', 'pr') : 1
 ('model', 'complex', 'dlp', 'mlbda', 'pr') : 2
-('dlp', 'noyau') : 9
-('model', 'noyau', 'pr') : 9
-('dlp', 'mlbda') : 9
-('model', 'archi1', 'complex', 'noyau') : 8
+('dlp', 'noyau') : 10
+('model', 'noyau', 'pr') : 11
+('dlp', 'mlbda') : 11
+('model', 'archi1', 'complex', 'noyau') : 12
 ('ares', 'complex', 'dlp', 'mlbda') : 0
-('model', 'ares', 'complex', 'noyau') : 6
-('ares', 'mapsi', 'mlbda', 'pr') : 8
+('model', 'ares', 'complex', 'noyau') : 10
+('ares', 'mapsi', 'mlbda', 'pr') : 20
 ('model', 'complex', 'mapsi', 'mlbda', 'pr') : 4
-('model', 'complex', 'mapsi', 'pr') : 10
+('model', 'complex', 'mapsi', 'pr') : 18
 ('model', 'ares', 'dlp', 'mlbda') : 0
-('model', 'dlp', 'mlbda', 'noyau', 'pr') : 8
-('dlp', 'mapsi', 'noyau', 'pr') : 6
-('model', 'complex', 'mlbda') : 1
-('archi1', 'complex', 'dlp', 'noyau') : 4
-('ares', 'complex', 'pr') : 2
+('model', 'dlp', 'mlbda', 'noyau', 'pr') : 15
+('dlp', 'mapsi', 'noyau', 'pr') : 10
+('model', 'complex', 'mlbda') : 2
+('archi1', 'complex', 'dlp', 'noyau') : 6
+('ares', 'complex', 'pr') : 4
 ('archi1', 'complex', 'dlp', 'mapsi') : 4
-('model', 'dlp', 'mlbda', 'pr') : 4
+('model', 'dlp', 'mlbda', 'pr') : 7
 ('model', 'mlbda', 'noyau') : 6
 ('model', 'ares', 'mapsi', 'mlbda', 'pr') : 0
-('model', 'archi1', 'mapsi') : 5
-('archi1', 'ares', 'mapsi', 'pr') : 16
+('model', 'archi1', 'mapsi') : 7
+('archi1', 'ares', 'mapsi', 'pr') : 58
 ('model', 'archi1', 'mlbda', 'noyau') : 4
-('archi1', 'ares', 'mapsi') : 16
-('dlp', 'mapsi', 'noyau') : 3
-('model', 'dlp', 'mlbda', 'noyau') : 12
+('archi1', 'ares', 'mapsi') : 23
+('dlp', 'mapsi', 'noyau') : 5
+('model', 'dlp', 'mlbda', 'noyau') : 14
 ('model', 'archi1', 'dlp', 'mlbda', 'pr') : 1
 ('archi1', 'dlp', 'mlbda', 'pr') : 4
 ('model', 'archi1', 'mlbda') : 4
-('archi1', 'ares', 'complex', 'noyau') : 8
+('archi1', 'ares', 'complex', 'noyau') : 17
 ('model', 'archi1', 'ares', 'complex', 'dlp') : 1
-('model', 'archi1', 'complex', 'noyau', 'pr') : 4
-('archi1', 'ares', 'mlbda') : 4
+('model', 'archi1', 'complex', 'noyau', 'pr') : 16
+('archi1', 'ares', 'mlbda') : 10
 ('ares', 'complex', 'mlbda', 'noyau') : 0
 ('model', 'archi1', 'ares', 'mapsi', 'noyau') : 1
 ('model', 'mlbda') : 2
-('ares', 'noyau', 'pr') : 18
-('model', 'archi1', 'complex', 'mapsi', 'mlbda') : 1
-('ares', 'mlbda', 'noyau') : 6
-('model', 'dlp', 'mapsi') : 3
-('archi1', 'complex', 'noyau', 'pr') : 8
+('ares', 'noyau', 'pr') : 35
+('model', 'archi1', 'complex', 'mapsi', 'mlbda') : 2
+('ares', 'mlbda', 'noyau') : 12
+('model', 'dlp', 'mapsi') : 4
+('archi1', 'complex', 'noyau', 'pr') : 32
 ('archi1', 'dlp', 'mlbda', 'noyau') : 6
-('ares', 'complex', 'mapsi', 'noyau') : 6
-('dlp', 'pr') : 8
-('dlp', 'mapsi', 'pr') : 8
-('ares', 'complex', 'noyau', 'pr') : 6
+('ares', 'complex', 'mapsi', 'noyau') : 13
+('dlp', 'pr') : 10
+('dlp', 'mapsi', 'pr') : 12
+('ares', 'complex', 'noyau', 'pr') : 12
 ('model', 'archi1', 'dlp', 'mapsi') : 2
 ('model', 'dlp', 'mapsi', 'mlbda', 'noyau') : 1
-('model', 'ares', 'complex', 'dlp') : 4
-('dlp', 'noyau', 'pr') : 18
+('model', 'ares', 'complex', 'dlp') : 7
+('dlp', 'noyau', 'pr') : 29
 ('complex', 'dlp', 'mlbda', 'pr') : 4
-('model', 'complex', 'mapsi', 'mlbda') : 4
+('model', 'complex', 'mapsi', 'mlbda') : 8
 ('archi1', 'complex', 'dlp', 'pr') : 2
-('model', 'mapsi', 'mlbda', 'noyau') : 6
+('model', 'mapsi', 'mlbda', 'noyau') : 7
 ('model', 'ares', 'mapsi') : 8
 ('archi1', 'ares', 'complex', 'dlp') : 2
 ('model', 'archi1', 'dlp', 'mlbda') : 2
-('model', 'ares', 'complex', 'dlp', 'noyau') : 8
-('complex', 'dlp', 'mapsi') : 3
+('model', 'ares', 'complex', 'dlp', 'noyau') : 17
+('complex', 'dlp', 'mapsi') : 4
 ('model', 'archi1', 'dlp', 'mapsi', 'noyau') : 0
-('ares', 'dlp', 'mapsi', 'mlbda') : 1
-('model', 'archi1', 'ares', 'mapsi', 'pr') : 4
-('model', 'archi1', 'complex', 'pr') : 4
-('mapsi', 'mlbda', 'pr') : 24
-('model', 'archi1', 'noyau') : 4
-('archi1', 'mlbda', 'noyau') : 12
-('model', 'ares', 'complex', 'mapsi', 'pr') : 4
-('ares', 'complex') : 2
-('archi1', 'ares', 'mapsi', 'noyau') : 8
-('archi1', 'ares', 'noyau') : 12
-('archi1', 'noyau') : 6
+('ares', 'dlp', 'mapsi', 'mlbda') : 2
+('model', 'archi1', 'ares', 'mapsi', 'pr') : 8
+('model', 'archi1', 'complex', 'pr') : 10
+('mapsi', 'mlbda', 'pr') : 42
+('model', 'archi1', 'noyau') : 6
+('archi1', 'mlbda', 'noyau') : 14
+('model', 'ares', 'complex', 'mapsi', 'pr') : 12
+('ares', 'complex') : 3
+('archi1', 'ares', 'mapsi', 'noyau') : 10
+('archi1', 'ares', 'noyau') : 22
+('archi1', 'noyau') : 9
 ('archi1', 'dlp', 'mapsi') : 4
-('archi1', 'mlbda') : 9
-('complex', 'dlp', 'mlbda', 'noyau') : 8
-('dlp', 'mlbda', 'pr') : 12
+('archi1', 'mlbda') : 11
+('complex', 'dlp', 'mlbda', 'noyau') : 15
+('dlp', 'mlbda', 'pr') : 20
 ('model', 'ares', 'mlbda', 'noyau') : 0
-('archi1', 'complex', 'mlbda', 'pr') : 4
-('archi1', 'dlp', 'mapsi', 'mlbda') : 4
-('model', 'archi1', 'complex', 'mapsi', 'pr') : 5
-('model', 'dlp', 'mapsi', 'mlbda', 'pr') : 2
-('archi1', 'ares', 'pr') : 12
-('mapsi', 'noyau') : 8
-('model', 'complex', 'dlp', 'mapsi', 'pr') : 4
-('archi1', 'complex', 'mlbda') : 4
-('model', 'archi1', 'pr') : 6
+('archi1', 'complex', 'mlbda', 'pr') : 5
+('archi1', 'dlp', 'mapsi', 'mlbda') : 5
+('model', 'archi1', 'complex', 'mapsi', 'pr') : 15
+('model', 'dlp', 'mapsi', 'mlbda', 'pr') : 3
+('archi1', 'ares', 'pr') : 32
+('mapsi', 'noyau') : 9
+('model', 'complex', 'dlp', 'mapsi', 'pr') : 6
+('archi1', 'complex', 'mlbda') : 8
+('model', 'archi1', 'pr') : 8
 ('model', 'archi1', 'ares', 'mlbda') : 0
 ('model', 'archi1', 'ares', 'mlbda', 'pr') : 0
-('model', 'dlp', 'noyau') : 9
-('model', 'dlp', 'noyau', 'pr') : 12
+('model', 'dlp', 'noyau') : 10
+('model', 'dlp', 'noyau', 'pr') : 23
 ('model', 'archi1', 'ares', 'dlp', 'mapsi') : 1
-('model', 'ares', 'complex', 'mapsi', 'noyau') : 6
+('model', 'ares', 'complex', 'mapsi', 'noyau') : 13
 ('ares', 'dlp', 'mapsi') : 3
-('complex', 'dlp', 'noyau', 'pr') : 12
-('archi1', 'complex', 'mapsi', 'noyau') : 8
-('mlbda', 'pr') : 6
-('model', 'ares', 'noyau', 'pr') : 6
-('model', 'ares', 'mapsi', 'noyau', 'pr') : 6
-('model', 'dlp', 'pr') : 6
-('model', 'archi1', 'mapsi', 'mlbda', 'pr') : 2
+('complex', 'dlp', 'noyau', 'pr') : 29
+('archi1', 'complex', 'mapsi', 'noyau') : 12
+('mlbda', 'pr') : 9
+('model', 'ares', 'noyau', 'pr') : 13
+('model', 'ares', 'mapsi', 'noyau', 'pr') : 16
+('model', 'dlp', 'pr') : 8
+('model', 'archi1', 'mapsi', 'mlbda', 'pr') : 4
 ('model', 'archi1', 'dlp') : 2
-('archi1', 'ares', 'dlp', 'pr') : 4
+('archi1', 'ares', 'dlp', 'pr') : 9
 ('ares', 'complex', 'mlbda') : 0
-('dlp', 'mlbda', 'noyau', 'pr') : 24
+('dlp', 'mlbda', 'noyau', 'pr') : 42
 ('model', 'ares', 'complex', 'mlbda', 'pr') : 0
-('archi1', 'ares', 'dlp') : 6
-('complex', 'dlp', 'noyau') : 12
-('model', 'ares', 'dlp', 'pr') : 4
+('archi1', 'ares', 'dlp') : 8
+('complex', 'dlp', 'noyau') : 16
+('model', 'ares', 'dlp', 'pr') : 10
 ('model', 'complex') : 2
-('ares', 'mlbda', 'noyau', 'pr') : 6
+('ares', 'mlbda', 'noyau', 'pr') : 15
 ('model', 'noyau') : 4
-('complex', 'mlbda') : 2
+('complex', 'mlbda') : 3
