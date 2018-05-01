@@ -1,5 +1,6 @@
 from gurobipy import *
-
+import numpy as np
+import random
 
 class Etudiant:
         """ Classe representant un etudiant"""
@@ -15,7 +16,7 @@ class Etudiant:
             self.varName = "x_{}_{}".format(self.indexParcours, self.idRelatif)
             self.ListeDesInscriptions = list()
             Parcours_Obj.rajouter_etudiant(self) #L'etudiant se rajoute a son parcours
-
+            self.non_entierement_satisfait = False
 
         def gerer_variables_contraintes_ue_obligatoires(self,modelGurobi):
             """ajoute les contraintes relatives aux ue obligatoires"""
@@ -84,6 +85,7 @@ class Etudiant:
                     self.optimizer.ListeDesUEs[ue].inscrire(str(self), numeroGroup)
             else:
                     chaine = self.optimizer.ListeDesUEs[ue].get_intitule()+"X"
+                    self.non_entierement_satisfait = True
 
             if ue in self.ue_obligatoires:
                 self.ListeDesInscriptions = [chaine] + self.ListeDesInscriptions
@@ -108,6 +110,57 @@ class Etudiant:
 
         def get_ue_conseillees(self):
             return self.ue_non_obligatoires
+
+
+        def generer_aleatoirement_mes_indifferences(self):
+            def indifferenceValide(mesIndifferences):
+                for i in range(len(mesIndifferences)):
+                    if mesIndifferences[i] == self.ue_non_obligatoires[i]:
+                        return False
+                return True
+            ListeDesUeConseilleesDeMonParcours = self.Parcours.get_Liste_ue_conseillees()
+            self.mesIndifferences = np.random.choice(ListeDesUeConseilleesDeMonParcours, len(self.ue_non_obligatoires))
+
+            while not indifferenceValide(self.mesIndifferences):
+                self.mesIndifferences = np.random.choice(ListeDesUeConseilleesDeMonParcours, len(self.ue_non_obligatoires))
+
+
+        def changer_mes_ues_non_obligatoires(self):
+            self.non_entierement_satisfait = False
+            self.ue_non_obligatoires_copy = [ue for ue in self.ue_non_obligatoires] #pour s'assurer qu'elle n'est pas incompatible
+
+            def is_nouveau_contrat_incompatible(optimizer, ue_obligatoires, ue_non_obligatoires):
+                LOblig = [optimizer.ListeDesUEs[ueO].get_intitule() for ueO in ue_obligatoires]
+                LOblig.sort()
+                LCons = [optimizer.ListeDesUEs[ueC].get_intitule() for ueC in ue_non_obligatoires]
+                LCons.sort()
+                try:                  #Juste pour les ecarts par rapport aux ues conseillees retenues dans parcours
+                    # print(tuple(LOblig + LCons))
+                    if self.Parcours.get_dico_configurations()[tuple(LOblig + LCons)] == 0:
+                        # print "incompatibilite introduite"
+                        return True
+                except:
+                    pass
+                return False
+
+
+            for i in range(len(self.ue_non_obligatoires)):
+                if random.random() <= 0.5:# and ue_indifference_non_encore_introduite(self.ue_non_obligatoires,i, self.mesIndifferences[i]):
+                    aux = self.mesIndifferences[i]
+                    self.mesIndifferences[i] = self.ue_non_obligatoires[i]
+                    self.ue_non_obligatoires[i] = aux
+            if len(set(self.ue_non_obligatoires)) != len(self.ue_non_obligatoires):
+                self.ue_non_obligatoires = self.ue_non_obligatoires_copy
+                return
+
+            if is_nouveau_contrat_incompatible(self.optimizer, self.ue_obligatoires, self.ue_non_obligatoires):
+                self.ue_non_obligatoires = self.ue_non_obligatoires_copy
+            # print "a la fin"
+            # print self.mesIndifferences
+            # print self.ue_non_obligatoires
+
+        def get_statut(self):
+            return self.non_entierement_satisfait
 
         def __str__(self):
             s = str(self.idRelatif)+"("+self.Parcours.get_intitule()+")"

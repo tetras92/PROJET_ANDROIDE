@@ -175,8 +175,9 @@ class DAK_Optimizer:
         MM = MatchingModel(self,equilibre)
         if analyzer != None:
             analyzer.add_MatchingModel(MM)
-        MM.match(path)
+        value = MM.match(path)
         print MM
+        return value
 
     def nettoyer_les_Ues_et_les_Incompatibilites(self):
         for Ue in DAK_Optimizer.ListeDesUEs[1:]:
@@ -250,13 +251,52 @@ class DAK_Optimizer:
 
         DAK_Optimizer.ListeDesParcours[indexParcours].afficher_carte_augmentee_incompatibilites(taille)
 
+    def maj_interets_etudiants_pour_les_ues(self):
+        for Etu in DAK_Optimizer.ListeDesEtudiants:
+            Etu.enregistrer_interet_pour_UE()
+
+    def RL_introduire_les_indifferences_etudiants(self):
+        for Etu in DAK_Optimizer.ListeDesEtudiants:
+            Etu.generer_aleatoirement_mes_indifferences()
+
+    def RL_voisinage(self):
+        for Etu in DAK_Optimizer.ListeDesEtudiants:
+            if Etu.get_statut():
+                Etu.changer_mes_ues_non_obligatoires()
+
+    def RL_appliquer(self, proba, objectif, timeLimit):
+
+        self.RL_introduire_les_indifferences_etudiants()
+        time_ = 0
+        while time_ < timeLimit:
+            time_ += 1
+            self.RL_voisinage()
+            # DAK_Optimizer.restaurer_UEsParcours = True
+            self.nettoyer_les_Ues_et_les_Incompatibilites()
+            # for Ue in DAK_Optimizer.ListeDesUEs[1:]:
+            #     print Ue
+            self.maj_interets_etudiants_pour_les_ues()
+            # for Ue in DAK_Optimizer.ListeDesUEs[1:]:
+            #     print Ue
+            #     print Ue.getEnsEtu()
+
+            DAK_Optimizer.ListedesVarY = list()
+            DAK_Optimizer.ListedesVarN = list()
+            self.effacer_donnees_affectation_Parcours()
+            value = self.match()
+            if value > objectif:
+                print "ameliore", value, objectif
+                objectif = value
+
 
 Optim = DAK_Optimizer()
 Optim.charger_edt("edt.csv")
-# print Optim.EDT
+print Optim.DictUEs
 Optim.charger_parcours("parcours.csv")
-# Optim.traiter_dossier_voeux("../VOEUX")
-# Optim.match()
+Optim.traiter_dossier_voeux("../VOEUX")
+Optim.match()
+Optim.RL_appliquer(0.4, len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
+
 #
 # Optim.AS_supprimer_groupe(11, 3) #Groupe 3 Mapsi
 #
@@ -269,7 +309,7 @@ Optim.charger_parcours("parcours.csv")
 # Optim.AS_supprimer_groupe(9, 3)           #IL3
 # Optim.AS_ajouter_groupe(9, 21, 22, 32)
 
-Optim.AD_afficher_carte_augmentee_incompatibilites("sfpn")
+# Optim.AD_afficher_carte_augmentee_incompatibilites("sfpn")
 # Optim.eprouver_edt(nombreDeDossierGeneres=50)
 # for P in Optim.ListeDesParcours:
 #     print P.nom

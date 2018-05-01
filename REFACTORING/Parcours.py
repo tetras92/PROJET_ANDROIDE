@@ -29,7 +29,7 @@ class Parcours:
             self.mesEtudiants = list()
             self.DicoConfigurations = dict()
             deb = time.time()
-            self.generer_dico_Nbconfig()
+            # self.generer_dico_Nbconfig()
             print ("....." * int(time.time() - deb + 1)*9)
             self.effectif = 0
             self.mesEtudiantsAProbleme = list()
@@ -43,6 +43,8 @@ class Parcours:
             self.effectif = 0
             self.effacer_donnees_problemes_affectation()
 
+        def get_dico_configurations(self):
+            return self.DicoConfigurations
 
         def effacer_donnees_problemes_affectation(self):
             self.lesContratsAProbleme = list()
@@ -171,7 +173,8 @@ class Parcours:
             for elmt in Liste:
                 print elmt
 
-
+        def get_Liste_ue_conseillees(self):
+            return [self.optimizer.DictUEs[ue].get_id() for ue in self.ListeUEConseilles]
 
         def __str__(self):
             s = "Parcours : " + self.nom + "\n\t\tEffectif : {} etudiants dont {} insatisfaits ({}%)\n".format(self.effectif, len(self.mesEtudiantsAProbleme), round(100. - 100.0*len(self.mesEtudiantsAProbleme)/self.effectif, 2))

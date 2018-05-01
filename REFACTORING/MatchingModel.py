@@ -61,7 +61,7 @@ class MatchingModel:
         self.objectif2_Value = self.modelGurobi.ObjNVal           #Nombre d'etudiants entierement satisfaits
 
         self.traitement_resolution(path)
-
+        return  self.objectif2_Value
 
     def traitement_resolution(self, path=''):
         self.charge = round(100.0*self.nombreTotalDemandesInscriptions/self.capaciteTotaleAccueilUEs,2)
