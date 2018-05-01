@@ -1,51 +1,51 @@
 LES AFFECTATIONS
-1 vlsi11 archi14 mobj1 
-2 vlsi11 archi13 ares1 esa2 signal2 
-3 vlsi11 archi13 ares1 esa2 mobj2 
-4 vlsi11 archi14 mobj1 noyau3 pr1 
-5 vlsi11 archi12 noyau3 pr1 signal2 
-6 vlsi12 archi13 esa1 noyau1 signal1 
-7 esa1 mobj1 signal1 
-8 vlsi12 archi11 esa2 mobj2 noyau3 
-9 vlsi11 archi14 ares1 
-10 vlsi12 archi12 mobj2 pr2 signal1 
-11 vlsi11 archi14 noyau1 pr1 signal2 
-12 vlsi12 archi11 esa2 noyau3 pr3 
-13 archi11 ares1 pr2 
-14 vlsi12 archi13 esa1 signal1 
-15 esa1 mobj1 
-16 vlsi11 archi13 ares1 esa2 mobj2 
-17 archi12 esa1 
-18 vlsi12 archi11 ares2 mobj1 signal2 
-19 ares2 esa2 mobj2 
-20 vlsi12 archi11 esa2 mobj2 pr2 
-21 vlsi11 archi14 mobj2 noyau1 pr2 
-22 vlsi12 archi11 ares2 esa2 mobj2 
-23 vlsi12 archi12 esa1 noyau3 signal1 
-24 vlsi11 archi13 mobj1 pr1 signal2 
-25 vlsi12 archi13 esa2 mobj2 signal1 
-26 vlsi12 archi11 mobj1 noyau3 pr3 
-27 vlsi11 archi12 noyau3 
-28 vlsi11 archi13 noyau1 pr1 signal2 
-29 vlsi12 archi13 signal1 
-30 vlsi11 archi13 ares1 esa2 pr4 
-31 mobj1 noyau4 signal1 
-32 vlsi12 archi11 ares2 mobj1 signal2 
-33 vlsi11 archi12 mobj2 noyau3 pr4 
-34 vlsi11 archi13 pr1 
-35 vlsi12 archi13 esa1 noyau2 signal1 
-36 vlsi12 archi13 esa1 mobj1 signal1 
-37 vlsi12 archi12 mobj2 noyau3 pr4 
-38 vlsi12 archi13 esa1 mobj1 signal1 
-39 archi13 esa1 mobj1 signal1 
-40 vlsi11 archi13 signal2 
-41 vlsi11 archi13 ares3 noyau2 pr4 
-42 vlsi12 archi13 esa2 mobj2 signal1 
-43 vlsi11 archi14 ares1 mobj2 pr3 
-44 ares3 mobj1 signal1 
-45 vlsi12 archi11 esa1 mobj1 pr3 
-46 archi11 ares2 esa2 mobj2 
-47 vlsi12 archi11 ares2 esa2 mobj2 
-48 vlsi11 archi12 ares1 
-49 vlsi12 mobj1 pr2 signal2 
-50 vlsi12 archi13 esa1 mobj1 signal1 
+1 archi13 vlsi12 esa1 mobj1 signal1 
+2 archi13 vlsi12 mobj2 esa2 signal1 
+3 archi12 vlsi11 pr4 noyau3 ares1 
+4 archi13 vlsi12 mobj2 esa2 signal1 
+5 archi13 vlsi12 mobj2 signal1 esa2 
+6 archi13 vlsi12 esa2 signal1 mobj2 
+7 archi11 vlsi12 lrc4 mogpl4 noyau2 
+8 archi13 vlsi12 signal1 mobj1 esa1 
+9 archi13 vlsi12 mobj1 signal1 esa1 
+10 archi13 vlsi12 signal1 esa2 mobj2 
+11 archi11 vlsi12 signal2 esa2 pr2 
+12 archi13 vlsi12 esa1 signal1 mobj1 
+13 archi11 vlsi12 signal2 esa2 noyau3 
+14 rtel1 ares1 
+15 vlsi11 esa1 mobj1 
+16 archi14 vlsi11 mobj2 pr1 noyau1 
+17 archi14 vlsi11 mobj1 pr1 noyau3 
+18 archi12 vlsi12 signal2 
+19 archi13 vlsi11 esa2 
+20 archi14 vlsi11 mobj2 pr1 noyau2 
+21 archi13 vlsi11 signal2 pr1 noyau1 
+22 archi13 signal2 il1 
+23 archi14 signal2 
+24 archi11 pr1 noyau1 
+25 archi14 vlsi11 signal2 ares1 
+26 archi12 vlsi11 mobj2 pr1 noyau3 
+27 signal2 esa2 
+28 archi13 vlsi12 mobj1 signal1 esa1 
+29 archi13 vlsi11 mobj1 signal2 ares1 
+30 archi12 vlsi11 mobj2 pr4 mlbda2 
+31 archi12 vlsi11 signal2 ares1 
+32 archi12 esa1 
+33 archi14 vlsi11 mobj1 ares1 noyau3 
+34 archi13 vlsi11 mobj2 pr1 noyau1 
+35 archi13 vlsi12 mobj1 signal1 esa1 
+36 archi12 signal1 ares1 
+37 archi12 vlsi11 mlbda3 il1 
+38 vlsi12 signal1 ares2 
+39 archi12 vlsi11 mobj2 ares1 noyau3 
+40 archi13 vlsi12 signal1 esa2 mobj2 
+41 archi13 vlsi12 esa1 mobj1 signal1 
+42 archi13 vlsi12 mobj1 esa1 signal1 
+43 archi14 vlsi11 mapsi1 mlbda2 lrc1 
+44 archi12 vlsi11 il4 ares3 
+45 archi14 vlsi11 mobj1 ares1 noyau3 
+46 archi14 vlsi12 algav3 mapsi3 noyau3 
+47 archi11 mlbda4 ares1 
+48 archi13 vlsi12 mobj2 signal1 esa2 
+49 archi14 vlsi11 mobj1 pr2 ares1 
+50 archi12 vlsi11 esa1 pr1 noyau3 

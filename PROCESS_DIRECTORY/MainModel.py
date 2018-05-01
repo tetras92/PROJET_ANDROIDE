@@ -724,9 +724,9 @@ class MainModel():
 
 
 
-# m = MainModel("../VOEUX", "edt.csv", equilibre=True)
+#m = MainModel("../VOEUX", "edt.csv", equilibre=True)
 # # # # # # m = MainModel("RAND_VOEUX1", "edt.csv")
-# m.resoudre()
+#m.resoudre()
 # # # #
 # # # #
 # f = open("inscription2017_2018_.txt", "w")
