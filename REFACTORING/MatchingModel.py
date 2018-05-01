@@ -13,7 +13,7 @@ class MatchingModel:
         self.ListeDesParcours = optimizer.ListeDesParcours
         self.objectif1 = LinExpr()
         self.objectif2 = LinExpr()
-        self.numeroModele = optimizer.iModelAlea
+        self.identifiantModele = optimizer.iModelAlea
 
         #Contraintes s'appliquant aux etudiants
         for Etu in self.ListeDesEtudiants:
@@ -42,7 +42,7 @@ class MatchingModel:
         self.nombreTotalEtudiants = len(self.optimizer.ListedesVarN)
         self.capaciteTotaleAccueilUEs = self.optimizer.capaciteTotaleAccueil
 
-    def match(self):
+    def match(self, path=''):
         self.modelGurobi.NumObj = 2
         self.modelGurobi.setParam( 'OutputFlag', False)
 
@@ -61,7 +61,7 @@ class MatchingModel:
         self.modelGurobi.setParam(GRB.Param.ObjNumber, 1)
         self.objectif2_Value = self.modelGurobi.ObjNVal           #Nombre d'etudiants entierement satisfaits
 
-        self.traitement_resolution(path='')
+        self.traitement_resolution(path)
 
 
     def traitement_resolution(self, path=''):
@@ -96,7 +96,7 @@ class MatchingModel:
 
         if path != '':
             try:
-                affectationDirectory = path + str(self.numeroModele)+"_MATCHING/"
+                affectationDirectory = path + "/MATCHING/" #path + str(self.identifiantModele)+"MATCHING/"
                 os.mkdir(affectationDirectory)
             except:
                 pass
@@ -122,6 +122,17 @@ class MatchingModel:
         for Ue in self.ListeDesUEs[1:]:
             Ue.set_equilibre()
 
+    def get_identifiantModele(self):
+        return self.identifiantModele
+
+    def get_charge(self):
+        return self.charge
+
+    def get_PsatisfactionY(self):
+        return self.proportionSatisfactionY
+
+    def get_PsatisfactionN(self):
+        return self.proportionSatisfactionN
 
     def __str__(self):
         """Affiche les UES du Modele"""

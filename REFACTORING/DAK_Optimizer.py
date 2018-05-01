@@ -4,6 +4,7 @@ from Incompatibilite import *
 from Parcours import *
 from MatchingModel import *
 from GenerateurDeVoeux import *
+from Analyzer import *
 
 class DAK_Optimizer:
 
@@ -131,19 +132,20 @@ class DAK_Optimizer:
 
     def traiter_dossier_voeux(self, dossierVoeux):
         for fichierVoeux in os.listdir(dossierVoeux):
-            # try: #POUR EVITER LES ERREURS DE SPLIT SUR LE DOSSIER DE VOEUX PAR PARCOURS
-            parcours = fichierVoeux.split('.')[1]
-            path = dossierVoeux+"/"+fichierVoeux
-            f_voeux = open(path)
-            data = csv.DictReader(f_voeux)
+            try: #POUR EVITER LES ERREURS DE SPLIT SUR LE DOSSIER DE VOEUX PAR PARCOURS
+                parcours = fichierVoeux.split('.')[1]
+                path = dossierVoeux+"/"+fichierVoeux
+                f_voeux = open(path)
+                data = csv.DictReader(f_voeux)
 
-            Obj_Parcours = self.get_Parcours(parcours)
+                Obj_Parcours = self.get_Parcours(parcours)
 
-            for ligneEtu in data:
-                currentEtu = Etudiant(ligneEtu, Obj_Parcours, self) #generation de l'objet etudiant
-                DAK_Optimizer.ListeDesEtudiants.append(currentEtu)
-                currentEtu.enregistrer_interet_pour_UE()
-
+                for ligneEtu in data:
+                    currentEtu = Etudiant(ligneEtu, Obj_Parcours, self) #generation de l'objet etudiant
+                    DAK_Optimizer.ListeDesEtudiants.append(currentEtu)
+                    currentEtu.enregistrer_interet_pour_UE()
+            except:
+                pass
 
 
     def get_Parcours(self, nom):
@@ -152,11 +154,13 @@ class DAK_Optimizer:
                 return Parcours_Obj
 
 
-    def match(self, equilibre=True, tauxEquilibre=0.10):
+    def match(self, equilibre=True, tauxEquilibre=0.10, path='',analyzer=None):
         if tauxEquilibre >= 0 and tauxEquilibre <= 1.0:
             DAK_Optimizer.Parameters.tauxEquilibre = tauxEquilibre
         MM = MatchingModel(self,equilibre)
-        MM.match()
+        if analyzer != None:
+            analyzer.add_MatchingModel(MM)
+        MM.match(path)
         print MM
 
     def nettoyer_les_Ues_et_les_Incompatibilites(self):
@@ -181,9 +185,11 @@ class DAK_Optimizer:
         DAK_Optimizer.ListedesVarN = list()
         DAK_Optimizer.ListeDesEtudiants = list()
         #FIN RESTAURATION
+        analyseur =  Analyzer(self)
         for dossierId in range(nombreDeDossierGeneres):
             self.traiter_dossier_voeux(directoryName+"/"+str(dossierId))
-            self.match(equilibre,tauxEquilibre)
+            self.match(equilibre,tauxEquilibre,path=directoryName+"/"+str(dossierId),analyzer=analyseur)
+            DAK_Optimizer.iModelAlea += 1
             # RESTAURATION A L'ETAT DE DEPART
             self.reinitialiser_les_parcours()
             self.nettoyer_les_Ues_et_les_Incompatibilites()
@@ -191,7 +197,7 @@ class DAK_Optimizer:
             DAK_Optimizer.ListedesVarN = list()
             DAK_Optimizer.ListeDesEtudiants = list()
             # FIN RESTAURATION
-
+        analyseur.analyze()
 
 
 
@@ -200,7 +206,7 @@ Optim.charger_edt("edt.csv")
 Optim.charger_parcours("parcours.csv")
 # Optim.traiter_dossier_voeux("../VOEUX")
 # Optim.match(equilibre=True, tauxEquilibre=0.10)
-Optim.eprouver_edt(nombreDeDossierGeneres=5)
-# for P in Optim.ListeDesParcours:
-#     print P.nom
-#     print P.DicoConfigurations
+Optim.eprouver_edt(nombreDeDossierGeneres=50)
+for P in Optim.ListeDesParcours:
+    print P.nom
+    print P.HistoriqueDesContratsAProbleme
