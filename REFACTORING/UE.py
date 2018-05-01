@@ -20,6 +20,9 @@ class UE:
             self.capaciteTotale = sum(self.ListeCapacites)
             self.optimizer.capaciteTotaleAccueil += self.capaciteTotale
             self.equilibre = True
+            self.groupes_supprimes = set()
+
+
 
         def actualiseEDT(self, EDT):
             """MAJ de l'EDT"""
@@ -57,8 +60,9 @@ class UE:
         def ajouterContraintesEquilibre(self, modelGurobi):
             for idGroup1 in range(1, self.nb_groupes+1):
                 for idGroup2 in range(idGroup1+1, self.nb_groupes+1):
-                    modelGurobi.addConstr(quicksum((1./self.ListeCapacites[idGroup1-1])*modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup1) for etu in self.EnsEtuInteresses) + quicksum((-1./self.ListeCapacites[idGroup2-1])*modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup2) for etu in self.EnsEtuInteresses) <= self.optimizer_Params.tauxEquilibre)
-                    modelGurobi.addConstr(quicksum((1./self.ListeCapacites[idGroup1-1])*modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup1) for etu in self.EnsEtuInteresses) + quicksum((-1./self.ListeCapacites[idGroup2-1])*modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup2) for etu in self.EnsEtuInteresses) >= -1.*self.optimizer_Params.tauxEquilibre)
+                    if idGroup1 not in self.groupes_supprimes and idGroup2 not in self.groupes_supprimes:
+                        modelGurobi.addConstr(quicksum((1./self.ListeCapacites[idGroup1-1])*modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup1) for etu in self.EnsEtuInteresses) + quicksum((-1./self.ListeCapacites[idGroup2-1])*modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup2) for etu in self.EnsEtuInteresses) <= self.optimizer_Params.tauxEquilibre)
+                        modelGurobi.addConstr(quicksum((1./self.ListeCapacites[idGroup1-1])*modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup1) for etu in self.EnsEtuInteresses) + quicksum((-1./self.ListeCapacites[idGroup2-1])*modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup2) for etu in self.EnsEtuInteresses) >= -1.*self.optimizer_Params.tauxEquilibre)
             modelGurobi.update()
 
 
@@ -89,7 +93,8 @@ class UE:
             s += self.intitule + "(" + str(len(self.EnsEtuInteresses) - self.nbInscrits) + " / " + str(self.capaciteTotale - self.nbInscrits) + ")  "
             return s
 
-
+        def maj_capacite_totale(self):
+            self.capaciteTotale = sum(self.ListeCapacites)
 
         def get_nbInscrits(self):
             return self.nbInscrits
@@ -97,22 +102,35 @@ class UE:
         def get_nbInteresses(self):
             return len(self.EnsEtuInteresses)
 
-        def remise_a_zero(self):
-            self.EnsEtuInteresses.clear()
+        def restaurer_places_apres_affectation(self):
             self.ResumeDesAffectations = ["null"] + [set()]*self.nb_groupes
             self.nbInscrits = 0
             self.ListeNonInscrits = list()
             self.ListeEtudiantsGroupes = [list() for kk in range(self.nb_groupes+1)]
 
+        def remise_a_zero(self):
+            self.EnsEtuInteresses.clear()
+            self.restaurer_places_apres_affectation()
+
         def set_equilibre(self):
             # print(self.intitule)
             for idL1 in range(1, self.nb_groupes):
-                for idL2 in range(idL1+1, self.nb_groupes+1):
-                    # print("groupe1", idL1, "groupe2", idL2)
-                    difference = abs(1.0*len(self.ListeEtudiantsGroupes[idL1])/(1.0*self.ListeCapacites[idL1-1])- 1.0*len(self.ListeEtudiantsGroupes[idL2])/(1.0*self.ListeCapacites[idL2-1]))
+                if idL1 not in self.groupes_supprimes:
+                    for idL2 in range(idL1+1, self.nb_groupes+1):
+                        if idL2 not in self.groupes_supprimes:
+                        # print("groupe1", idL1, "groupe2", idL2)
+                            difference = abs(1.0*len(self.ListeEtudiantsGroupes[idL1])/(1.0*self.ListeCapacites[idL1-1])- 1.0*len(self.ListeEtudiantsGroupes[idL2])/(1.0*self.ListeCapacites[idL2-1]))
 
-                    if difference > self.optimizer_Params.tauxEquilibre:
-                        self.equilibre = False
+                            if difference > self.optimizer_Params.tauxEquilibre:
+                                self.equilibre = False
+
+        def modifier_capacite_groupe(self, numeroGroupe, nouvelleCapacite):
+            if numeroGroupe <= self.nb_groupes: #A REMPLACER PAR DES EXCEPTIONS
+                self.ListeCapacites[numeroGroupe - 1] = nouvelleCapacite
+                self.maj_capacite_totale()
+                if nouvelleCapacite == 0:
+                    self.groupes_supprimes.add(numeroGroupe)
+
 
         def __str__(self):
             """ Retourne la chaine representant une UE"""

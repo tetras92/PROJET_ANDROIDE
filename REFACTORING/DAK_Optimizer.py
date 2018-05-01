@@ -30,6 +30,7 @@ class DAK_Optimizer:
 
     iModelAlea = 0
 
+    restaurer_UEsParcours = False        #EFFACER DONNEES AFFECTATION
     ListeDesParcours = list()
 
 
@@ -153,8 +154,22 @@ class DAK_Optimizer:
             if Parcours_Obj.get_intitule() == nom:
                 return Parcours_Obj
 
+    def effacer_donnees_affectation_UEs(self):
+        for Ue in DAK_Optimizer.ListeDesUEs[1:]:
+            Ue.restaurer_places_apres_affectation()
+        DAK_Optimizer.ListedesVarY = list()
+        DAK_Optimizer.ListedesVarN = list()
+
+    def effacer_donnees_affectation_Parcours(self):
+        for Parcours_Obj in DAK_Optimizer.ListeDesParcours:
+            Parcours_Obj.effacer_donnees_problemes_affectation()
 
     def match(self, equilibre=True, tauxEquilibre=0.10, path='',analyzer=None):
+        if DAK_Optimizer.restaurer_UEsParcours:
+            self.effacer_donnees_affectation_UEs()
+            self.effacer_donnees_affectation_Parcours()
+            DAK_Optimizer.restaurer_UEsParcours = False
+
         if tauxEquilibre >= 0 and tauxEquilibre <= 1.0:
             DAK_Optimizer.Parameters.tauxEquilibre = tauxEquilibre
         MM = MatchingModel(self,equilibre)
@@ -199,14 +214,37 @@ class DAK_Optimizer:
             # FIN RESTAURATION
         analyseur.analyze()
 
+    def AS_modifier_capacite(self, idUE, numeroGroupe, nouvelleCapacite):
+        DAK_Optimizer.ListeDesUEs[idUE].modifier_capacite_groupe(numeroGroupe, nouvelleCapacite)
+        DAK_Optimizer.restaurer_UEsParcours = True
 
+
+    def AS_supprimer_groupe(self, idUE, numeroGroupe):
+        self.AS_modifier_capacite(idUE, numeroGroupe, 0)
+
+    def AS_creer_groupe(self):
+        return
 
 Optim = DAK_Optimizer()
 Optim.charger_edt("edt.csv")
 Optim.charger_parcours("parcours.csv")
-# Optim.traiter_dossier_voeux("../VOEUX")
-# Optim.match(equilibre=True, tauxEquilibre=0.10)
-Optim.eprouver_edt(nombreDeDossierGeneres=50)
-for P in Optim.ListeDesParcours:
-    print P.nom
-    print P.HistoriqueDesContratsAProbleme
+Optim.traiter_dossier_voeux("../VOEUX")
+Optim.match(equilibre=True, tauxEquilibre=0.10)
+# Optim.eprouver_edt(nombreDeDossierGeneres=50)
+# for P in Optim.ListeDesParcours:
+#     print P.nom
+#     print P.HistoriqueDesContratsAProbleme
+# Optim.AS_modifier_capacite(10, 3, 35)
+# Optim.match()
+# Optim.AS_modifier_capacite(10, 1, 35)
+# Optim.match()
+# Optim.AS_modifier_capacite(10, 4, 35)
+# Optim.match()
+# Optim.AS_modifier_capacite(10, 2, 35)
+# Optim.match()
+# Optim.AS_modifier_capacite(6, 2, 35)
+# Optim.match()
+Optim.AS_supprimer_groupe(11, 3)
+Optim.match(equilibre=False)
+Optim.AS_supprimer_groupe(3, 1)
+Optim.match(equilibre=False)

@@ -29,7 +29,7 @@ class Parcours:
             self.mesEtudiants = list()
             self.DicoConfigurations = dict()
             deb = time.time()
-            self.generer_dico_Nbconfig()
+            # self.generer_dico_Nbconfig()
             print ("....." * int(time.time() - deb + 1)*9)
             self.effectif = 0
             self.mesEtudiantsAProbleme = list()
@@ -40,10 +40,13 @@ class Parcours:
             if avecSauvegarde:
                 self.HistoriqueDesContratsAProbleme = self.HistoriqueDesContratsAProbleme + self.lesContratsAProbleme
             self.mesEtudiants = list()
+            self.effectif = 0
+            self.effacer_donnees_problemes_affectation()
+
+
+        def effacer_donnees_problemes_affectation(self):
             self.lesContratsAProbleme = list()
             self.mesEtudiantsAProbleme = list()
-            self.effectif = 0
-
 
         def constituer_voeu(self, k):
             """Construit un voeu de k UE"""

@@ -48,7 +48,6 @@ class MatchingModel:
 
         self.objectif1 = quicksum(self.modelGurobi.getVarByName(var) for var in self.optimizer.ListedesVarY)
         self.objectif2 = quicksum(var for var in self.optimizer.ListedesVarN)
-
         self.modelGurobi.setObjectiveN(self.objectif1,0,1)
         self.modelGurobi.setObjectiveN(self.objectif2,1,0)
 
