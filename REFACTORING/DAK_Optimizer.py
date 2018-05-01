@@ -1,11 +1,11 @@
 from gurobipy import *
 from HelpingFunctions import *
 import csv
-import UE
-import Etudiant
-import Incompatibilite
-import Parcours
-
+from UE import *
+from Etudiant import *
+from Incompatibilite import *
+from Parcours import *
+from MatchingModel import *
 
 class DAK_Optimizer:
 
@@ -36,30 +36,26 @@ class DAK_Optimizer:
     ListeDesEffectifsCumules = list()
 
 
-    DictionnaireDesInsatisfactionsParParcours = dict()
-    DictionnaireDistribUEInsatisfaitesParParcours = dict()
+
 
 
     nbTotalIncompatibilites = 0
     EnsIncompatibilites = set()
 
 
-    modelGurobi = Model("OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK)")
 
 
 
 
-    def __init__(self, fileUE):
-        print "constructeur DAK_Optimizer"
-        # self.fileUE= fileUE
-        # self.charger_edt(self.fileUE)
+    def __init__(self):
+        print "DAK_Optimizer Powered by DAK"
 
     def charger_edt(self, fileUE):
         f_ue = open(fileUE)
         data = csv.DictReader(f_ue)
         for ligneUE in data:
             currentUE = UE(ligneUE, self) #Generation de l'objet UE
-            currentUE.actualiseEDT()
+            currentUE.actualiseEDT(DAK_Optimizer.EDT)
             DAK_Optimizer.ListeDesUEs[currentUE.get_id()] = currentUE             #Rajout a la listeUe
             DAK_Optimizer.DictUEs[currentUE.intitule] = currentUE                  #Rajout au DictUe
 
@@ -80,8 +76,7 @@ class DAK_Optimizer:
         for parcoursCsvLine in parcoursreader:
             current_parcours = Parcours(parcoursCsvLine, self)
             DAK_Optimizer.ListeDesParcours.append(current_parcours)
-            # path = Generateur_Voeux.directoryName+str(self.nbDossiersGeneres)
-            # current_parcours.generer_csv_aleatoires(path)
+
         csvfile.close()
 
 
@@ -168,5 +163,20 @@ class DAK_Optimizer:
 
     def get_Parcours(self, nom):
         for Parcours_Obj in DAK_Optimizer.ListeDesParcours:
-            if Parcours_Obj.get_nom() == nom:
+            if Parcours_Obj.get_intitule() == nom:
                 return Parcours_Obj
+
+
+    def match(self, equilibre=True, tauxEquilibre=0.10):
+        if tauxEquilibre >= 0 and tauxEquilibre <= 1.0:
+            DAK_Optimizer.Parameters.tauxEquilibre = tauxEquilibre
+        MM = MatchingModel(self,equilibre)
+        MM.match()
+        print MM
+
+
+Optim = DAK_Optimizer()
+Optim.charger_edt("edt.csv")
+Optim.charger_parcours("parcours.csv")
+Optim.traiter_dossier_voeux("../VOEUX")
+Optim.match()

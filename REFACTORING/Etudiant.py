@@ -8,7 +8,7 @@ class Etudiant:
             self.optimizer = optimizer
             self.idRelatif = int(csv_line["num"])
             self.Parcours = Parcours_Obj
-            self.indexParcours = int(csv_line["index"])
+            self.indexParcours = Parcours_Obj.get_index()
             self.ue_obligatoires = [self.optimizer.DictUEs[csv_line["oblig"+str(id)]].get_id() for id in range(1, self.optimizer_Params.nbMaxUEObligatoires+1) if csv_line["oblig"+str(id)] != ""]
             self.ue_non_obligatoires = [self.optimizer.DictUEs[csv_line["cons"+str(id)]].get_id() for id in range(1, self.optimizer_Params.nbMaxUEConseillees+1) if csv_line["cons"+str(id)] != ""]
             self.nombreDeVoeux = len(self.ue_obligatoires) + len(self.ue_non_obligatoires)
@@ -30,7 +30,6 @@ class Etudiant:
                 contrainte -= var
 
                 # objectif += var
-                self.optimizer.objectif1 += var
 
                 modelGurobi.addConstr(var , GRB.EQUAL, 1)   #y_i_j = 1
                 modelGurobi.addConstr(contrainte, GRB.EQUAL, 0)
@@ -55,7 +54,6 @@ class Etudiant:
                 contrainte -= var
 
                 # objectif += var
-                self.optimizer.objectif1 += var
                 #VERIFIER LES CONTRAINTES DU MODELES
                 modelGurobi.addConstr(contrainte, GRB.EQUAL, 0)
             #contrainte ETUDIANT ENTIEREMENT SATISFAIT
@@ -66,8 +64,6 @@ class Etudiant:
 
         def enregistrer_interet_pour_UE(self):
             for ue in self.ue_non_obligatoires + self.ue_obligatoires:
-                if ue == 11:
-                    self.optimizer.count += 1
                 self.optimizer.ListeDesUEs[ue].ajouterEtuInteresses(self.varName)
 
         def get_nombreDeVoeux(self):

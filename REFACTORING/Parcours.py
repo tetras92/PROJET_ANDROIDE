@@ -2,7 +2,8 @@ import random
 import numpy as np
 import itertools as it
 import csv
-import CompatibilityModel
+from CompatibilityModel import *
+import time
 
 class Parcours:
 
@@ -11,6 +12,7 @@ class Parcours:
             self.optimizer = optimizer
             self.optimizer_Params = optimizer.Parameters
             self.nom = csvLine["parcours"]
+            self.index = int(csvLine["index"])
             self.effectifMin = int(csvLine["effectif_min"])
             self.effectifMax = int(csvLine["effectif_max"])
             self.ListeUEObligatoires = [csvLine["oblig"+str(i)] for i in range(1, self.optimizer_Params.nbMaxUEObligatoires+1) if csvLine["oblig"+str(i)] != ""] #**
@@ -25,7 +27,10 @@ class Parcours:
 
             self.ListeProbaUEConseillees = [float(csvLine["Pcons"+str(i)]) for i in range(1, self.optimizer_Params.nbMaxUEConseilleesParcours+1) if csvLine["Pcons"+str(i)] != ""]
             self.mesEtudiants = list()
-            self.DicoConfigurations = self.generer_dico_Nbconfig()
+            self.DicoConfigurations = dict()
+            # deb = time.time()
+            # self.generer_dico_Nbconfig()
+            # print (self.nom, time.time() - deb)
             self.effectif = 0
             self.mesEtudiantsAProbleme = list()
             self.lesContratsAProbleme  = list()
@@ -92,7 +97,7 @@ class Parcours:
 
             file.close()
 
-        def maj_effectif(self, effectif):
+        def maj_effectif(self):
             self.effectif = len(self.mesEtudiants)
 
         def generer_dico_Nbconfig(self):
@@ -128,6 +133,9 @@ class Parcours:
 
         def get_intitule(self):
             return self.nom
+
+        def get_index(self):
+            return self.index
 
         def get_mes_Etudiants(self):
             return self.mesEtudiants

@@ -84,9 +84,10 @@ class UE:
             if len(self.ListeNonInscrits) == 0:
                 return ""
             s = ""
-            if len(self.capaciteTotale) == self.nbInscrits:
+            if self.capaciteTotale == self.nbInscrits:
                 s += "** "
-            s += self.intitule + "(" + str(len(self.EnsEtuInteresses) - self.nbInscrits) + " / " + str(len(self.capaciteTotale) - self.nbInscrits) + ")  "
+            s += self.intitule + "(" + str(len(self.EnsEtuInteresses) - self.nbInscrits) + " / " + str(self.capaciteTotale - self.nbInscrits) + ")  "
+            return s
 
 
 
@@ -126,7 +127,7 @@ class UE:
             s += "Nombre Etudiants effectivement inscrits : {}\n\t".format(self.nbInscrits)
             s += "Les ({}) Non-inscrits : ".format(len(self.ListeNonInscrits))
             for parcours, idRelatif in self.ListeNonInscrits:
-                s += str(idRelatif)+"("+self.optimizer.ListeDesParcours[int(parcours)]+") "
+                s += str(idRelatif)+"("+self.optimizer.ListeDesParcours[int(parcours)].get_intitule()+") "
             s += "\n\tLes Inscrits:\n"
             for numGroup in range(1, len(self.ListeEtudiantsGroupes)):
                 s += "\t\tGroupe {} [{}/{}] : ".format(numGroup, len(self.ListeEtudiantsGroupes[numGroup]), self.ListeCapacites[numGroup-1])

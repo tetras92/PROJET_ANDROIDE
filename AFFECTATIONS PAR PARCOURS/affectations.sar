@@ -1,34 +1,34 @@
 LES AFFECTATIONS
-1 noyau3 pr1 dlp3 archi12 ares3 
-2 noyau2 pr3 dlp1 ares3 il4 
-3 noyau2 pr4 rtel1 ares2 il5 
-4 noyau3 pr3 lrcX archi12 il3 
-5 noyau4 pr3 mlbda3 lrc3 il2 
-6 noyau1 mlbda2 
+1 noyau3 pr1 dlp3 archi14 ares3 
+2 noyau2 pr2 dlp3 ares3 il5 
+3 noyau1 pr3 rtel1 ares3 il5 
+4 noyau1 pr3 lrcX archi11 il1 
+5 noyau4 pr3 mlbda1 lrc3 il3 
+6 noyau4 mlbda2 
 7 noyau3 pr1 complex2 algav1 archi14 
 8 noyau2 pr1 algav3 dlp3 archi14 
-9 noyau2 pr1 dlp3 algav3 archi14 
-10 noyau1 pr1 dlp3 archi14 ares2 
-11 noyau4 pr3 ares1 
-12 noyau4 pr3 rtel1 il4 
-13 noyau1 pr3 archi14 ares3 il4 
-14 pr3 mlbda2 
-15 noyau3 pr4 algav2 dlp1 ares1 
-16 noyau4 dlp3 mlbda2 
-17 noyau1 pr4 dlp1 mlbda3 il4 
-18 noyau4 pr3 mlbda1 il3 lrc3 
+9 noyau1 pr1 dlp3 algav3 archi14 
+10 noyau1 pr1 dlp3 archi13 ares3 
+11 noyau4 pr2 ares1 
+12 noyau3 pr4 rtel1 il5 
+13 noyau2 pr3 archi14 ares2 il3 
+14 pr1 mlbda3 
+15 noyau3 pr3 algav1 dlp1 ares1 
+16 noyau1 dlp1 mlbda2 
+17 noyau1 pr3 dlp2 mlbda3 il2 
+18 noyau4 pr3 mlbda3 il3 lrc3 
 19 noyau4 pr3 mlbda1 il3 lrc3 
-20 noyau4 pr1 mobj2 ares2 
+20 noyau4 pr2 mobj2 ares1 
 21 noyau3 pr3 rtel1 ares3 il5 
-22 noyau1 pr3 archi14 ares3 il4 
-23 noyau2 pr3 dlp2 mlbda2 ares3 
-24 noyau1 pr4 dlp2 mlbda3 il1 
-25 noyau1 pr3 rtel1 ares2 il5 
+22 noyau1 pr3 archi14 ares3 il3 
+23 noyau1 pr3 dlp2 mlbda2 ares3 
+24 noyau2 pr3 dlp1 mlbda3 il4 
+25 noyau2 pr3 rtel1 ares2 il5 
 26 noyau4 pr4 complex1 rtel1 ares2 
-27 noyau3 pr4 dlp2 algav1 il2 
-28 noyau4 pr3 mlbda1 il3 lrc3 
+27 noyau4 pr2 dlp3 algav3 il1 
+28 noyau4 pr4 mlbda1 il3 lrc3 
 29 mlbda2 
 30 pr4 mlbda2 lrc3 
-31 noyau1 pr3 dlp1 algav2 il2 
-32 noyau3 pr4 algav3 dlp1 il2 
+31 noyau4 pr2 dlp3 algav3 il2 
+32 noyau1 pr2 algav3 dlp2 il1 
 33 noyau4 pr3 algav2 ares1 

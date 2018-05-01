@@ -21,9 +21,8 @@ class Incompatibilite:
         def ajouterContrainteModeleGurobi(self, modelGurobi):
             if not self.vide:
                 for etuName in self.ensEtuConcernes:
-                    contrainte = LinExpr()
                     modelGurobi.addConstr(modelGurobi.getVarByName(etuName+"_%d"%self.ueGroup1[0]+"_%d"%self.ueGroup1[1]) + modelGurobi.getVarByName(etuName+"_%d"%self.ueGroup2[0]+"_%d"%self.ueGroup2[1]) <= 1)
-
+                    modelGurobi.update()
                 modelGurobi.update()
 
         def m_a_j_EnsEtuConcernes(self):

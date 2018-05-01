@@ -17,7 +17,7 @@ if __name__ == "__main__":
     # while n < 3 :
     for i in range(nbExecutions):
         dossierVoeux, ListeParcours = generateur.generer()
-        m = MainModel(dossierVoeux, "edt.csv",equilibre=True)
+        m = MainModel(dossierVoeux, "edt.csv",)
         charge, p = m.resoudre()
         # if p >= 100.:
         #     print dossierVoeux
@@ -30,7 +30,7 @@ if __name__ == "__main__":
         m.remise_a_zero()
         # a
 
-        m = MainModel(dossierVoeux, "edt.csv",equilibre=True)
+        m = MainModel(dossierVoeux, "edt.csv")
         charge, p = m.resoudre(False)
 
         Liste_charge.append(charge)

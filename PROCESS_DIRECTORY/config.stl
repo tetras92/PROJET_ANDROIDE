@@ -1,361 +1,361 @@
-('dlp', 'archi1', 'il', 'mlbda') : 6
-('dlp', 'lrc', 'mlbda') : 27
-('algav', 'dlp', 'lrc', 'mlbda', 'noyau') : 4
-('mlbda', 'mogpl', 'noyau') : 18
+('dlp', 'archi1', 'il', 'mlbda') : 8
+('dlp', 'lrc', 'mlbda') : 41
+('algav', 'dlp', 'lrc', 'mlbda', 'noyau') : 6
+('mlbda', 'mogpl', 'noyau') : 25
 ('dlp', 'complex', 'il', 'mogpl') : 2
-('algav', 'dlp', 'archi1', 'il') : 12
-('dlp', 'lrc', 'mlbda', 'pr') : 16
+('algav', 'dlp', 'archi1', 'il') : 21
+('dlp', 'lrc', 'mlbda', 'pr') : 33
 ('dlp', 'archi1', 'il', 'mogpl') : 0
-('il', 'mogpl') : 16
+('il', 'mogpl') : 18
 ('algav', 'complex', 'mlbda', 'pr') : 2
-('archi1', 'il', 'mlbda') : 12
+('archi1', 'il', 'mlbda') : 23
 ('dlp', 'lrc') : 12
 ('dlp', 'mogpl') : 4
-('algav', 'archi1', 'noyau', 'pr') : 16
-('mlbda', 'noyau', 'pr') : 18
+('algav', 'archi1', 'noyau', 'pr') : 36
+('mlbda', 'noyau', 'pr') : 27
 ('archi1', 'complex') : 8
-('algav', 'mlbda') : 9
-('algav', 'complex', 'lrc', 'mogpl') : 8
-('dlp', 'lrc', 'mogpl') : 8
+('algav', 'mlbda') : 10
+('algav', 'complex', 'lrc', 'mogpl') : 10
+('dlp', 'lrc', 'mogpl') : 12
 ('algav', 'dlp', 'archi1', 'complex') : 2
 ('il', 'lrc') : 16
-('algav', 'il', 'mogpl', 'noyau') : 36
+('algav', 'il', 'mogpl', 'noyau') : 70
 ('complex', 'noyau') : 8
-('mogpl', 'pr') : 6
+('mogpl', 'pr') : 8
 ('complex', 'il') : 3
-('archi1', 'il', 'noyau') : 12
-('algav', 'dlp', 'il', 'mogpl', 'noyau') : 24
+('archi1', 'il', 'noyau') : 28
+('algav', 'dlp', 'il', 'mogpl', 'noyau') : 36
 ('dlp', 'archi1', 'mlbda') : 6
-('algav', 'mogpl', 'noyau', 'pr') : 24
-('algav', 'il', 'lrc', 'mogpl') : 36
-('algav', 'il', 'mlbda', 'pr') : 12
-('mlbda', 'mogpl') : 12
-('algav', 'mogpl', 'noyau') : 18
-('archi1', 'lrc', 'pr') : 8
-('dlp', 'complex', 'lrc') : 12
+('algav', 'mogpl', 'noyau', 'pr') : 53
+('algav', 'il', 'lrc', 'mogpl') : 72
+('algav', 'il', 'mlbda', 'pr') : 20
+('mlbda', 'mogpl') : 15
+('algav', 'mogpl', 'noyau') : 24
+('archi1', 'lrc', 'pr') : 13
+('dlp', 'complex', 'lrc') : 15
 ('algav', 'dlp', 'archi1', 'mogpl') : 0
-('algav', 'il', 'noyau') : 18
-('archi1', 'lrc', 'mogpl') : 6
+('algav', 'il', 'noyau') : 34
+('archi1', 'lrc', 'mogpl') : 12
 ('algav', 'dlp', 'archi1', 'il', 'mogpl') : 0
-('algav', 'il', 'mogpl') : 36
+('algav', 'il', 'mogpl') : 42
 ('dlp', 'il', 'mogpl') : 12
-('dlp', 'lrc', 'mlbda', 'mogpl') : 18
-('archi1', 'il', 'lrc') : 18
-('archi1', 'il') : 9
-('algav', 'lrc', 'mlbda', 'pr') : 8
-('algav', 'lrc', 'noyau', 'pr') : 6
+('dlp', 'lrc', 'mlbda', 'mogpl') : 36
+('archi1', 'il', 'lrc') : 29
+('archi1', 'il') : 14
+('algav', 'lrc', 'mlbda', 'pr') : 18
+('algav', 'lrc', 'noyau', 'pr') : 9
 ('algav', 'dlp', 'mogpl', 'pr') : 12
-('algav', 'dlp', 'archi1', 'il', 'pr') : 8
+('algav', 'dlp', 'archi1', 'il', 'pr') : 10
 ('dlp', 'mogpl', 'noyau') : 6
-('algav', 'dlp', 'il', 'lrc', 'pr') : 16
-('algav', 'dlp', 'lrc', 'mogpl') : 12
+('algav', 'dlp', 'il', 'lrc', 'pr') : 24
+('algav', 'dlp', 'lrc', 'mogpl') : 24
 ('algav', 'mogpl') : 12
 ('dlp', 'archi1', 'mogpl') : 0
 ('dlp', 'mlbda', 'mogpl', 'noyau') : 12
 ('complex', 'il', 'lrc') : 6
-('dlp', 'archi1', 'lrc') : 6
+('dlp', 'archi1', 'lrc') : 7
 ('dlp', 'complex', 'mogpl', 'noyau') : 6
-('algav', 'dlp', 'mlbda', 'pr') : 24
-('complex', 'il', 'noyau') : 6
-('archi1', 'mlbda', 'pr') : 12
-('complex', 'mogpl') : 6
-('dlp', 'il', 'noyau', 'pr') : 24
+('algav', 'dlp', 'mlbda', 'pr') : 46
+('complex', 'il', 'noyau') : 10
+('archi1', 'mlbda', 'pr') : 23
+('complex', 'mogpl') : 7
+('dlp', 'il', 'noyau', 'pr') : 48
 ('algav', 'archi1', 'complex', 'noyau') : 2
-('algav', 'lrc') : 6
-('archi1', 'mogpl', 'pr') : 4
-('algav', 'dlp', 'il', 'mlbda', 'pr') : 12
-('algav', 'lrc', 'mlbda') : 18
-('algav', 'dlp', 'archi1', 'mlbda', 'pr') : 4
-('algav', 'dlp', 'il', 'lrc', 'mlbda') : 24
-('algav', 'lrc', 'mogpl') : 18
-('algav', 'lrc', 'mlbda', 'mogpl') : 36
-('algav', 'dlp', 'il') : 27
-('algav', 'noyau') : 8
-('algav', 'archi1', 'il', 'pr') : 16
-('il', 'lrc', 'noyau') : 9
+('algav', 'lrc') : 9
+('archi1', 'mogpl', 'pr') : 5
+('algav', 'dlp', 'il', 'mlbda', 'pr') : 24
+('algav', 'lrc', 'mlbda') : 29
+('algav', 'dlp', 'archi1', 'mlbda', 'pr') : 6
+('algav', 'dlp', 'il', 'lrc', 'mlbda') : 59
+('algav', 'lrc', 'mogpl') : 30
+('algav', 'lrc', 'mlbda', 'mogpl') : 87
+('algav', 'dlp', 'il') : 30
+('algav', 'noyau') : 10
+('algav', 'archi1', 'il', 'pr') : 43
+('il', 'lrc', 'noyau') : 14
 ('complex', 'lrc') : 6
 ('dlp', 'archi1', 'mogpl', 'pr') : 0
-('complex', 'lrc', 'mogpl') : 12
-('algav', 'dlp', 'lrc', 'mlbda') : 36
-('archi1', 'mlbda') : 9
-('dlp', 'archi1', 'complex', 'noyau') : 4
+('complex', 'lrc', 'mogpl') : 17
+('algav', 'dlp', 'lrc', 'mlbda') : 78
+('archi1', 'mlbda') : 11
+('dlp', 'archi1', 'complex', 'noyau') : 6
 ('algav', 'dlp', 'archi1', 'mlbda', 'mogpl') : 0
 ('complex', 'il', 'mlbda') : 0
-('dlp', 'noyau', 'pr') : 18
-('dlp', 'il', 'lrc', 'noyau') : 12
-('algav', 'dlp', 'lrc', 'mogpl', 'pr') : 4
-('algav', 'archi1', 'il') : 12
-('algav', 'dlp', 'il', 'lrc', 'noyau') : 4
-('il', 'mogpl', 'noyau') : 27
-('dlp', 'archi1', 'il', 'noyau') : 8
-('algav', 'complex', 'mogpl', 'pr') : 4
-('algav', 'dlp', 'lrc', 'noyau') : 2
-('archi1', 'pr') : 9
-('algav', 'archi1', 'pr') : 12
-('algav', 'dlp', 'mlbda', 'mogpl', 'pr') : 6
-('archi1', 'lrc', 'mlbda') : 18
+('dlp', 'noyau', 'pr') : 29
+('dlp', 'il', 'lrc', 'noyau') : 18
+('algav', 'dlp', 'lrc', 'mogpl', 'pr') : 6
+('algav', 'archi1', 'il') : 21
+('algav', 'dlp', 'il', 'lrc', 'noyau') : 6
+('il', 'mogpl', 'noyau') : 40
+('dlp', 'archi1', 'il', 'noyau') : 14
+('algav', 'complex', 'mogpl', 'pr') : 9
+('algav', 'dlp', 'lrc', 'noyau') : 3
+('archi1', 'pr') : 14
+('algav', 'archi1', 'pr') : 26
+('algav', 'dlp', 'mlbda', 'mogpl', 'pr') : 8
+('archi1', 'lrc', 'mlbda') : 37
 ('algav', 'dlp', 'lrc', 'mogpl', 'noyau') : 0
-('algav', 'complex', 'pr') : 3
-('mogpl', 'noyau', 'pr') : 12
+('algav', 'complex', 'pr') : 5
+('mogpl', 'noyau', 'pr') : 23
 ('complex', 'lrc', 'noyau') : 2
-('lrc', 'mogpl', 'noyau') : 6
-('algav', 'il', 'mlbda') : 12
-('algav', 'archi1', 'il', 'mogpl') : 16
+('lrc', 'mogpl', 'noyau') : 8
+('algav', 'il', 'mlbda') : 22
+('algav', 'archi1', 'il', 'mogpl') : 33
 ('algav', 'dlp', 'archi1', 'mlbda', 'noyau') : 8
-('algav', 'dlp', 'mogpl', 'noyau', 'pr') : 16
+('algav', 'dlp', 'mogpl', 'noyau', 'pr') : 22
 ('algav', 'dlp') : 9
-('lrc', 'mlbda', 'mogpl') : 27
-('dlp', 'complex', 'mogpl') : 4
-('lrc', 'mlbda', 'noyau') : 9
-('algav', 'il', 'mlbda', 'mogpl') : 27
-('algav', 'dlp', 'complex', 'lrc') : 8
-('dlp', 'complex') : 4
-('algav', 'complex', 'mogpl') : 6
-('dlp', 'archi1', 'noyau') : 4
-('archi1', 'il', 'pr') : 12
-('il', 'mlbda', 'noyau') : 24
+('lrc', 'mlbda', 'mogpl') : 48
+('dlp', 'complex', 'mogpl') : 6
+('lrc', 'mlbda', 'noyau') : 13
+('algav', 'il', 'mlbda', 'mogpl') : 62
+('algav', 'dlp', 'complex', 'lrc') : 10
+('dlp', 'complex') : 5
+('algav', 'complex', 'mogpl') : 7
+('dlp', 'archi1', 'noyau') : 6
+('archi1', 'il', 'pr') : 32
+('il', 'mlbda', 'noyau') : 36
 ('algav', 'dlp', 'complex', 'mogpl', 'noyau') : 2
-('dlp', 'lrc', 'mlbda', 'noyau') : 12
-('lrc', 'noyau', 'pr') : 9
-('dlp', 'il', 'lrc', 'mogpl') : 16
+('dlp', 'lrc', 'mlbda', 'noyau') : 21
+('lrc', 'noyau', 'pr') : 12
+('dlp', 'il', 'lrc', 'mogpl') : 24
 ('algav', 'dlp', 'archi1', 'mogpl', 'pr') : 0
-('mlbda', 'mogpl', 'pr') : 8
-('algav', 'lrc', 'mogpl', 'pr') : 8
-('dlp', 'il', 'lrc', 'mlbda') : 24
-('algav', 'archi1', 'lrc', 'pr') : 4
+('mlbda', 'mogpl', 'pr') : 14
+('algav', 'lrc', 'mogpl', 'pr') : 15
+('dlp', 'il', 'lrc', 'mlbda') : 41
+('algav', 'archi1', 'lrc', 'pr') : 6
 ('dlp', 'mogpl', 'pr') : 4
-('dlp', 'il', 'mlbda', 'noyau') : 24
-('il', 'mlbda') : 10
+('dlp', 'il', 'mlbda', 'noyau') : 44
+('il', 'mlbda') : 13
 ('algav', 'dlp', 'il', 'mogpl', 'pr') : 12
-('algav', 'dlp', 'archi1', 'lrc', 'pr') : 2
-('archi1', 'noyau', 'pr') : 12
-('algav', 'dlp', 'complex', 'mogpl') : 4
-('algav', 'il', 'lrc') : 18
-('algav', 'complex', 'mlbda', 'noyau') : 2
-('noyau', 'pr') : 12
-('algav', 'il', 'noyau', 'pr') : 36
-('algav', 'il', 'mlbda', 'noyau') : 18
-('algav', 'dlp', 'mlbda', 'mogpl') : 24
-('algav', 'dlp', 'complex', 'lrc', 'mlbda') : 8
+('algav', 'dlp', 'archi1', 'lrc', 'pr') : 3
+('archi1', 'noyau', 'pr') : 28
+('algav', 'dlp', 'complex', 'mogpl') : 6
+('algav', 'il', 'lrc') : 27
+('algav', 'complex', 'mlbda', 'noyau') : 3
+('noyau', 'pr') : 15
+('algav', 'il', 'noyau', 'pr') : 86
+('algav', 'il', 'mlbda', 'noyau') : 39
+('algav', 'dlp', 'mlbda', 'mogpl') : 34
+('algav', 'dlp', 'complex', 'lrc', 'mlbda') : 14
 ('il', 'lrc', 'pr') : 16
 ('algav', 'dlp', 'archi1', 'mogpl', 'noyau') : 0
-('archi1', 'complex', 'noyau') : 12
-('algav', 'complex', 'il', 'mogpl') : 3
+('archi1', 'complex', 'noyau') : 18
+('algav', 'complex', 'il', 'mogpl') : 4
 ('algav', 'archi1', 'lrc', 'noyau') : 0
-('algav', 'archi1', 'complex', 'mlbda') : 1
-('algav', 'archi1', 'lrc', 'mlbda') : 16
-('algav', 'il', 'mogpl', 'pr') : 24
-('algav', 'archi1', 'complex', 'mogpl') : 4
+('algav', 'archi1', 'complex', 'mlbda') : 2
+('algav', 'archi1', 'lrc', 'mlbda') : 32
+('algav', 'il', 'mogpl', 'pr') : 39
+('algav', 'archi1', 'complex', 'mogpl') : 5
 ('algav', 'complex', 'il') : 2
 ('archi1', 'lrc', 'noyau') : 4
-('algav', 'archi1', 'il', 'mlbda') : 6
-('dlp', 'il', 'mlbda', 'pr') : 12
-('complex', 'mlbda', 'noyau') : 6
+('algav', 'archi1', 'il', 'mlbda') : 14
+('dlp', 'il', 'mlbda', 'pr') : 16
+('complex', 'mlbda', 'noyau') : 9
 ('algav', 'archi1', 'complex', 'lrc') : 4
-('lrc', 'mlbda', 'pr') : 8
+('lrc', 'mlbda', 'pr') : 15
 ('algav', 'dlp', 'archi1', 'complex', 'noyau') : 1
-('dlp', 'lrc', 'noyau', 'pr') : 12
+('dlp', 'lrc', 'noyau', 'pr') : 16
 ('dlp', 'complex', 'il') : 2
 ('dlp', 'archi1') : 3
-('algav', 'mlbda', 'mogpl', 'pr') : 12
-('algav', 'dlp', 'archi1', 'il', 'lrc') : 16
+('algav', 'mlbda', 'mogpl', 'pr') : 32
+('algav', 'dlp', 'archi1', 'il', 'lrc') : 26
 ('algav', 'archi1', 'complex', 'il') : 1
-('algav', 'dlp', 'il', 'noyau', 'pr') : 48
-('algav', 'dlp', 'il', 'mlbda', 'mogpl') : 18
+('algav', 'dlp', 'il', 'noyau', 'pr') : 106
+('algav', 'dlp', 'il', 'mlbda', 'mogpl') : 42
 ('algav', 'dlp', 'complex', 'il', 'pr') : 0
 ('algav', 'dlp', 'mogpl') : 12
 ('algav', 'dlp', 'archi1', 'complex', 'pr') : 1
-('algav', 'dlp', 'mlbda') : 18
-('il', 'lrc', 'mogpl') : 36
-('archi1', 'mogpl') : 6
-('algav', 'archi1', 'lrc') : 8
+('algav', 'dlp', 'mlbda') : 27
+('il', 'lrc', 'mogpl') : 48
+('archi1', 'mogpl') : 7
+('algav', 'archi1', 'lrc') : 13
 ('dlp', 'archi1', 'lrc', 'noyau') : 2
-('archi1', 'complex', 'mlbda') : 4
+('archi1', 'complex', 'mlbda') : 8
 ('dlp', 'archi1', 'complex', 'mogpl') : 0
 ('dlp', 'lrc', 'mogpl', 'pr') : 4
 ('algav', 'dlp', 'archi1', 'complex', 'mogpl') : 0
-('algav', 'dlp', 'il', 'noyau') : 36
+('algav', 'dlp', 'il', 'noyau') : 70
 ('dlp', 'complex', 'mogpl', 'pr') : 2
-('algav', 'dlp', 'lrc', 'mlbda', 'pr') : 16
-('dlp', 'mlbda', 'noyau', 'pr') : 24
+('algav', 'dlp', 'lrc', 'mlbda', 'pr') : 39
+('dlp', 'mlbda', 'noyau', 'pr') : 42
 ('mlbda', 'noyau') : 12
-('mogpl', 'noyau') : 9
-('algav', 'dlp', 'mlbda', 'noyau') : 24
+('mogpl', 'noyau') : 10
+('algav', 'dlp', 'mlbda', 'noyau') : 39
 ('dlp', 'complex', 'il', 'mlbda') : 0
-('lrc', 'mlbda') : 12
-('dlp', 'il', 'mogpl', 'noyau') : 12
+('lrc', 'mlbda') : 15
+('dlp', 'il', 'mogpl', 'noyau') : 16
 ('algav', 'dlp', 'archi1', 'complex', 'mlbda') : 1
 ('dlp', 'lrc', 'mogpl', 'noyau') : 4
-('algav', 'dlp', 'il', 'pr') : 36
-('dlp', 'il', 'noyau') : 18
-('dlp', 'mlbda', 'mogpl') : 12
-('algav', 'mlbda', 'noyau') : 18
+('algav', 'dlp', 'il', 'pr') : 57
+('dlp', 'il', 'noyau') : 30
+('dlp', 'mlbda', 'mogpl') : 14
+('algav', 'mlbda', 'noyau') : 22
 ('dlp', 'archi1', 'mogpl', 'noyau') : 0
-('il', 'mlbda', 'mogpl') : 24
+('il', 'mlbda', 'mogpl') : 41
 ('algav', 'archi1', 'mlbda', 'noyau') : 8
-('dlp', 'mlbda', 'noyau') : 18
-('complex', 'mlbda') : 2
-('algav', 'dlp', 'lrc', 'pr') : 12
+('dlp', 'mlbda', 'noyau') : 25
+('complex', 'mlbda') : 3
+('algav', 'dlp', 'lrc', 'pr') : 21
 ('dlp', 'archi1', 'lrc', 'mogpl') : 0
-('dlp', 'mogpl', 'noyau', 'pr') : 8
-('algav', 'complex', 'noyau', 'pr') : 4
-('dlp', 'il', 'lrc') : 24
+('dlp', 'mogpl', 'noyau', 'pr') : 10
+('algav', 'complex', 'noyau', 'pr') : 8
+('dlp', 'il', 'lrc') : 28
 ('dlp', 'archi1', 'complex', 'pr') : 2
-('algav', 'complex', 'mlbda') : 2
-('algav', 'dlp', 'il', 'lrc') : 36
+('algav', 'complex', 'mlbda') : 3
+('algav', 'dlp', 'il', 'lrc') : 63
 ('algav', 'il') : 12
 ('dlp', 'complex', 'il', 'pr') : 0
-('algav', 'il', 'pr') : 27
-('dlp', 'complex', 'mlbda') : 4
-('dlp', 'archi1', 'lrc', 'mlbda') : 12
-('algav', 'dlp', 'il', 'mlbda') : 18
+('algav', 'il', 'pr') : 33
+('dlp', 'complex', 'mlbda') : 7
+('dlp', 'archi1', 'lrc', 'mlbda') : 19
+('algav', 'dlp', 'il', 'mlbda') : 40
 ('algav', 'dlp', 'complex', 'il', 'lrc') : 0
-('algav', 'dlp', 'noyau') : 18
-('algav', 'mlbda', 'noyau', 'pr') : 24
-('il', 'pr') : 12
+('algav', 'dlp', 'noyau') : 24
+('algav', 'mlbda', 'noyau', 'pr') : 45
+('il', 'pr') : 14
 ('algav', 'dlp', 'complex', 'lrc', 'mogpl') : 4
-('algav', 'dlp', 'archi1', 'il', 'mlbda') : 4
-('algav', 'dlp', 'archi1', 'lrc') : 8
-('algav', 'dlp', 'archi1', 'noyau') : 8
+('algav', 'dlp', 'archi1', 'il', 'mlbda') : 8
+('algav', 'dlp', 'archi1', 'lrc') : 13
+('algav', 'dlp', 'archi1', 'noyau') : 13
 ('dlp', 'complex', 'il', 'noyau') : 4
 ('algav', 'dlp', 'archi1', 'lrc', 'mogpl') : 0
-('complex', 'lrc', 'mlbda') : 6
+('complex', 'lrc', 'mlbda') : 9
 ('algav', 'complex', 'lrc', 'noyau') : 0
-('algav', 'dlp', 'complex', 'pr') : 6
-('algav', 'dlp', 'complex', 'noyau') : 4
+('algav', 'dlp', 'complex', 'pr') : 11
+('algav', 'dlp', 'complex', 'noyau') : 6
 ('algav', 'complex', 'il', 'pr') : 1
 ('algav', 'dlp', 'complex', 'lrc', 'pr') : 0
-('algav', 'dlp', 'il', 'mlbda', 'noyau') : 24
-('algav', 'dlp', 'lrc', 'mlbda', 'mogpl') : 24
-('archi1', 'mlbda', 'mogpl') : 12
-('complex', 'mogpl', 'pr') : 4
-('dlp', 'il', 'mlbda', 'mogpl') : 12
+('algav', 'dlp', 'il', 'mlbda', 'noyau') : 46
+('algav', 'dlp', 'lrc', 'mlbda', 'mogpl') : 58
+('archi1', 'mlbda', 'mogpl') : 17
+('complex', 'mogpl', 'pr') : 9
+('dlp', 'il', 'mlbda', 'mogpl') : 22
 ('algav', 'dlp', 'complex', 'lrc', 'noyau') : 0
 ('dlp', 'complex', 'mlbda', 'pr') : 4
-('algav', 'archi1', 'lrc', 'mogpl') : 4
-('algav', 'dlp', 'il', 'lrc', 'mogpl') : 24
+('algav', 'archi1', 'lrc', 'mogpl') : 7
+('algav', 'dlp', 'il', 'lrc', 'mogpl') : 48
 ('algav', 'dlp', 'complex', 'mogpl', 'pr') : 2
-('algav', 'dlp', 'complex') : 4
-('algav', 'dlp', 'lrc') : 18
-('algav', 'complex', 'il', 'noyau') : 1
+('algav', 'dlp', 'complex') : 5
+('algav', 'dlp', 'lrc') : 27
+('algav', 'complex', 'il', 'noyau') : 2
 ('algav', 'complex') : 2
 ('dlp', 'archi1', 'mlbda', 'mogpl') : 0
-('complex', 'lrc', 'pr') : 2
-('il', 'lrc', 'mlbda') : 24
-('algav', 'archi1', 'mlbda') : 8
-('algav', 'dlp', 'archi1') : 6
-('algav', 'dlp', 'archi1', 'noyau', 'pr') : 8
+('complex', 'lrc', 'pr') : 3
+('il', 'lrc', 'mlbda') : 36
+('algav', 'archi1', 'mlbda') : 13
+('algav', 'dlp', 'archi1') : 8
+('algav', 'dlp', 'archi1', 'noyau', 'pr') : 17
 ('complex', 'il', 'pr') : 2
-('archi1', 'complex', 'lrc') : 12
+('archi1', 'complex', 'lrc') : 16
 ('lrc', 'pr') : 6
-('archi1', 'mogpl', 'noyau') : 4
+('archi1', 'mogpl', 'noyau') : 6
 ('algav', 'dlp', 'complex', 'il', 'mogpl') : 2
-('dlp', 'pr') : 8
-('il', 'mogpl', 'pr') : 12
-('algav', 'archi1', 'mogpl', 'pr') : 4
-('algav', 'archi1', 'mogpl', 'noyau') : 4
+('dlp', 'pr') : 10
+('il', 'mogpl', 'pr') : 18
+('algav', 'archi1', 'mogpl', 'pr') : 7
+('algav', 'archi1', 'mogpl', 'noyau') : 6
 ('algav', 'dlp', 'complex', 'il') : 2
-('algav', 'archi1', 'noyau') : 8
-('archi1', 'noyau') : 6
+('algav', 'archi1', 'noyau') : 13
+('archi1', 'noyau') : 9
 ('complex', 'mlbda', 'pr') : 2
-('complex', 'il', 'mogpl') : 6
+('complex', 'il', 'mogpl') : 7
 ('dlp', 'archi1', 'complex') : 3
-('algav', 'dlp', 'archi1', 'mlbda') : 8
+('algav', 'dlp', 'archi1', 'mlbda') : 11
 ('dlp', 'mlbda', 'mogpl', 'pr') : 4
-('dlp', 'complex', 'mlbda', 'mogpl') : 4
-('mlbda', 'pr') : 6
-('archi1', 'lrc') : 9
-('algav', 'dlp', 'mlbda', 'noyau', 'pr') : 32
-('algav', 'lrc', 'pr') : 6
-('algav', 'lrc', 'mlbda', 'noyau') : 6
-('complex', 'mogpl', 'noyau') : 12
-('algav', 'complex', 'mlbda', 'mogpl') : 6
-('dlp', 'complex', 'pr') : 6
-('algav', 'dlp', 'complex', 'mlbda') : 4
+('dlp', 'complex', 'mlbda', 'mogpl') : 8
+('mlbda', 'pr') : 9
+('archi1', 'lrc') : 11
+('algav', 'dlp', 'mlbda', 'noyau', 'pr') : 56
+('algav', 'lrc', 'pr') : 9
+('algav', 'lrc', 'mlbda', 'noyau') : 9
+('complex', 'mogpl', 'noyau') : 16
+('algav', 'complex', 'mlbda', 'mogpl') : 10
+('dlp', 'complex', 'pr') : 11
+('algav', 'dlp', 'complex', 'mlbda') : 7
 ('algav', 'dlp', 'complex', 'il', 'noyau') : 0
 ('algav', 'dlp', 'complex', 'mlbda', 'pr') : 4
 ('dlp', 'archi1', 'mlbda', 'pr') : 4
-('algav', 'mogpl', 'pr') : 18
+('algav', 'mogpl', 'pr') : 24
 ('algav', 'dlp', 'il', 'mogpl') : 36
 ('dlp', 'archi1', 'mlbda', 'noyau') : 6
-('algav', 'dlp', 'complex', 'noyau', 'pr') : 4
-('algav', 'archi1', 'mogpl') : 8
-('algav', 'mlbda', 'mogpl', 'noyau') : 24
+('algav', 'dlp', 'complex', 'noyau', 'pr') : 7
+('algav', 'archi1', 'mogpl') : 13
+('algav', 'mlbda', 'mogpl', 'noyau') : 39
 ('algav', 'dlp', 'archi1', 'complex', 'il') : 0
-('archi1', 'complex', 'il') : 4
-('algav', 'dlp', 'archi1', 'lrc', 'mlbda') : 16
+('archi1', 'complex', 'il') : 6
+('algav', 'dlp', 'archi1', 'lrc', 'mlbda') : 28
 ('algav', 'complex', 'lrc') : 4
-('dlp', 'archi1', 'lrc', 'pr') : 2
-('il', 'noyau', 'pr') : 27
-('algav', 'archi1', 'complex', 'pr') : 2
-('algav', 'archi1', 'mlbda', 'pr') : 8
-('complex', 'pr') : 3
+('dlp', 'archi1', 'lrc', 'pr') : 3
+('il', 'noyau', 'pr') : 47
+('algav', 'archi1', 'complex', 'pr') : 7
+('algav', 'archi1', 'mlbda', 'pr') : 23
+('complex', 'pr') : 5
 ('dlp', 'il', 'mogpl', 'pr') : 4
-('dlp', 'lrc', 'pr') : 12
-('complex', 'noyau', 'pr') : 9
+('dlp', 'lrc', 'pr') : 14
+('complex', 'noyau', 'pr') : 18
 ('dlp', 'archi1', 'complex', 'il') : 0
-('dlp', 'archi1', 'pr') : 4
-('dlp', 'complex', 'lrc', 'mlbda') : 12
-('algav', 'dlp', 'mogpl', 'noyau') : 12
+('dlp', 'archi1', 'pr') : 5
+('dlp', 'complex', 'lrc', 'mlbda') : 21
+('algav', 'dlp', 'mogpl', 'noyau') : 14
 ('algav', 'dlp', 'archi1', 'lrc', 'noyau') : 0
 ('algav', 'pr') : 12
-('lrc', 'noyau') : 3
-('algav', 'complex', 'lrc', 'mlbda') : 4
-('algav', 'archi1', 'il', 'noyau') : 16
-('dlp', 'archi1', 'il') : 6
+('lrc', 'noyau') : 4
+('algav', 'complex', 'lrc', 'mlbda') : 6
+('algav', 'archi1', 'il', 'noyau') : 30
+('dlp', 'archi1', 'il') : 8
 ('dlp', 'complex', 'lrc', 'noyau') : 1
-('dlp', 'il', 'mlbda') : 12
-('algav', 'noyau', 'pr') : 24
-('algav', 'archi1', 'il', 'lrc') : 16
+('dlp', 'il', 'mlbda') : 20
+('algav', 'noyau', 'pr') : 37
+('algav', 'archi1', 'il', 'lrc') : 26
 ('dlp', 'archi1', 'complex', 'mlbda') : 2
 ('algav', 'dlp', 'complex', 'il', 'mlbda') : 0
-('lrc', 'mogpl') : 12
-('dlp', 'complex', 'lrc', 'pr') : 4
-('archi1', 'il', 'mogpl') : 12
-('lrc', 'mogpl', 'pr') : 8
+('lrc', 'mogpl') : 14
+('dlp', 'complex', 'lrc', 'pr') : 6
+('archi1', 'il', 'mogpl') : 24
+('lrc', 'mogpl', 'pr') : 10
 ('algav', 'dlp', 'archi1', 'complex', 'lrc') : 2
-('complex', 'mlbda', 'mogpl') : 6
+('complex', 'mlbda', 'mogpl') : 10
 ('algav', 'archi1', 'complex') : 4
-('algav', 'dlp', 'pr') : 24
-('archi1', 'complex', 'pr') : 6
-('dlp', 'lrc', 'noyau') : 6
-('archi1', 'complex', 'mogpl') : 8
-('dlp', 'noyau') : 9
-('algav', 'archi1', 'mlbda', 'mogpl') : 8
-('algav', 'archi1') : 6
+('algav', 'dlp', 'pr') : 30
+('archi1', 'complex', 'pr') : 17
+('dlp', 'lrc', 'noyau') : 8
+('archi1', 'complex', 'mogpl') : 11
+('dlp', 'noyau') : 10
+('algav', 'archi1', 'mlbda', 'mogpl') : 17
+('algav', 'archi1') : 8
 ('dlp', 'archi1', 'il', 'pr') : 4
 ('algav', 'complex', 'lrc', 'pr') : 0
-('dlp', 'il') : 9
-('il', 'noyau') : 12
-('algav', 'mlbda', 'pr') : 12
+('dlp', 'il') : 10
+('il', 'noyau') : 18
+('algav', 'mlbda', 'pr') : 21
 ('algav', 'dlp', 'mlbda', 'mogpl', 'noyau') : 16
-('algav', 'lrc', 'noyau') : 2
-('algav', 'dlp', 'lrc', 'noyau', 'pr') : 2
-('algav', 'lrc', 'mogpl', 'noyau') : 2
+('algav', 'lrc', 'noyau') : 3
+('algav', 'dlp', 'lrc', 'noyau', 'pr') : 3
+('algav', 'lrc', 'mogpl', 'noyau') : 3
 ('dlp', 'il', 'lrc', 'pr') : 16
-('algav', 'dlp', 'archi1', 'il', 'noyau') : 16
-('algav', 'dlp', 'noyau', 'pr') : 36
-('algav', 'dlp', 'complex', 'mlbda', 'mogpl') : 4
+('algav', 'dlp', 'archi1', 'il', 'noyau') : 30
+('algav', 'dlp', 'noyau', 'pr') : 67
+('algav', 'dlp', 'complex', 'mlbda', 'mogpl') : 8
 ('algav', 'dlp', 'complex', 'mlbda', 'noyau') : 1
-('dlp', 'archi1', 'noyau', 'pr') : 4
-('algav', 'il', 'lrc', 'noyau') : 4
-('algav', 'il', 'lrc', 'mlbda') : 18
+('dlp', 'archi1', 'noyau', 'pr') : 8
+('algav', 'il', 'lrc', 'noyau') : 6
+('algav', 'il', 'lrc', 'mlbda') : 42
 ('dlp', 'complex', 'il', 'lrc') : 0
-('algav', 'complex', 'mogpl', 'noyau') : 4
-('algav', 'il', 'lrc', 'pr') : 12
+('algav', 'complex', 'mogpl', 'noyau') : 6
+('algav', 'il', 'lrc', 'pr') : 18
 ('algav', 'complex', 'il', 'lrc') : 2
-('archi1', 'mlbda', 'noyau') : 12
-('algav', 'mlbda', 'mogpl') : 27
-('dlp', 'complex', 'mlbda', 'noyau') : 8
-('dlp', 'mlbda', 'pr') : 12
+('archi1', 'mlbda', 'noyau') : 14
+('algav', 'mlbda', 'mogpl') : 37
+('dlp', 'complex', 'mlbda', 'noyau') : 15
+('dlp', 'mlbda', 'pr') : 20
 ('algav', 'complex', 'il', 'mlbda') : 0
-('dlp', 'complex', 'lrc', 'mogpl') : 6
-('dlp', 'archi1', 'complex', 'lrc') : 4
-('dlp', 'il', 'pr') : 12
+('dlp', 'complex', 'lrc', 'mogpl') : 10
+('dlp', 'archi1', 'complex', 'lrc') : 5
+('dlp', 'il', 'pr') : 19
 ('algav', 'complex', 'noyau') : 4
-('algav', 'dlp', 'archi1', 'pr') : 8
-('dlp', 'complex', 'noyau', 'pr') : 12
-('dlp', 'archi1', 'il', 'lrc') : 12
-('il', 'mlbda', 'pr') : 12
-('dlp', 'complex', 'noyau') : 12
-('dlp', 'mlbda') : 9
+('algav', 'dlp', 'archi1', 'pr') : 13
+('dlp', 'complex', 'noyau', 'pr') : 29
+('dlp', 'archi1', 'il', 'lrc') : 14
+('il', 'mlbda', 'pr') : 16
+('dlp', 'complex', 'noyau') : 16
+('dlp', 'mlbda') : 11

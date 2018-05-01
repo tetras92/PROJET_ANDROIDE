@@ -1,159 +1,159 @@
-('esa', 'noyau') : 4
-('archi1', 'ares') : 9
-('vlsi1', 'ares', 'esa', 'pr') : 8
-('vlsi1', 'noyau', 'pr') : 12
-('archi1', 'vlsi1', 'mobj', 'noyau', 'signal') : 4
-('archi1', 'pr') : 9
-('archi1', 'noyau', 'pr') : 12
-('archi1', 'esa', 'pr', 'signal') : 2
-('archi1', 'noyau', 'signal') : 8
-('vlsi1', 'ares', 'noyau', 'pr') : 16
-('archi1', 'esa') : 4
+('esa', 'noyau') : 6
+('archi1', 'ares') : 11
+('vlsi1', 'ares', 'esa', 'pr') : 15
+('vlsi1', 'noyau', 'pr') : 19
+('archi1', 'vlsi1', 'mobj', 'noyau', 'signal') : 10
+('archi1', 'pr') : 14
+('archi1', 'noyau', 'pr') : 28
+('archi1', 'esa', 'pr', 'signal') : 7
+('archi1', 'noyau', 'signal') : 15
+('vlsi1', 'ares', 'noyau', 'pr') : 37
+('archi1', 'esa') : 5
 ('vlsi1', 'noyau') : 6
-('vlsi1', 'ares', 'noyau') : 8
-('mobj', 'noyau') : 4
-('archi1', 'vlsi1', 'mobj', 'pr', 'signal') : 2
-('archi1', 'ares', 'esa', 'signal') : 2
-('vlsi1', 'ares', 'pr') : 8
-('vlsi1', 'noyau', 'pr', 'signal') : 4
-('ares', 'esa', 'signal') : 4
-('vlsi1', 'signal') : 2
-('archi1', 'noyau', 'pr', 'signal') : 8
-('archi1', 'mobj', 'signal') : 4
-('vlsi1', 'esa', 'mobj', 'noyau') : 2
+('vlsi1', 'ares', 'noyau') : 13
+('mobj', 'noyau') : 6
+('archi1', 'vlsi1', 'mobj', 'pr', 'signal') : 8
+('archi1', 'ares', 'esa', 'signal') : 5
+('vlsi1', 'ares', 'pr') : 15
+('vlsi1', 'noyau', 'pr', 'signal') : 9
+('ares', 'esa', 'signal') : 5
+('vlsi1', 'signal') : 3
+('archi1', 'noyau', 'pr', 'signal') : 21
+('archi1', 'mobj', 'signal') : 8
+('vlsi1', 'esa', 'mobj', 'noyau') : 4
 ('mobj', 'pr') : 8
-('archi1', 'vlsi1', 'ares', 'esa', 'signal') : 1
-('esa', 'noyau', 'signal') : 4
-('vlsi1', 'ares', 'esa', 'noyau') : 2
-('vlsi1', 'esa', 'pr') : 12
-('mobj', 'signal') : 2
-('ares', 'mobj', 'signal') : 4
-('archi1', 'vlsi1', 'noyau', 'signal') : 8
-('archi1', 'esa', 'mobj', 'signal') : 1
-('archi1', 'ares', 'mobj', 'signal') : 4
-('ares', 'esa', 'noyau') : 4
-('archi1', 'mobj', 'noyau', 'pr') : 12
-('archi1', 'ares', 'mobj') : 8
-('archi1', 'vlsi1', 'ares', 'noyau') : 8
-('archi1', 'signal') : 6
-('mobj', 'noyau', 'pr') : 12
-('vlsi1', 'esa', 'mobj', 'pr') : 6
-('archi1', 'vlsi1', 'esa', 'mobj', 'noyau') : 1
-('esa', 'mobj', 'signal') : 1
-('archi1', 'vlsi1', 'signal') : 6
+('archi1', 'vlsi1', 'ares', 'esa', 'signal') : 3
+('esa', 'noyau', 'signal') : 8
+('vlsi1', 'ares', 'esa', 'noyau') : 3
+('vlsi1', 'esa', 'pr') : 14
+('mobj', 'signal') : 3
+('ares', 'mobj', 'signal') : 7
+('archi1', 'vlsi1', 'noyau', 'signal') : 21
+('archi1', 'esa', 'mobj', 'signal') : 2
+('archi1', 'ares', 'mobj', 'signal') : 15
+('ares', 'esa', 'noyau') : 5
+('archi1', 'mobj', 'noyau', 'pr') : 33
+('archi1', 'ares', 'mobj') : 15
+('archi1', 'vlsi1', 'ares', 'noyau') : 27
+('archi1', 'signal') : 7
+('mobj', 'noyau', 'pr') : 22
+('vlsi1', 'esa', 'mobj', 'pr') : 14
+('archi1', 'vlsi1', 'esa', 'mobj', 'noyau') : 2
+('esa', 'mobj', 'signal') : 2
+('archi1', 'vlsi1', 'signal') : 10
 ('noyau', 'signal') : 8
-('archi1', 'pr', 'signal') : 8
-('vlsi1', 'esa', 'pr', 'signal') : 2
-('archi1', 'vlsi1', 'mobj', 'pr') : 8
-('ares', 'pr', 'signal') : 2
-('archi1', 'vlsi1', 'esa', 'pr', 'signal') : 1
-('vlsi1', 'pr') : 6
+('archi1', 'pr', 'signal') : 12
+('vlsi1', 'esa', 'pr', 'signal') : 5
+('archi1', 'vlsi1', 'mobj', 'pr') : 33
+('ares', 'pr', 'signal') : 6
+('archi1', 'vlsi1', 'esa', 'pr', 'signal') : 3
+('vlsi1', 'pr') : 7
 ('vlsi1', 'esa') : 4
-('archi1', 'ares', 'pr', 'signal') : 4
-('archi1', 'vlsi1', 'ares', 'pr') : 8
-('ares', 'esa', 'pr') : 6
-('archi1', 'vlsi1', 'mobj') : 8
-('vlsi1', 'mobj', 'noyau', 'pr') : 12
-('archi1', 'vlsi1', 'esa', 'noyau', 'pr') : 8
-('archi1', 'vlsi1', 'ares', 'esa', 'pr') : 4
-('archi1', 'esa', 'signal') : 2
-('vlsi1', 'ares', 'esa', 'signal') : 2
-('vlsi1', 'pr', 'signal') : 2
-('vlsi1', 'esa', 'noyau', 'pr') : 12
-('archi1', 'vlsi1', 'esa', 'mobj', 'pr') : 4
-('archi1', 'mobj', 'pr') : 12
-('archi1', 'ares', 'signal') : 8
-('archi1', 'esa', 'noyau') : 4
-('archi1', 'vlsi1', 'mobj', 'noyau') : 8
-('mobj', 'pr', 'signal') : 4
-('archi1', 'esa', 'noyau', 'signal') : 2
-('archi1', 'vlsi1', 'ares', 'esa') : 2
-('esa', 'signal') : 2
+('archi1', 'ares', 'pr', 'signal') : 15
+('archi1', 'vlsi1', 'ares', 'pr') : 37
+('ares', 'esa', 'pr') : 10
+('archi1', 'vlsi1', 'mobj') : 12
+('vlsi1', 'mobj', 'noyau', 'pr') : 24
+('archi1', 'vlsi1', 'esa', 'noyau', 'pr') : 25
+('archi1', 'vlsi1', 'ares', 'esa', 'pr') : 12
+('archi1', 'esa', 'signal') : 5
+('vlsi1', 'ares', 'esa', 'signal') : 5
+('vlsi1', 'pr', 'signal') : 4
+('vlsi1', 'esa', 'noyau', 'pr') : 24
+('archi1', 'vlsi1', 'esa', 'mobj', 'pr') : 16
+('archi1', 'mobj', 'pr') : 24
+('archi1', 'ares', 'signal') : 15
+('archi1', 'esa', 'noyau') : 7
+('archi1', 'vlsi1', 'mobj', 'noyau') : 18
+('mobj', 'pr', 'signal') : 6
+('archi1', 'esa', 'noyau', 'signal') : 4
+('archi1', 'vlsi1', 'ares', 'esa') : 5
+('esa', 'signal') : 3
 ('ares', 'esa') : 3
-('archi1', 'vlsi1', 'esa', 'pr') : 8
-('ares', 'mobj', 'pr') : 8
-('archi1', 'mobj', 'pr', 'signal') : 4
-('vlsi1', 'noyau', 'signal') : 6
-('archi1', 'esa', 'mobj') : 2
-('vlsi1', 'ares') : 4
-('ares', 'noyau') : 9
-('vlsi1', 'ares', 'signal') : 2
-('vlsi1', 'mobj', 'signal') : 2
-('ares', 'mobj') : 4
-('archi1', 'esa', 'mobj', 'pr') : 6
+('archi1', 'vlsi1', 'esa', 'pr') : 23
+('ares', 'mobj', 'pr') : 16
+('archi1', 'mobj', 'pr', 'signal') : 13
+('vlsi1', 'noyau', 'signal') : 9
+('archi1', 'esa', 'mobj') : 4
+('vlsi1', 'ares') : 5
+('ares', 'noyau') : 11
+('vlsi1', 'ares', 'signal') : 5
+('vlsi1', 'mobj', 'signal') : 4
+('ares', 'mobj') : 5
+('archi1', 'esa', 'mobj', 'pr') : 14
 ('archi1', 'vlsi1', 'ares', 'esa', 'noyau') : 1
-('archi1', 'ares', 'esa') : 4
-('archi1', 'vlsi1', 'noyau', 'pr') : 8
-('archi1', 'ares', 'esa', 'pr') : 8
-('noyau', 'pr') : 12
-('vlsi1', 'esa', 'mobj') : 2
-('vlsi1', 'esa', 'noyau') : 6
+('archi1', 'ares', 'esa') : 5
+('archi1', 'vlsi1', 'noyau', 'pr') : 36
+('archi1', 'ares', 'esa', 'pr') : 15
+('noyau', 'pr') : 15
+('vlsi1', 'esa', 'mobj') : 4
+('vlsi1', 'esa', 'noyau') : 8
 ('pr', 'signal') : 4
-('vlsi1', 'mobj', 'pr', 'signal') : 2
-('esa', 'mobj') : 1
-('archi1', 'mobj', 'noyau', 'signal') : 4
-('archi1', 'vlsi1', 'esa', 'mobj', 'signal') : 1
-('archi1', 'ares', 'mobj', 'pr') : 8
-('archi1', 'vlsi1', 'pr', 'signal') : 4
+('vlsi1', 'mobj', 'pr', 'signal') : 5
+('esa', 'mobj') : 2
+('archi1', 'mobj', 'noyau', 'signal') : 9
+('archi1', 'vlsi1', 'esa', 'mobj', 'signal') : 2
+('archi1', 'ares', 'mobj', 'pr') : 40
+('archi1', 'vlsi1', 'pr', 'signal') : 10
 ('esa', 'pr') : 8
-('archi1', 'vlsi1', 'esa', 'noyau', 'signal') : 2
-('archi1', 'ares', 'noyau', 'pr') : 16
-('ares', 'signal') : 4
-('esa', 'pr', 'signal') : 4
-('archi1', 'vlsi1') : 6
-('noyau', 'pr', 'signal') : 12
-('vlsi1', 'ares', 'mobj', 'signal') : 2
-('ares', 'pr') : 6
-('vlsi1', 'ares', 'esa', 'mobj') : 2
-('archi1', 'vlsi1', 'noyau') : 8
-('archi1', 'esa', 'pr') : 12
-('archi1', 'mobj', 'noyau') : 6
+('archi1', 'vlsi1', 'esa', 'noyau', 'signal') : 4
+('archi1', 'ares', 'noyau', 'pr') : 57
+('ares', 'signal') : 5
+('esa', 'pr', 'signal') : 6
+('archi1', 'vlsi1') : 7
+('noyau', 'pr', 'signal') : 14
+('vlsi1', 'ares', 'mobj', 'signal') : 6
+('ares', 'pr') : 10
+('vlsi1', 'ares', 'esa', 'mobj') : 3
+('archi1', 'vlsi1', 'noyau') : 15
+('archi1', 'esa', 'pr') : 18
+('archi1', 'mobj', 'noyau') : 11
 ('archi1', 'ares', 'esa', 'noyau') : 2
-('vlsi1', 'mobj', 'noyau') : 6
-('esa', 'noyau', 'pr') : 12
-('esa', 'mobj', 'pr') : 4
-('archi1', 'ares', 'mobj', 'noyau') : 8
-('archi1', 'vlsi1', 'ares', 'mobj', 'pr') : 4
+('vlsi1', 'mobj', 'noyau') : 8
+('esa', 'noyau', 'pr') : 22
+('esa', 'mobj', 'pr') : 8
+('archi1', 'ares', 'mobj', 'noyau') : 17
+('archi1', 'vlsi1', 'ares', 'mobj', 'pr') : 39
 ('ares', 'esa', 'mobj') : 2
-('archi1', 'vlsi1', 'pr') : 8
-('archi1', 'vlsi1', 'ares', 'signal') : 4
-('archi1', 'vlsi1', 'esa') : 4
-('mobj', 'noyau', 'signal') : 4
-('ares', 'mobj', 'noyau') : 6
-('vlsi1', 'esa', 'noyau', 'signal') : 3
-('vlsi1', 'ares', 'esa') : 4
-('vlsi1', 'ares', 'pr', 'signal') : 1
-('archi1', 'vlsi1', 'ares', 'noyau', 'signal') : 4
-('archi1', 'vlsi1', 'ares', 'mobj', 'signal') : 2
-('archi1', 'esa', 'noyau', 'pr') : 12
-('vlsi1', 'ares', 'mobj', 'noyau') : 4
-('ares', 'noyau', 'pr') : 18
-('archi1', 'ares', 'esa', 'mobj') : 2
-('archi1', 'vlsi1', 'esa', 'signal') : 2
-('archi1', 'vlsi1', 'ares', 'pr', 'signal') : 2
-('archi1', 'vlsi1', 'ares', 'mobj', 'noyau') : 4
-('archi1', 'esa', 'mobj', 'noyau') : 1
-('esa', 'mobj', 'noyau') : 2
-('archi1', 'vlsi1', 'esa', 'mobj') : 2
-('vlsi1', 'esa', 'signal') : 2
-('archi1', 'ares', 'noyau') : 12
-('archi1', 'noyau') : 6
-('vlsi1', 'ares', 'mobj') : 4
-('vlsi1', 'esa', 'mobj', 'signal') : 1
-('archi1', 'vlsi1', 'noyau', 'pr', 'signal') : 4
-('archi1', 'mobj') : 6
-('archi1', 'ares', 'pr') : 12
-('ares', 'noyau', 'signal') : 12
-('archi1', 'vlsi1', 'ares', 'esa', 'mobj') : 1
-('archi1', 'vlsi1', 'esa', 'noyau') : 4
+('archi1', 'vlsi1', 'pr') : 20
+('archi1', 'vlsi1', 'ares', 'signal') : 13
+('archi1', 'vlsi1', 'esa') : 8
+('mobj', 'noyau', 'signal') : 8
+('ares', 'mobj', 'noyau') : 12
+('vlsi1', 'esa', 'noyau', 'signal') : 6
+('vlsi1', 'ares', 'esa') : 5
+('vlsi1', 'ares', 'pr', 'signal') : 3
+('archi1', 'vlsi1', 'ares', 'noyau', 'signal') : 20
+('archi1', 'vlsi1', 'ares', 'mobj', 'signal') : 10
+('archi1', 'esa', 'noyau', 'pr') : 23
+('vlsi1', 'ares', 'mobj', 'noyau') : 10
+('ares', 'noyau', 'pr') : 35
+('archi1', 'ares', 'esa', 'mobj') : 3
+('archi1', 'vlsi1', 'esa', 'signal') : 6
+('archi1', 'vlsi1', 'ares', 'pr', 'signal') : 6
+('archi1', 'vlsi1', 'ares', 'mobj', 'noyau') : 16
+('archi1', 'esa', 'mobj', 'noyau') : 2
+('esa', 'mobj', 'noyau') : 4
+('archi1', 'vlsi1', 'esa', 'mobj') : 6
+('vlsi1', 'esa', 'signal') : 4
+('archi1', 'ares', 'noyau') : 22
+('archi1', 'noyau') : 9
+('vlsi1', 'ares', 'mobj') : 8
+('vlsi1', 'esa', 'mobj', 'signal') : 2
+('archi1', 'vlsi1', 'noyau', 'pr', 'signal') : 14
+('archi1', 'mobj') : 7
+('archi1', 'ares', 'pr') : 32
+('ares', 'noyau', 'signal') : 18
+('archi1', 'vlsi1', 'ares', 'esa', 'mobj') : 2
+('archi1', 'vlsi1', 'esa', 'noyau') : 10
 ('vlsi1', 'mobj') : 4
-('archi1', 'vlsi1', 'ares') : 8
-('vlsi1', 'ares', 'mobj', 'pr') : 8
-('archi1', 'vlsi1', 'mobj', 'signal') : 4
-('archi1', 'ares', 'noyau', 'signal') : 8
-('archi1', 'vlsi1', 'ares', 'mobj') : 4
-('vlsi1', 'mobj', 'pr') : 12
-('vlsi1', 'mobj', 'noyau', 'signal') : 3
-('archi1', 'vlsi1', 'mobj', 'noyau', 'pr') : 8
-('archi1', 'vlsi1', 'ares', 'noyau', 'pr') : 8
-('vlsi1', 'ares', 'noyau', 'signal') : 4
+('archi1', 'vlsi1', 'ares') : 15
+('vlsi1', 'ares', 'mobj', 'pr') : 23
+('archi1', 'vlsi1', 'mobj', 'signal') : 10
+('archi1', 'ares', 'noyau', 'signal') : 27
+('archi1', 'vlsi1', 'ares', 'mobj') : 18
+('vlsi1', 'mobj', 'pr') : 14
+('vlsi1', 'mobj', 'noyau', 'signal') : 6
+('archi1', 'vlsi1', 'mobj', 'noyau', 'pr') : 41
+('archi1', 'vlsi1', 'ares', 'noyau', 'pr') : 57
+('vlsi1', 'ares', 'noyau', 'signal') : 12

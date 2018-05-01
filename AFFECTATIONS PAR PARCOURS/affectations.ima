@@ -1,13 +1,13 @@
 LES AFFECTATIONS
 1 mapsi4 bima1 model1 complex1 mogpl1 
 2 mapsi4 bima1 model1 complex1 mogpl1 
-3 mapsi1 bima1 algav2 mogpl1 il4 
-4 mapsi3 lrc2 il1 
+3 mapsi1 bima1 algav2 mogpl4 il4 
+4 mapsi5 lrc2 il3 
 5 mapsi1 bima1 model1 mogpl1 il4 
-6 mapsi4 bima1 aagb1 mogpl1 lrc4 
-7 mapsi4 bima1 model1 complex1 mogpl1 
-8 mapsi1 bima1 mogpl1 lrcX il4 
-9 mapsi5 il4 
-10 mapsi2 complex2 lrc2 il5 
+6 mapsi2 bima1 aagb1 mogpl4 lrc2 
+7 mapsi2 bima1 model1 complex1 mogpl1 
+8 mapsi4 bima1 mogpl4 lrc2 il2 
+9 mapsi1 il4 
+10 mapsi4 lrcX complex2 il4 
 11 mapsi1 bima1 dlp3 algav2 il4 
-12 mapsi1 bima1 model1 mogpl1 lrcX 
+12 mapsi4 bima1 model1 mogpl1 lrcX 
