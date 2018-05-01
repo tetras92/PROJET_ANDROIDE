@@ -29,7 +29,7 @@ class Parcours:
             self.mesEtudiants = list()
             self.DicoConfigurations = dict()
             deb = time.time()
-            # self.generer_dico_Nbconfig()
+            self.generer_dico_Nbconfig()
             print ("....." * int(time.time() - deb + 1)*9)
             self.effectif = 0
             self.mesEtudiantsAProbleme = list()
@@ -161,6 +161,17 @@ class Parcours:
 
         def str_nb_etudiants_insatisfaits(self):
             return self.nom + "(" + str(len(self.mesEtudiantsAProbleme)) + ")[{}%]  ".format(round(100. - 100.0*len(self.mesEtudiantsAProbleme)/self.effectif, 2))
+
+        def afficher_carte_augmentee_incompatibilites(self,taille):
+            Liste = list()
+            for tuple_, nbConfig in self.DicoConfigurations.items():
+                if taille == len(tuple_):
+                    Liste.append((tuple_, nbConfig))
+            Liste.sort(key=lambda elmt:elmt[1])
+            for elmt in Liste:
+                print elmt
+
+
 
         def __str__(self):
             s = "Parcours : " + self.nom + "\n\t\tEffectif : {} etudiants dont {} insatisfaits ({}%)\n".format(self.effectif, len(self.mesEtudiantsAProbleme), round(100. - 100.0*len(self.mesEtudiantsAProbleme)/self.effectif, 2))

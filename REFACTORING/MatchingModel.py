@@ -157,8 +157,6 @@ class MatchingModel:
 
         for Ue in self.ListeDesUEs[1:]:
             s += str(Ue)
-
-
         return s
 
 

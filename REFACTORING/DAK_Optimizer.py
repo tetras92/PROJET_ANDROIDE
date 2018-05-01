@@ -222,29 +222,71 @@ class DAK_Optimizer:
     def AS_supprimer_groupe(self, idUE, numeroGroupe):
         self.AS_modifier_capacite(idUE, numeroGroupe, 0)
 
-    def AS_creer_groupe(self):
-        return
+    def AS_ajouter_groupe(self, ueId, creneauTd, creneauTme, capacite):
+        numNouveauGroupe = DAK_Optimizer.ListeDesUEs[ueId].ajouter_un_groupe(creneauTd, creneauTme, capacite)
+        #MAJ_EDT
+        dictCreneauTd = DAK_Optimizer.EDT[creneauTd]
+        if numNouveauGroupe not in dictCreneauTd:
+            dictCreneauTd[numNouveauGroupe] = set([ueId])
+        else:
+            dictCreneauTd[numNouveauGroupe].add(ueId)
+
+        dictCreneauTme = DAK_Optimizer.EDT[creneauTme]
+        if numNouveauGroupe not in dictCreneauTme:
+            dictCreneauTme[numNouveauGroupe] = set([ueId])
+        else:
+            dictCreneauTme[numNouveauGroupe].add(ueId)
+
+        DAK_Optimizer.EnsIncompatibilites.clear()
+        self.generer_incompatibilites()
+
+        DAK_Optimizer.restaurer_UEsParcours = True
+
+    def AD_afficher_carte_augmentee_incompatibilites(self, nomParcours, taille=5):
+
+        indexParcours = 0
+        while nomParcours != DAK_Optimizer.ListeDesParcours[indexParcours].get_intitule():
+            indexParcours += 1
+
+        DAK_Optimizer.ListeDesParcours[indexParcours].afficher_carte_augmentee_incompatibilites(taille)
+
 
 Optim = DAK_Optimizer()
 Optim.charger_edt("edt.csv")
+# print Optim.EDT
 Optim.charger_parcours("parcours.csv")
-Optim.traiter_dossier_voeux("../VOEUX")
-Optim.match(equilibre=True, tauxEquilibre=0.10)
+# Optim.traiter_dossier_voeux("../VOEUX")
+# Optim.match()
+#
+# Optim.AS_supprimer_groupe(11, 3) #Groupe 3 Mapsi
+#
+# Optim.AS_modifier_capacite(10, 1, 36)
+# Optim.AS_modifier_capacite(10, 3, 36)   # AUX GROUPES DE LRC
+# Optim.AS_modifier_capacite(10, 2, 36)
+# Optim.AS_modifier_capacite(10, 4, 36)
+#
+# Optim.AS_ajouter_groupe(6, 5, 24, 32)      #UN GROUPE DE 32 EN COMPLEX
+# Optim.AS_supprimer_groupe(9, 3)           #IL3
+# Optim.AS_ajouter_groupe(9, 21, 22, 32)
+
+Optim.AD_afficher_carte_augmentee_incompatibilites("sfpn")
 # Optim.eprouver_edt(nombreDeDossierGeneres=50)
 # for P in Optim.ListeDesParcours:
 #     print P.nom
 #     print P.HistoriqueDesContratsAProbleme
-# Optim.AS_modifier_capacite(10, 3, 35)
-# Optim.match()
-# Optim.AS_modifier_capacite(10, 1, 35)
+
+# Optim.match(False)
+
 # Optim.match()
 # Optim.AS_modifier_capacite(10, 4, 35)
 # Optim.match()
-# Optim.AS_modifier_capacite(10, 2, 35)
+
 # Optim.match()
 # Optim.AS_modifier_capacite(6, 2, 35)
 # Optim.match()
-Optim.AS_supprimer_groupe(11, 3)
-Optim.match(equilibre=False)
-Optim.AS_supprimer_groupe(3, 1)
-Optim.match(equilibre=False)
+
+# Optim.match(equilibre=False)
+# Optim.AS_supprimer_groupe(3, 1)
+# Optim.match(False)
+
+# Optim.match()

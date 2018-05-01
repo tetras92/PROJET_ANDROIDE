@@ -93,6 +93,17 @@ class UE:
             s += self.intitule + "(" + str(len(self.EnsEtuInteresses) - self.nbInscrits) + " / " + str(self.capaciteTotale - self.nbInscrits) + ")  "
             return s
 
+
+        #--------------------------------------------------------------#
+        def ajouter_un_groupe(self, creneauTd, creneauTme, capacite):
+            if creneauTme != creneauTd:         #Les exceptions
+                self.ListeCreneauxTdTme.append((creneauTd, creneauTme))
+                self.ListeCapacites.append(capacite)
+                self.nb_groupes += 1
+                self.maj_capacite_totale()
+                self.optimizer.capaciteTotaleAccueil += capacite
+                return self.nb_groupes
+
         def maj_capacite_totale(self):
             self.capaciteTotale = sum(self.ListeCapacites)
 
@@ -126,6 +137,8 @@ class UE:
 
         def modifier_capacite_groupe(self, numeroGroupe, nouvelleCapacite):
             if numeroGroupe <= self.nb_groupes: #A REMPLACER PAR DES EXCEPTIONS
+                self.optimizer.capaciteTotaleAccueil -= self.ListeCapacites[numeroGroupe - 1]
+                self.optimizer.capaciteTotaleAccueil += nouvelleCapacite
                 self.ListeCapacites[numeroGroupe - 1] = nouvelleCapacite
                 self.maj_capacite_totale()
                 if nouvelleCapacite == 0:
