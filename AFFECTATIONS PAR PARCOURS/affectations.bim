@@ -1,26 +1,26 @@
 LES AFFECTATIONS
-1 mapsi3 maths4m0621 aagb1 complex2 il5 
-2 mapsi2 maths4m0621 aagb1 bima1 lrc4 
+1 mapsi5 maths4m0621 aagb1 complex2 il3 
+2 mapsi4 maths4m0621 aagb1 bima1 lrc4 
 3 model1 lrc3 
-4 mapsi3 mlbda3 il4 
-5 mapsi2 lrc2 mlbda2 
-6 complex2 mogpl2 il4 
+4 mapsi3 mlbda3 il5 
+5 mapsi1 lrc4 mlbda2 
+6 complex2 mogpl3 il4 
 7 mapsi5 maths4m0621 aagb1 lrc4 il3 
 8 mapsi2 maths4m0621 aagb1 bima1 complex2 
-9 mapsi3 maths4m0621 mogpl2 il1 
-10 mapsi2 maths4m0621 aagb1 mogpl2 lrc4 
-11 mapsi3 mlbda3 il1 
-12 mapsi2 maths4m0621 aagb1 bima1 mogpl4 
-13 mapsi2 maths4m0621 aagb1 bima1 mogpl4 
+9 mapsi1 maths4m0621 mogpl2 il3 
+10 mapsi4 maths4m0621 aagb1 mogpl2 lrc4 
+11 mapsi2 mlbda3 il1 
+12 mapsi4 maths4m0621 aagb1 bima1 mogpl4 
+13 mapsi4 maths4m0621 aagb1 bima1 mogpl4 
 14 mapsi5 maths4m0621 aagb1 mogpl4 il3 
 15 mapsi5 maths4m0621 aagb1 lrc4 
-16 mapsi2 maths4m0621 aagb1 complex2 il5 
+16 mapsi5 maths4m0621 aagb1 complex2 il3 
 17 mapsi1 algav2 mogpl3 
-18 mapsi3 maths4m0621 aagb1 mogpl2 lrc4 
-19 mapsi4 maths4m0621 aagb1 bima1 lrc4 
-20 mapsi2 maths4m0621 aagb1 lrc4 il5 
-21 mapsi4 maths4m0621 aagb1 mogpl2 lrc4 
-22 mapsi4 maths4m0621 aagb1 lrc4 il5 
-23 mapsi5 maths4m0621 aagb1 il3 lrc4 
-24 mapsi4 maths4m0621 aagb1 bima1 lrc4 
-25 mapsi2 maths4m0621 aagb1 bima1 complex2 
+18 mapsi2 maths4m0621 aagb1 mogpl3 lrc4 
+19 mapsi2 maths4m0621 aagb1 bima1 lrc4 
+20 mapsi4 maths4m0621 aagb1 lrc4 il5 
+21 mapsi2 maths4m0621 aagb1 mogpl2 lrc4 
+22 mapsi5 maths4m0621 aagb1 lrc4 il3 
+23 mapsi2 maths4m0621 aagb1 il5 lrc4 
+24 mapsi2 maths4m0621 aagb1 bima1 lrc4 
+25 mapsi4 maths4m0621 aagb1 bima1 complex2 

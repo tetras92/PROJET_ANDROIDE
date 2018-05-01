@@ -85,18 +85,13 @@ class Etudiant:
             else:
                     chaine = self.optimizer.ListeDesUEs[ue].get_intitule()+"X"
 
-                    # pattern = ""
-                    # ListeTrieeDesUE = self.ue_obligatoires + self.ue_non_obligatoires
-                    # ListeTrieeDesUE.sort()
-                    # # print(ListeTrieeDesUE)
-                    # for ue in ListeTrieeDesUE:
-                    #     pattern += self.optimizer.ListeDesUEs[ue].get_intitule() + " "
-                    #
-                    # self.optimizer.DictionnaireDesInsatisfactionsParParcours[self.parcours].append([str(self),ListeTrieeDesUE]) #remplacer ListeTrieeDesUEs par pattern if pertinent
             if ue in self.ue_obligatoires:
                 self.ListeDesInscriptions = [chaine] + self.ListeDesInscriptions
             else:
                 self.ListeDesInscriptions.append(chaine)
+
+        def get_ListeDesInscriptions(self):
+            return self.ListeDesInscriptions
 
         def enregistrer_affectation(self, file):
             """enregistre l'etat des inscriptions de l'etudiant dans le fichier des affectations corresopondant a son parcours"""

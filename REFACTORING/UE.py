@@ -117,7 +117,6 @@ class UE:
         def __str__(self):
             """ Retourne la chaine representant une UE"""
             s = "UE {} ({}) :\n\tNombre de groupes : {}\n\tCapacite totale d'accueil: {}\n\t".format(self.intitule, self.id, self.nb_groupes, sum(self.ListeCapacites))
-            # equil = ["Oui", "Non"]
             if self.equilibre:
                 s += "Equilibre? : Oui\n"
             else:

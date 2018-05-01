@@ -12,22 +12,14 @@ class CompatibilityModel():
 
 
         self.modelGurobi = Model("MODELE DE COMPATIBILITE (PAR DAK)")
-        for Ue in self.ListeDesUEs[1:]:
-            Ue.remise_a_zero()
 
-        for Incompatibilite in self.EnsIncompatibilites:
-            Incompatibilite.reset_incompatibilite()
-
-        self.ListeVarObj = list()
+        # self.ListeVarObj = list()
 
         self.ListeVoeux = [optimizer.DictUEs[voeu] for voeu in ListeVoeux]
         self.ListeVoeuxId = [Ue.get_id() for Ue in self.ListeVoeux]
 
         for ue_ in self.ListeVoeuxId:#range(1, len(CompatibilityModel.ListeDesUEs)):
             self.ListeDesUEs[ue_].EnsEtuInteresses.add("x")
-
-        for Incompatibilite in self.EnsIncompatibilites:
-            Incompatibilite.m_a_j_EnsEtuConcernes()
 
         self.instancier_var_Xij()
 
@@ -41,13 +33,14 @@ class CompatibilityModel():
             for idG in range(1, voeuUE.get_nb_groupes()+1):
                 #cREATION DES VARIABLES XIJ
                 # print (idG, voeuUE)
-                var = self.modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name="x_%d"%idG+"_%d"%voeuUE.get_id())
+                var = self.modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name="x_%d"%voeuUE.get_id()+"_%d"%idG)
                 self.LVarXij.append(var)
             self.modelGurobi.update()
 
-        #CREATION DE VARIABLES N_IJKLm
+        for Incompatibilite in self.EnsIncompatibilites:
+            Incompatibilite.m_a_j_EnsEtuConcernes()
+            Incompatibilite.ajouterContrainteModeleGurobi(self.modelGurobi)
 
-            #INSTANCIATION DE TOUTES LES COMBINAISONS
 
     def resoudre(self):
         L_L_Groupe_ListeVoeux = [[i + 1 for i in range(self.ListeDesUEs[ueId].get_nb_groupes())] for ueId in self.ListeVoeuxId]
@@ -62,12 +55,12 @@ class CompatibilityModel():
             var = self.modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name=varname)
             # CompatibilityModel.modelGurobi.update()
 
-            self.ListeVarObj.append(var)
+            # self.ListeVarObj.append(var)
             self.modelGurobi.update()
 
             Z = zip(L_gr_combi, self.ListeVoeuxId)
             # print Z
-            cst1 = self.modelGurobi.addConstr(quicksum(self.modelGurobi.getVarByName("x_%d"%gr+"_%d"%ue) for gr,ue in Z) >= len(self.ListeVoeux)*var)
+            cst1 = self.modelGurobi.addConstr(quicksum(self.modelGurobi.getVarByName("x_%d"%ue+"_%d"%gr) for gr,ue in Z) >= len(self.ListeVoeux)*var)
             cst2 = self.modelGurobi.addConstr(var, GRB.EQUAL, 1)
             #Pas d'objectif: juste un modele de realisabilite
             self.modelGurobi.update()
@@ -75,6 +68,7 @@ class CompatibilityModel():
 
             status = self.modelGurobi.Status
             if status == GRB.Status.INFEASIBLE:
+                # print [self.ListeDesUEs[ueI].get_intitule() for ueI in self.ListeVoeuxId]
                 nbConfig -= 1
 
             self.modelGurobi.reset()

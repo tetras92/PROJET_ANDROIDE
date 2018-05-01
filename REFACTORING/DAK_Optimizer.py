@@ -1,11 +1,9 @@
-from gurobipy import *
-from HelpingFunctions import *
-import csv
 from UE import *
 from Etudiant import *
 from Incompatibilite import *
 from Parcours import *
 from MatchingModel import *
+from GenerateurDeVoeux import *
 
 class DAK_Optimizer:
 
@@ -31,19 +29,12 @@ class DAK_Optimizer:
 
     iModelAlea = 0
 
-    ListeEffectifDesParcours = list()
     ListeDesParcours = list()
-    ListeDesEffectifsCumules = list()
-
-
 
 
 
     nbTotalIncompatibilites = 0
     EnsIncompatibilites = set()
-
-
-
 
 
 
@@ -120,11 +111,7 @@ class DAK_Optimizer:
                             for idGroup1 in range(1, nb_group_ue1+1):
                                 for idGroup2 in range(1, nb_group_ue2):
                                     currentIncompatibilite = Incompatibilite(ue1, idGroup1, ue2, idGroup2, self)
-                                    #Instruction Rajout au model
-                                    # currentIncompatibilite.ajouterContrainteModeleGurobi(DAK_Optimizer.modelGurobi)
-                                    #Fin
-                                    # if random.random() <= 0.5:
-                                    #     print(currentIncompatibilite)
+
                                     DAK_Optimizer.EnsIncompatibilites.add(currentIncompatibilite)
 
                     # incompatibilite inter cours et td tme
@@ -133,9 +120,7 @@ class DAK_Optimizer:
                             for ue2 in EnsUE2:
                                 for idGroup1 in range(1, nb_group_ue1+1):
                                     currentIncompatibilite = Incompatibilite(ue1, idGroup1, ue2, idGroupTdTme, self)
-                                    #Instruction Rajout au model
-                                    # currentIncompatibilite.ajouterContrainteModeleGurobi(DAK_Optimizer.modelGurobi)
-                                    #Fin
+
                                     DAK_Optimizer.EnsIncompatibilites.add(currentIncompatibilite)
 
             except:
@@ -174,9 +159,48 @@ class DAK_Optimizer:
         MM.match()
         print MM
 
+    def nettoyer_les_Ues_et_les_Incompatibilites(self):
+        for Ue in DAK_Optimizer.ListeDesUEs[1:]:
+            Ue.remise_a_zero()
+
+        for Incompatibilite in DAK_Optimizer.EnsIncompatibilites:
+            Incompatibilite.reset_incompatibilite()
+
+    def reinitialiser_les_parcours(self, sauvegarde=True):
+        for Parcours_Obj in DAK_Optimizer.ListeDesParcours:
+            Parcours_Obj.reinitialiser_parcours(sauvegarde)
+
+    def eprouver_edt(self, nombreDeDossierGeneres=50, directoryName='VOEUX_RANDOM',equilibre=True, tauxEquilibre=0.10):
+        G = GenerateurDeVoeux(directoryName, self)
+        G.generer(nombreDeDossierGeneres)
+        #Traitement
+        # #RESTAURATION A L'ETAT DE DEPART
+        self.reinitialiser_les_parcours(sauvegarde=False) #Au cas ou il y aurait eu un matching avant
+        self.nettoyer_les_Ues_et_les_Incompatibilites()
+        DAK_Optimizer.ListedesVarY = list()
+        DAK_Optimizer.ListedesVarN = list()
+        DAK_Optimizer.ListeDesEtudiants = list()
+        #FIN RESTAURATION
+        for dossierId in range(nombreDeDossierGeneres):
+            self.traiter_dossier_voeux(directoryName+"/"+str(dossierId))
+            self.match(equilibre,tauxEquilibre)
+            # RESTAURATION A L'ETAT DE DEPART
+            self.reinitialiser_les_parcours()
+            self.nettoyer_les_Ues_et_les_Incompatibilites()
+            DAK_Optimizer.ListedesVarY = list()
+            DAK_Optimizer.ListedesVarN = list()
+            DAK_Optimizer.ListeDesEtudiants = list()
+            # FIN RESTAURATION
+
+
+
 
 Optim = DAK_Optimizer()
 Optim.charger_edt("edt.csv")
 Optim.charger_parcours("parcours.csv")
-Optim.traiter_dossier_voeux("../VOEUX")
-Optim.match()
+# Optim.traiter_dossier_voeux("../VOEUX")
+# Optim.match(equilibre=True, tauxEquilibre=0.10)
+Optim.eprouver_edt(nombreDeDossierGeneres=5)
+# for P in Optim.ListeDesParcours:
+#     print P.nom
+#     print P.DicoConfigurations

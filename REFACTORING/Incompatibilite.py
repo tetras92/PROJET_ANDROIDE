@@ -14,7 +14,7 @@ class Incompatibilite:
 
         def __str__(self):
             """Retourne la chaine d'affichage de l'incompatibilite et l'effectif des etudiants concernes"""
-            s = "Incompatibilite entre l'UE/Groupe {} et l'UE/Groupe {}\n\tNombre d'etudiants concernes: {}\n\n".format(self.ueGroup1, self.ueGroup2, len(self.ensEtuConcernes))
+            s = "Incompatibilite entre l'UE/Groupe {} et l'UE/Groupe {}\n\tNombre d'etudiants concernes: {}\n{}\n\n".format(self.ueGroup1, self.ueGroup2, len(self.ensEtuConcernes), self.ensEtuConcernes)
 
             return s
 
@@ -27,7 +27,9 @@ class Incompatibilite:
 
         def m_a_j_EnsEtuConcernes(self):
             self.ensEtuConcernes = self.optimizer.ListeDesUEs[self.ueGroup1[0]].getEnsEtu() & self.optimizer.ListeDesUEs[self.ueGroup2[0]].getEnsEtu()
+            self.vide = (len(self.ensEtuConcernes) == 0)
 
         def reset_incompatibilite(self):
             #vide juste self.ensEtuConcernes
             self.ensEtuConcernes.clear()
+            self.vide = (len(self.ensEtuConcernes) == 0)

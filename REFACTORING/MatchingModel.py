@@ -55,18 +55,21 @@ class MatchingModel:
         self.modelGurobi.modelSense = -1        #MAXIMIZE
 
         self.modelGurobi.optimize()
+
         self.modelGurobi.setParam(GRB.Param.ObjNumber, 0)
         self.objectif1_Value = self.modelGurobi.ObjNVal           #Nombre d'inscriptions satisfaites
         self.modelGurobi.setParam(GRB.Param.ObjNumber, 1)
         self.objectif2_Value = self.modelGurobi.ObjNVal           #Nombre d'etudiants entierement satisfaits
 
-
+        self.traitement_resolution(path='')
 
 
     def traitement_resolution(self, path=''):
-        self.charge = round(100.0*self.objectif1_Value/self.nombreTotalDemandesInscriptions,2)
+        self.charge = round(100.0*self.nombreTotalDemandesInscriptions/self.capaciteTotaleAccueilUEs,2)
         self.proportionSatisfactionY =  round(100.*self.objectif1_Value/self.nombreTotalDemandesInscriptions, 2)
         self.proportionSatisfactionN =  round(100.*self.objectif2_Value/self.nombreTotalEtudiants, 2)
+
+
 
         for varName in self.optimizer.ListedesVarY:
             # print (varName)
@@ -99,29 +102,34 @@ class MatchingModel:
                 pass
             for Parcours_Obj in self.ListeDesParcours:
                 f = open(affectationDirectory + Parcours_Obj.get_intitule() + ".csv", "w")
-                fieldnames = ["num"] + ["oblig"+str(i) for i in range(1,self.optimizer.Parameters.nbMaxUEObligatoires)] + ["cons"+str(i) for i in range(1,self.optimizer.Parameters.nbMaxUEConseillees)]
-                writer = csv.DictWriter(file, fieldnames=fieldnames)
+                fieldnames = ["num"] + ["oblig"+str(i) for i in range(1,self.optimizer.Parameters.nbMaxUEObligatoires + 1)] + ["cons"+str(i) for i in range(1,self.optimizer.Parameters.nbMaxUEConseillees + 1 )]
+                writer = csv.DictWriter(f, fieldnames=fieldnames)
                 writer.writeheader()
                 for Etu in Parcours_Obj.get_mes_Etudiants():
                     csvLine = dict()
                     csvLine["num"] = Etu.get_id_relatif()
+                    L_inscriptions = Etu.get_ListeDesInscriptions()
                     L_Oblig = Etu.get_ue_obligatoires()
                     L_Cons = Etu.get_ue_conseillees()
                     for o in range(len(L_Oblig)):
-                        csvLine["oblig"+str(o+1)] = L_Oblig[o]
+                        csvLine["oblig"+str(o+1)] = L_inscriptions[o]
                     for c in range(len(L_Cons)):
-                        csvLine["cons"+str(c+1)] = L_Cons[c]
+                        csvLine["cons"+str(c+1)] = L_inscriptions[len(L_Oblig) + c]
                     writer.writerow(csvLine)
 
             f.close()
+        #VERIFICATION DE L'EQUILIBRE DES GROUPES
+        for Ue in self.ListeDesUEs[1:]:
+            Ue.set_equilibre()
 
 
     def __str__(self):
         """Affiche les UES du Modele"""
-        self.traitement_resolution()
-        s = "**********OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK)**********\n\n"
+
+        s = "\n\n**********OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK)**********\n\n"
         s += "Nombre Total d'inscriptions a satisfaire : {} \n".format(self.nombreTotalDemandesInscriptions)
         s += "Nombre Maximal d'inscriptions pouvant etre satisfaites : {} \n".format(self.capaciteTotaleAccueilUEs)
+        s += "Nombre total d'etudiants du master : {}\n".format(self.nombreTotalEtudiants)
         s += "Charge : {}% \nDesequilibre maximal autorise : {} %\n\n\t\t\t*LES RESULTATS D'AFFECTATION*\n".format(self.charge, self.tauxEquilibre*100)
 
         # proportionSatisfaction = round(100.0*MainModel.nbInscriptionsSatisfaites/len(MainModel.ListedesVarY),2)
@@ -134,7 +142,7 @@ class MatchingModel:
         s += "\n\t\tNombre de demandes non satisfaites par UE (**Saturee):\n\t\t\t"
         for Ue in self.ListeDesUEs[1:]:
             s += Ue.str_nb_non_inscrits()
-        s += "\n\t\t\t*DETAIL DES AFFECTATIONS PAR UE*\n\n"
+        s += "\n\n\n\t\t\t*DETAIL DES AFFECTATIONS PAR UE*\n\n"
 
 
         for Ue in self.ListeDesUEs[1:]:

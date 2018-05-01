@@ -28,12 +28,22 @@ class Parcours:
             self.ListeProbaUEConseillees = [float(csvLine["Pcons"+str(i)]) for i in range(1, self.optimizer_Params.nbMaxUEConseilleesParcours+1) if csvLine["Pcons"+str(i)] != ""]
             self.mesEtudiants = list()
             self.DicoConfigurations = dict()
-            # deb = time.time()
-            # self.generer_dico_Nbconfig()
-            # print (self.nom, time.time() - deb)
+            deb = time.time()
+            self.generer_dico_Nbconfig()
+            print ("....." * int(time.time() - deb + 1)*9)
             self.effectif = 0
             self.mesEtudiantsAProbleme = list()
             self.lesContratsAProbleme  = list()
+            self.HistoriqueDesContratsAProbleme = list()
+
+        def reinitialiser_parcours(self,avecSauvegarde=True):
+            if avecSauvegarde:
+                self.HistoriqueDesContratsAProbleme = self.HistoriqueDesContratsAProbleme + self.lesContratsAProbleme
+            self.mesEtudiants = list()
+            self.lesContratsAProbleme = list()
+            self.mesEtudiantsAProbleme = list()
+            self.effectif = 0
+
 
         def constituer_voeu(self, k):
             """Construit un voeu de k UE"""
@@ -57,16 +67,16 @@ class Parcours:
             contratUEObligatoires.sort()
             contrat = contratUEObligatoires + contratUEConseillees
             # contrat.sort()
-            if len(contrat) > 1 and self.DicoConfigurations[self.nom][tuple(contrat)] == 0.0: #l'orde oblig avant conseilles importants
+            if len(contrat) > 1 and self.DicoConfigurations[tuple(contrat)] == 0.0: #l'orde oblig avant conseilles importants
                     # print("incompatible cree")
                     return self.constituer_voeu(k)
             return contratUEObligatoires, contratUEConseillees
 
-        def generer_csv_aleatoires(self, directoryName):
+        def generer_csv_aleatoires(self, path):
             """Genere un csv aleatoire d'au plus n etudiants au cas ou 0 apparait dans les tirages aleatoires (loi binomiale n, P)"""
-            file = open(directoryName + "/voeux."+self.nom, "w")
+            file = open(path + "/voeux."+self.nom, "w")
 
-            fieldnames = ["num"] + ["oblig"+str(i) for i in range(1,4)] + ["cons"+str(i) for i in range(1,6)]
+            fieldnames = ["num"] + ["oblig"+str(i) for i in range(1,self.optimizer.Parameters.nbMaxUEObligatoires + 1)] + ["cons"+str(i) for i in range(1,self.optimizer.Parameters.nbMaxUEConseillees + 1)]
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writeheader()
             effectif = random.randint(self.effectifMin, self.effectifMax)
@@ -77,9 +87,7 @@ class Parcours:
 
             s = [v for i in range(len(s)) for v in [i+1]*s[i]]
             random.shuffle(s)
-            # print(s)
-#            print (s)
-#            s = np.random.binomial(5, P, n) #****
+
             id_rel = 0
             for i in range(len(s)):
                 current_nb_ue = s[i]
@@ -117,11 +125,12 @@ class Parcours:
                             ss_ContratCons = list(combiC)
                             ss_ContratCons.sort()
                             Contrat = ss_ContratOblig + ss_ContratCons
-                            # Contrat.sort()
-                            # print(Contrat)
+
+                            self.optimizer.nettoyer_les_Ues_et_les_Incompatibilites()
                             cM = CompatibilityModel(Contrat, self.optimizer)
                             ContratStr, nb_config = cM.resoudre()
-                            # print(ContratStr)
+                            self.optimizer.nettoyer_les_Ues_et_les_Incompatibilites()
+
                             ContratStr = tuple(ContratStr)
                             nb_config = int(nb_config)
                             self.DicoConfigurations[ContratStr] = nb_config
@@ -148,4 +157,8 @@ class Parcours:
             self.lesContratsAProbleme.append(self.get_mes_etudiants()[idRelatif].get_contrat())
 
         def str_nb_etudiants_insatisfaits(self):
-            return self.nom + "(" + str(len(self.mesEtudiantsAProbleme)) + ")  "
+            return self.nom + "(" + str(len(self.mesEtudiantsAProbleme)) + ")[{}%]  ".format(round(100. - 100.0*len(self.mesEtudiantsAProbleme)/self.effectif, 2))
+
+        def __str__(self):
+            s = "Parcours : " + self.nom + "\n\t\tEffectif : {} etudiants dont {} insatisfaits ({}%)\n".format(self.effectif, len(self.mesEtudiantsAProbleme), round(100. - 100.0*len(self.mesEtudiantsAProbleme)/self.effectif, 2))
+            return s
