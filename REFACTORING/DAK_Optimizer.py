@@ -264,7 +264,7 @@ class DAK_Optimizer:
             if Etu.get_statut():
                 Etu.changer_mes_ues_non_obligatoires()
 
-    def RL_appliquer(self, proba, objectif, timeLimit):
+    def RL_appliquer(self, objectif, timeLimit):
 
         self.RL_introduire_les_indifferences_etudiants()
         time_ = 0
@@ -288,24 +288,54 @@ class DAK_Optimizer:
                 print "ameliore", value, objectif
                 objectif = value
 
+    def sauvegarde_UEs(self, path):
+        file = open(path, "w")
+        fieldnames = ["id_ue", "intitule", "nb_groupes"] + ["capac"+str(i) for i in range(1, DAK_Optimizer.Parameters.nbMaxGroupeParUE+1)]
+        fieldnames += ["cours"+str(i) for i in range(1, DAK_Optimizer.Parameters.nbMaxCoursParUE+1)]
+
+
+        Z = zip(["td"+str(i) for i in range(1, DAK_Optimizer.Parameters.nbMaxGroupeParUE+1)], ["tme"+str(i) for i in range(1, DAK_Optimizer.Parameters.nbMaxGroupeParUE+1)])
+        fieldnames += [elem for couple in Z for elem in list(couple)]
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        writer.writeheader()
+
+        for Ue in DAK_Optimizer.ListeDesUEs[1:]:
+            csvLine = Ue.ue_sauvegarde()
+            writer.writerow(csvLine)
+        file.close()
+
+
 
 Optim = DAK_Optimizer()
 Optim.charger_edt("edt.csv")
-print Optim.DictUEs
 Optim.charger_parcours("parcours.csv")
-Optim.traiter_dossier_voeux("../VOEUX")
-Optim.match()
-Optim.RL_appliquer(0.4, len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
+# print Optim.DictUEs
 
+
+# Optim.match()
+# Optim.eprouver_edt(nombreDeDossierGeneres=5)
+# Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
+# Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
 #
 # Optim.AS_supprimer_groupe(11, 3) #Groupe 3 Mapsi
-#
+# Optim.AS_ajouter_groupe(5, 23, 24, 16) #Bima
+Optim.traiter_dossier_voeux("../VOEUX")
+
+# #
 # Optim.AS_modifier_capacite(10, 1, 36)
 # Optim.AS_modifier_capacite(10, 3, 36)   # AUX GROUPES DE LRC
 # Optim.AS_modifier_capacite(10, 2, 36)
 # Optim.AS_modifier_capacite(10, 4, 36)
-#
+Optim.match()
+# Optim.sauvegarde_UEs("edt.csv")
+# Optim.eprouver_edt(nombreDeDossierGeneres=20)
+# #
 # Optim.AS_ajouter_groupe(6, 5, 24, 32)      #UN GROUPE DE 32 EN COMPLEX
+# Optim.match()
+
+
+
+
 # Optim.AS_supprimer_groupe(9, 3)           #IL3
 # Optim.AS_ajouter_groupe(9, 21, 22, 32)
 

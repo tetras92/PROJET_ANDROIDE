@@ -145,9 +145,38 @@ class UE:
                     self.groupes_supprimes.add(numeroGroupe)
 
 
+        def ue_sauvegarde(self):
+            Dict_Ue = dict()
+            Dict_Ue["id_ue"] = self.id
+            Dict_Ue["intitule"] = self.intitule
+            Dict_Ue["nb_groupes"] = self.nb_groupes - len(self.groupes_supprimes)
+
+            numI = 1
+            for capacite in self.ListeCapacites:
+                if capacite != 0:
+                    Dict_Ue["capac"+str(numI)] = capacite
+                    numI += 1
+            nbCours = 1
+            for creneau_cours in self.ListeCreneauxCours:
+                Dict_Ue["cours"+str(nbCours)] = creneau_cours
+                nbCours += 1
+
+            tdtmeId = 1
+            id_a_inscrire = 1
+            for creneautd,creneautme in self.ListeCreneauxTdTme[1:]:
+
+                if tdtmeId not in self.groupes_supprimes:
+                    Dict_Ue["td"+str(id_a_inscrire)] = creneautd
+                    Dict_Ue["tme"+str(id_a_inscrire)] = creneautme
+                    id_a_inscrire += 1
+                tdtmeId += 1
+
+            return Dict_Ue
+
+
         def __str__(self):
             """ Retourne la chaine representant une UE"""
-            s = "UE {} ({}) :\n\tNombre de groupes : {}\n\tCapacite totale d'accueil: {}\n\t".format(self.intitule, self.id, self.nb_groupes, sum(self.ListeCapacites))
+            s = "UE {} ({}) :\n\tNombre de groupes : {}\n\tCapacite totale d'accueil: {}\n\t".format(self.intitule, self.id, self.nb_groupes - len(self.groupes_supprimes), sum(self.ListeCapacites))
             if self.equilibre:
                 s += "Equilibre? : Oui\n"
             else:
