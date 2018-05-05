@@ -70,6 +70,8 @@ class CompatibilityModel():
             if status == GRB.Status.INFEASIBLE:
                 # print [self.ListeDesUEs[ueI].get_intitule() for ueI in self.ListeVoeuxId]
                 nbConfig -= 1
+            else:
+                return [self.ListeDesUEs[ueI].get_intitule() for ueI in self.ListeVoeuxId], 1   #soi-disant au moins un
 
             self.modelGurobi.reset()
             self.modelGurobi.remove(var)
