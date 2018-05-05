@@ -29,7 +29,7 @@ class Parcours:
             self.mesEtudiants = list()
             self.DicoConfigurations = dict()
             deb = time.time()
-            # self.generer_dico_Nbconfig()
+            self.generer_dico_Nbconfig()
             print ("....." * int(time.time() - deb + 1)*9)
             self.effectif = 0
             self.mesEtudiantsAProbleme = list()
@@ -72,7 +72,7 @@ class Parcours:
             contratUEObligatoires.sort()
             contrat = contratUEObligatoires + contratUEConseillees
             # contrat.sort()
-            if len(contrat) > 1 and self.DicoConfigurations[tuple(contrat)] == 0.0: #l'orde oblig avant conseilles importants
+            if len(self.DicoConfigurations) != 0 and len(contrat) > 1 and self.DicoConfigurations[tuple(contrat)] == 0.0: #l'orde oblig avant conseilles importants
                     # print("incompatible cree")
                     return self.constituer_voeu(k)
             return contratUEObligatoires, contratUEConseillees
@@ -114,6 +114,8 @@ class Parcours:
             self.effectif = len(self.mesEtudiants)
 
         def generer_dico_Nbconfig(self):
+            self.DicoConfigurations = dict()
+
             for taille_voeu in range(2,self.optimizer_Params.TailleMaxContrat+1): #A elargir a toutes les tailles
                 nbMaxUEObligatoiresDuVoeu = min(self.nbUEObligatoires, taille_voeu)
                 nbMinUEObligatoiresDuVoeu = max(0, self.nbUEObligatoires - (5 - taille_voeu))
@@ -167,7 +169,7 @@ class Parcours:
         def afficher_carte_augmentee_incompatibilites(self,taille):
             Liste = list()
             for tuple_, nbConfig in self.DicoConfigurations.items():
-                if taille == len(tuple_):
+                if taille == len(tuple_) and nbConfig == 0:
                     Liste.append((tuple_, nbConfig))
             Liste.sort(key=lambda elmt:elmt[1])
             for elmt in Liste:

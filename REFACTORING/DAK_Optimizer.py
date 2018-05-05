@@ -31,6 +31,7 @@ class DAK_Optimizer:
     iModelAlea = 0
 
     restaurer_UEsParcours = False        #EFFACER DONNEES AFFECTATION
+    UE_modifiees = False
     ListeDesParcours = list()
 
 
@@ -44,9 +45,12 @@ class DAK_Optimizer:
         print "DAK_Optimizer Powered by DAK"
 
     def charger_edt(self, fileUE):
+        DAK_Optimizer.EDT = [dict()] + [generer_model_dict_creneau(DAK_Optimizer.Parameters.nbMaxGroupeParUE) for i in range(0, DAK_Optimizer.Parameters.nbCreneauxParSemaine)]
+        self.capaciteTotaleAccueil = 0
         f_ue = open(fileUE)
         data = csv.DictReader(f_ue)
         for ligneUE in data:
+            # print ligneUE
             currentUE = UE(ligneUE, self) #Generation de l'objet UE
             currentUE.actualiseEDT(DAK_Optimizer.EDT)
             DAK_Optimizer.ListeDesUEs[currentUE.get_id()] = currentUE             #Rajout a la listeUe
@@ -59,6 +63,7 @@ class DAK_Optimizer:
                 if len(dictCopy[id]) == 0:
                     del DAK_Optimizer.EDT[creneau][id]
             # FIN NETTOYAGE EDT
+        print DAK_Optimizer.EDT
         self.generer_incompatibilites()
 
 
@@ -75,6 +80,7 @@ class DAK_Optimizer:
 
     def generer_incompatibilites(self):
         #GERER LES INCOMPATIBILITES
+        DAK_Optimizer.EnsIncompatibilites.clear()
         for creneauId in range(1, len(DAK_Optimizer.EDT)):
             #incompatibilites groupesTdTme
             dictCreneau = DAK_Optimizer.EDT[creneauId]
@@ -190,9 +196,21 @@ class DAK_Optimizer:
         for Parcours_Obj in DAK_Optimizer.ListeDesParcours:
             Parcours_Obj.reinitialiser_parcours(sauvegarde)
 
+
+#----------EPROUVER
     def eprouver_edt(self, nombreDeDossierGeneres=50, directoryName='VOEUX_RANDOM',equilibre=True, tauxEquilibre=0.10):
+        if DAK_Optimizer.UE_modifiees:
+            self.sauvegarde_UEs(".edt.csv")
+            self.charger_edt(".edt.csv")
+            print DAK_Optimizer.capaciteTotaleAccueil
+            for Parcours_Obj in DAK_Optimizer.ListeDesParcours:
+                Parcours_Obj.generer_dico_Nbconfig()
+            DAK_Optimizer.UE_modifiees = False
+
         G = GenerateurDeVoeux(directoryName, self)
         G.generer(nombreDeDossierGeneres)
+
+
         #Traitement
         # #RESTAURATION A L'ETAT DE DEPART
         self.reinitialiser_les_parcours(sauvegarde=False) #Au cas ou il y aurait eu un matching avant
@@ -215,13 +233,19 @@ class DAK_Optimizer:
             # FIN RESTAURATION
         analyseur.analyze()
 
-    def AS_modifier_capacite(self, idUE, numeroGroupe, nouvelleCapacite):
-        DAK_Optimizer.ListeDesUEs[idUE].modifier_capacite_groupe(numeroGroupe, nouvelleCapacite)
-        DAK_Optimizer.restaurer_UEsParcours = True
 
+
+
+    def AS_modifier_capacite(self, idUE, numeroGroupe, nouvelleCapacite):
+        if nouvelleCapacite != 0:
+            DAK_Optimizer.ListeDesUEs[idUE].modifier_capacite_groupe(numeroGroupe, nouvelleCapacite)
+            DAK_Optimizer.restaurer_UEsParcours = True
+        else:
+            print "pour supprimer un groupe utiliser la fonction adequate"
 
     def AS_supprimer_groupe(self, idUE, numeroGroupe):
         self.AS_modifier_capacite(idUE, numeroGroupe, 0)
+        DAK_Optimizer.UE_modifiees = True               #5/5
 
     def AS_ajouter_groupe(self, ueId, creneauTd, creneauTme, capacite):
         numNouveauGroupe = DAK_Optimizer.ListeDesUEs[ueId].ajouter_un_groupe(creneauTd, creneauTme, capacite)
@@ -242,6 +266,7 @@ class DAK_Optimizer:
         self.generer_incompatibilites()
 
         DAK_Optimizer.restaurer_UEsParcours = True
+        DAK_Optimizer.UE_modifiees = True
 
     def AD_afficher_carte_augmentee_incompatibilites(self, nomParcours, taille=5):
 
@@ -310,25 +335,31 @@ Optim = DAK_Optimizer()
 Optim.charger_edt("edt.csv")
 Optim.charger_parcours("parcours.csv")
 # print Optim.DictUEs
-
+print Optim.capaciteTotaleAccueil
 
 # Optim.match()
 # Optim.eprouver_edt(nombreDeDossierGeneres=5)
 # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
 # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
 #
-# Optim.AS_supprimer_groupe(11, 3) #Groupe 3 Mapsi
-# Optim.AS_ajouter_groupe(5, 23, 24, 16) #Bima
-Optim.traiter_dossier_voeux("../VOEUX")
 
+# Optim.AS_ajouter_groupe(5, 23, 24, 16) #Bima
+# Optim.AS_modifier_capacite(4, 1, 36)
+# Optim.AS_modifier_capacite(4, 3, 36)   # AUX GROUPES DE ARES
+# Optim.AS_modifier_capacite(4, 2, 36)
+# Optim.traiter_dossier_voeux("../VOEUX")
+Optim.AS_supprimer_groupe(11, 3) #Groupe 3 Mapsi
 # #
 # Optim.AS_modifier_capacite(10, 1, 36)
 # Optim.AS_modifier_capacite(10, 3, 36)   # AUX GROUPES DE LRC
 # Optim.AS_modifier_capacite(10, 2, 36)
 # Optim.AS_modifier_capacite(10, 4, 36)
-Optim.match()
+# Optim.match()
 # Optim.sauvegarde_UEs("edt.csv")
-# Optim.eprouver_edt(nombreDeDossierGeneres=20)
+# Optim.AD_afficher_carte_augmentee_incompatibilites("and")
+Optim.eprouver_edt(nombreDeDossierGeneres=25)
+print Optim.capaciteTotaleAccueil
+# Optim.AD_afficher_carte_augmentee_incompatibilites("and")
 # #
 # Optim.AS_ajouter_groupe(6, 5, 24, 32)      #UN GROUPE DE 32 EN COMPLEX
 # Optim.match()
@@ -339,7 +370,7 @@ Optim.match()
 # Optim.AS_supprimer_groupe(9, 3)           #IL3
 # Optim.AS_ajouter_groupe(9, 21, 22, 32)
 
-# Optim.AD_afficher_carte_augmentee_incompatibilites("sfpn")
+# Optim.AD_afficher_carte_augmentee_incompatibilites("and")
 # Optim.eprouver_edt(nombreDeDossierGeneres=50)
 # for P in Optim.ListeDesParcours:
 #     print P.nom
