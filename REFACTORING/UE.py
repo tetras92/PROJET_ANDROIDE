@@ -27,14 +27,18 @@ class UE:
         def actualiseEDT(self, EDT):
             """MAJ de l'EDT"""
             for creneauCours in self.ListeCreneauxCours:
-                EDT[creneauCours][0].add(self.id)
+                try:
+                   EDT[creneauCours][0].add(self.id)
+                except:
+                    print "Vous avez essayer d'ajouter un cours de {} au creneau {}. Creneau inexistant dans l'EDT.".format(self.intitule,creneauCours)
+
             for gr_i in range(1, self.nb_groupes+1):
                 creneauTdTme = self.ListeCreneauxTdTme[gr_i]
                 try:
                     EDT[int(creneauTdTme[0])][gr_i].add(self.id)      #Td
                     EDT[int(creneauTdTme[1])][gr_i].add(self.id)      #tme
                 except:
-                    pass
+                    print "Vous avez essayer d'ajouter un TD/TME de {} au creneau {}. Creneau inexistant dans l'EDT.".format(self.intitule,creneauTdTme)
 
         def get_id(self):
             return self.id
@@ -67,7 +71,10 @@ class UE:
 
 
         def affecterEtuGroup(self, parcours, idRelatif, idGroup):
-            self.ResumeDesAffectations[idGroup].add((parcours, idRelatif))
+            try:
+              self.ResumeDesAffectations[idGroup].add((parcours, idRelatif))
+            except:
+                print "Affectation de l'etudiant {}({}) imopssible. Groupe {} de l'UE {} est inconnu ".format(idRelatif,parcours,idGroup,self.intitule)
 
         def ajouterUnInscrit(self):
             self.nbInscrits += 1
@@ -82,7 +89,10 @@ class UE:
             return self.ListeCapacites
 
         def inscrire(self, etuName, numeroGroupe):
+            try:
                 self.ListeEtudiantsGroupes[numeroGroupe].append(etuName)
+            except:
+                print "Inscription de l'etudiant {} a l'UE {} est impossible. Groupe {} inconnu.".format(etuName,self.intitule,numeroGroupe)
 
         def str_nb_non_inscrits(self):
             if len(self.ListeNonInscrits) == 0:
@@ -134,15 +144,19 @@ class UE:
 
                             if difference > self.optimizer_Params.tauxEquilibre:
                                 self.equilibre = False
+                                break
 
         def modifier_capacite_groupe(self, numeroGroupe, nouvelleCapacite):
-            if numeroGroupe <= self.nb_groupes: #A REMPLACER PAR DES EXCEPTIONS
+            try:
+            # if numeroGroupe <= self.nb_groupes: #A REMPLACER PAR DES EXCEPTIONS
                 self.optimizer.capaciteTotaleAccueil -= self.ListeCapacites[numeroGroupe - 1]
                 self.optimizer.capaciteTotaleAccueil += nouvelleCapacite
                 self.ListeCapacites[numeroGroupe - 1] = nouvelleCapacite
                 self.maj_capacite_totale()
                 if nouvelleCapacite == 0:
                     self.groupes_supprimes.add(numeroGroupe)
+            except:
+                print "Groupe {} de l'UE {} est inexistant dans la base.".format(numeroGroupe,self.intitule)
 
 
         def ue_sauvegarde(self):
