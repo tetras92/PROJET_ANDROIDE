@@ -1,5 +1,7 @@
 import tkFileDialog
 
+# from DAK_Optimizer import *
+
 
 class Script():
 
@@ -11,22 +13,72 @@ class Script():
         self.file_edt = ''
         self.file_parcours = ''
         self.dir_dossier_voeux = ''
+        # self.optimizer = DAK_Optimizer()
 
 
     def start(self):
         while True:
             print"__________________________________Bienvenue au DAK_OPTIMIZER__________________________________\n\n"
-            self.charger_donnees(recharge=False)
+            # self.charger_donnees(recharge=False)
+            # self.optimizer.charger_edt(self.file_edt)
+            # self.optimizer.charger_parcours(self.file_parcours)
+            # self.optimizer.generer_incompatibilites()
             self.menu_principal()
 
 
 
     def modifier_edt(self):
+        print "\n___________________________Parametre EDT______________________________________\n\n"
+        print "Veuillez selectionner une UE : \n\n\t\t(1) AAGB\t(2) ALGAV"
+        choix_ue = raw_input(">>> ")
+        idUE =2# self.optimizer.ListeDesUEs[str.lower(choix_ue)]
+
         while True:
-            pass
+
+            print "\n\n\t\t(1) Ajouter un groupe\n\t\t(2) Supprimer un groupe \n\t\t(3) Changer l'UE\n\t\t(0) Retourner au Menu Principal\n\n "
+
+            input = raw_input(">>> ")
+
+            if input == '0':
+                self.menu_principal()
+            elif input == '1':
+                # numeroGroupe = self.optimizer.ListeDesUEs[idUE].get_nb_groupes()
+                # self.optimizer.AS_supprimer_groupe(idUE, numeroGroupe+1)
+                while True:
+                    print "\n NOTE : les creneaux sont numerotes de 1 a 25 (5 creneaux par jours)\n\n"
+                    cr_td = raw_input("Veuillez indiquer le creneau du TD  : ")
+                    cr_tme = raw_input("Veuillez indiquer le creneau du TME : ")
+                    cap = raw_input("Veuillez indiquer la capacite du nouveau groupe : ")
+                    if str.isdigit(cr_td) and str.isdigit(cr_tme) and str.isdigit(cap):
+                        # self.optimizer.AS_ajouter_groupe(self, idUE, int(cr_td), int(cr_tme), int(cap))
+                        print "\n\n===================== AJOUT GROUPE {} UE {} ENREGISTRE =====================\n\n".format(numeroGroupe+1,idUE)
+            elif input == '2':
+                done = False
+                while not(done) :
+                    numeroGroupe = raw_input("Veuillez indiquer le numero du groupe a supprimer : ")
+                    if str.isdigit(numeroGroupe):
+                        # self.optimizer.AS_supprimer_groupe(idUE,int(numeroGroupe))
+                        done = True
+                        print "\n\n===================== SUPPRESSION DU GROUPE {} UE {} ENREGISTRE =====================\n\n".format(numeroGroupe, idUE)
+
+            elif input == '3':
+                self.modifier_edt()
+
 
     def modifier_cap(self) :
-        pass
+        print "\n___________________________Parametre UE______________________________________\n\n"
+        print "Veuillez selectionner une UE : \n\n\t\t(1) AAGB\t(2) ALGAV"
+        choix_ue = raw_input(">>> ")
+        idUE =2# self.optimizer.ListeDesUEs[str.lower(choix_ue)]
+
+        while True:
+            numeroGroupe = raw_input("Veuillez le numero du groupe : ")
+            cap = raw_input("Veuillez indiquer la nouvelle capacite du groupe : ")
+            if str.isdigit(numeroGroupe) and str.isdigit(cap):
+                # self.optimizer.AS_modifier_capacite(idUE,int(numeroGroupe),int(cap))
+                print "\n\n===================== MODIFICATION DU GROUPE {} UE {} ENREGISTRE =====================\n\n".format(numeroGroupe, idUE)
+                self.menu_principal()
+
 
     def afficher_incompatibilites(self):
         pass
@@ -55,7 +107,7 @@ class Script():
 
             if input == '0':
                 exit(0)
-            if input == '1':
+            elif input == '1':
                 self.path_to_save_edt = save_file()
             elif input == '2' :
                 self.path_to_save_parcours = save_file()
@@ -94,14 +146,13 @@ class Script():
                 self.file_parcours = tkFileDialog.askopenfilename(filetypes=[('CSV', '.csv')])
                 if self.file_parcours==():
                   fichiers_chargees[1]= self.file_parcours
-
             elif chargement == '3':
                 self.dir_dossier_voeux = tkFileDialog.askdirectory(title='Choisissez un repertoire')
                 fichiers_chargees[2]= self.dir_dossier_voeux
             elif chargement == '4' and recharge:
                 self.menu_principal()
             elif chargement == '':
-                if len(self.fichiers_chargees) == 3:
+                if not('' in fichiers_chargees):
                     break
                 else:
                     print "Vous n'avez pas entre toutes les donnees necessaires.\n\n"
