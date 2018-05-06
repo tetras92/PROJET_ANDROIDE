@@ -14,11 +14,15 @@ class MatchingModel:
         self.objectif1 = LinExpr()
         self.objectif2 = LinExpr()
         self.identifiantModele = optimizer.iModelAlea
+        self.ListedesVarY = list()
+        self.ListedesVarN = list()
 
         #Contraintes s'appliquant aux etudiants
         for Etu in self.ListeDesEtudiants:
-            Etu.gerer_variables_contraintes_ue_non_obligatoires(self.modelGurobi)
-            Etu.gerer_variables_contraintes_ue_obligatoires(self.modelGurobi)
+            Etu.enregistrer_interet_pour_UE()
+            Etu.s_inscrire_dans_son_parcours()
+            Etu.gerer_variables_contraintes_ue_non_obligatoires(self)#(self.modelGurobi)
+            Etu.gerer_variables_contraintes_ue_obligatoires(self)#(self.modelGurobi)
         #Fin Contraintes s'appliquant aux etudiants
 
         #Contraintes d'incompatibilite
@@ -38,16 +42,16 @@ class MatchingModel:
                 Ue.ajouterContraintesEquilibre(self.modelGurobi)
         #Contraintes d'UE (Equilibre)
 
-        self.nombreTotalDemandesInscriptions = len(self.optimizer.ListedesVarY)
-        self.nombreTotalEtudiants = len(self.optimizer.ListedesVarN)
+        self.nombreTotalDemandesInscriptions = len(self.ListedesVarY)#(self.optimizer.ListedesVarY)
+        self.nombreTotalEtudiants = len(self.ListedesVarN)#(self.optimizer.ListedesVarN)
         self.capaciteTotaleAccueilUEs = self.optimizer.capaciteTotaleAccueil
 
     def match(self, path=''):
         self.modelGurobi.NumObj = 2
         self.modelGurobi.setParam( 'OutputFlag', False)
 
-        self.objectif1 = quicksum(self.modelGurobi.getVarByName(var) for var in self.optimizer.ListedesVarY)
-        self.objectif2 = quicksum(var for var in self.optimizer.ListedesVarN)
+        self.objectif1 = quicksum(var for var in self.ListedesVarY) #(self.modelGurobi.getVarByName(var) for var in self.optimizer.ListedesVarY)
+        self.objectif2 = quicksum(var for var in self.ListedesVarN)
         self.modelGurobi.setObjectiveN(self.objectif1,0,1)
         self.modelGurobi.setObjectiveN(self.objectif2,1,0)
 
@@ -70,16 +74,22 @@ class MatchingModel:
 
 
 
-        for varName in self.optimizer.ListedesVarY:
+        for var in self.ListedesVarY:
+            varName = var.VarName
             # print (varName)
-            if self.modelGurobi.getVarByName(varName).x == 1:
+            if var.x == 1:
                 indexParcours, idRelatif, ue = varName[2:].split('_')
                 self.ListeDesUEs[int(ue)].ajouterUnInscrit()
+                # print self.ListeDesParcours[int(indexParcours)].nom, len(self.ListeDesParcours[int(indexParcours)].get_mes_etudiants()), idRelatif
                 currentEtudiant = self.ListeDesParcours[int(indexParcours)].get_mes_etudiants()[int(idRelatif)]
                 numGroup = 1
-
+                # print currentEtudiant, ue
+                # try:
                 while self.modelGurobi.getVarByName(currentEtudiant.get_varName()+"_%d"%int(ue)+"_%d"%numGroup).x == 0:
+                    # print numGroup
                     numGroup += 1
+                # except:
+                #     print currentEtudiant.get_varName()+"_%d"%int(ue)+"_%d"%numGroup
                 currentEtudiant.entrer_inscription(int(ue), numGroup)
             else:
                 indexParcours, idRelatif, ue = varName[2:].split('_')
@@ -87,7 +97,7 @@ class MatchingModel:
                 currentEtudiant = self.ListeDesParcours[int(indexParcours)].get_mes_etudiants()[int(idRelatif)]
                 currentEtudiant.entrer_inscription(int(ue), 0)
 
-        for var in self.optimizer.ListedesVarN:
+        for var in self.ListedesVarN:
             if var.x == 0:
                 varName = var.VarName
                 indexParcours, idRelatif = varName[2:].split('_')
@@ -95,7 +105,7 @@ class MatchingModel:
 
         if path != '':
             try:
-                affectationDirectory = path + "/MATCHING/" #path + str(self.identifiantModele)+"MATCHING/"
+                affectationDirectory = path + "MATCHING/" #path + str(self.identifiantModele)+"MATCHING/"
                 os.mkdir(affectationDirectory)
             except:
                 pass
@@ -104,7 +114,7 @@ class MatchingModel:
                 fieldnames = ["num"] + ["oblig"+str(i) for i in range(1,self.optimizer.Parameters.nbMaxUEObligatoires + 1)] + ["cons"+str(i) for i in range(1,self.optimizer.Parameters.nbMaxUEConseillees + 1 )]
                 writer = csv.DictWriter(f, fieldnames=fieldnames)
                 writer.writeheader()
-                for Etu in Parcours_Obj.get_mes_Etudiants():
+                for Etu in Parcours_Obj.get_mes_etudiants()[1:]:
                     csvLine = dict()
                     csvLine["num"] = Etu.get_id_relatif()
                     L_inscriptions = Etu.get_ListeDesInscriptions()
@@ -137,6 +147,8 @@ class MatchingModel:
         """Affiche les UES du Modele"""
 
         s = "\n\n**********OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK)**********\n\n"
+        if self.optimizer.modeleAleatoire:
+            s += "\t\t\tDossier aleatoire n. {}\n\n".format(self.identifiantModele)
         s += "Nombre Total d'inscriptions a satisfaire : {} \n".format(self.nombreTotalDemandesInscriptions)
         s += "Nombre Maximal d'inscriptions pouvant etre satisfaites : {} \n".format(self.capaciteTotaleAccueilUEs)
         s += "Nombre total d'etudiants du master : {}\n".format(self.nombreTotalEtudiants)

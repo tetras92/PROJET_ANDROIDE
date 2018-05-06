@@ -30,25 +30,31 @@ class Parcours:
             self.DicoConfigurations = dict()
             deb = time.time()
             self.generer_dico_Nbconfig()
-            print ("....." * int(time.time() - deb + 1)*9)
+            # print ("....." * int(time.time() - deb + 1)*9)
             self.effectif = 0
-            self.mesEtudiantsAProbleme = list()
-            self.lesContratsAProbleme  = list()
+
+            # self.mesEtudiantsAProbleme = list()
+            # self.lesContratsAProbleme  = list()
+            self.effectifNonInscrit = 0
+
             self.HistoriqueDesContratsAProbleme = list()
 
-        def reinitialiser_parcours(self,avecSauvegarde=True):
-            if avecSauvegarde:
-                self.HistoriqueDesContratsAProbleme = self.HistoriqueDesContratsAProbleme + self.lesContratsAProbleme
-            self.mesEtudiants = list()
-            self.effectif = 0
-            self.effacer_donnees_problemes_affectation()
+        # def reinitialiser_parcours(self,avecSauvegarde=True):
+        #     if avecSauvegarde:
+        #         self.HistoriqueDesContratsAProbleme = self.HistoriqueDesContratsAProbleme + self.lesContratsAProbleme
+        #     self.mesEtudiants = list()
+        #     self.effectif = 0
+        #     self.effacer_donnees_problemes_affectation()
 
         def get_dico_configurations(self):
             return self.DicoConfigurations
 
         def effacer_donnees_problemes_affectation(self):
-            self.lesContratsAProbleme = list()
-            self.mesEtudiantsAProbleme = list()
+            self.effectifNonInscrit = 0
+            self.mesEtudiants = list()
+            self.effectif = 0
+            # self.lesContratsAProbleme = list()
+            # self.mesEtudiantsAProbleme = list()
 
         def constituer_voeu(self, k):
             """Construit un voeu de k UE"""
@@ -73,7 +79,7 @@ class Parcours:
             contrat = contratUEObligatoires + contratUEConseillees
             # contrat.sort()
             if len(self.DicoConfigurations) != 0 and len(contrat) > 1 and self.DicoConfigurations[tuple(contrat)] == 0.0: #l'orde oblig avant conseilles importants
-                    print "Peut pas creer", tuple(contrat)
+                    # print "Peut pas creer", tuple(contrat)
                     # print("incompatible cree")
                     return self.constituer_voeu(k)
             return contratUEObligatoires, contratUEConseillees
@@ -116,7 +122,7 @@ class Parcours:
 
         def generer_dico_Nbconfig(self):
             self.DicoConfigurations = dict()
-
+            print "{} : Generation des contrats incompatibles ... en cours ...\n".format(self.nom)
             for taille_voeu in range(2,self.optimizer_Params.TailleMaxContrat+1): #A elargir a toutes les tailles
                 nbMaxUEObligatoiresDuVoeu = min(self.nbUEObligatoires, taille_voeu)
                 nbMinUEObligatoiresDuVoeu = max(0, self.nbUEObligatoires - (5 - taille_voeu))
@@ -134,14 +140,16 @@ class Parcours:
                             ss_ContratCons.sort()
                             Contrat = ss_ContratOblig + ss_ContratCons
 
-                            self.optimizer.nettoyer_les_Ues_et_les_Incompatibilites()
+                            self.optimizer.effacer_donnees_affectation_UEs()
                             cM = CompatibilityModel(Contrat, self.optimizer)
                             ContratStr, nb_config = cM.resoudre()
-                            self.optimizer.nettoyer_les_Ues_et_les_Incompatibilites()
+                            # self.optimizer.nettoyer_les_Ues_et_les_Incompatibilites()
 
                             ContratStr = tuple(ContratStr)
                             nb_config = int(nb_config)
                             self.DicoConfigurations[ContratStr] = nb_config
+            print "{} : FIN Generation des contrats incompatibles\n".format(self.nom)
+            self.optimizer.effacer_donnees_affectation_UEs()
             return self.DicoConfigurations
 
         def rajouter_etudiant(self, Etu):
@@ -154,18 +162,19 @@ class Parcours:
         def get_index(self):
             return self.index
 
-        def get_mes_Etudiants(self):
-            return self.mesEtudiants
+        # def get_mes_Etudiants(self):
+        #     return self.mesEtudiants
 
         def get_mes_etudiants(self):
             return [None] + self.mesEtudiants
 
         def signalerUnProblemeDinscription(self, idRelatif):
-            self.mesEtudiantsAProbleme.append(str(self.get_mes_etudiants()[idRelatif]))
-            self.lesContratsAProbleme.append(self.get_mes_etudiants()[idRelatif].get_contrat())
+            self.effectifNonInscrit += 1
+            # self.mesEtudiantsAProbleme.append(str(self.get_mes_etudiants()[idRelatif]))
+            # self.lesContratsAProbleme.append(self.get_mes_etudiants()[idRelatif].get_contrat())      L'IDEE INITIALE C'ETAIT DE POUVOIR AVOIR UNE IDEE DES CONTRAT AVEC DES CONFIG SERREES MAIS IDEES ABANDONNEES
 
         def str_nb_etudiants_insatisfaits(self):
-            return self.nom + "(" + str(len(self.mesEtudiantsAProbleme)) + ")[{}%]  ".format(round(100. - 100.0*len(self.mesEtudiantsAProbleme)/self.effectif, 2))
+            return self.nom + "(" + str(self.effectifNonInscrit) + ")[{}%]  ".format(round(100. - 100.0*self.effectifNonInscrit/self.effectif, 2))
 
         def afficher_carte_augmentee_incompatibilites(self,taille):
             Liste = list()
@@ -180,5 +189,5 @@ class Parcours:
             return [self.optimizer.DictUEs[ue].get_id() for ue in self.ListeUEConseilles]
 
         def __str__(self):
-            s = "Parcours : " + self.nom + "\n\t\tEffectif : {} etudiants dont {} insatisfaits ({}%)\n".format(self.effectif, len(self.mesEtudiantsAProbleme), round(100. - 100.0*len(self.mesEtudiantsAProbleme)/self.effectif, 2))
+            s = "Parcours : " + self.nom + "\n\t\tEffectif : {} etudiants dont {} insatisfaits ({}%)\n".format(self.effectif, self.effectifNonInscrit, round(100. - 100.0*self.effectifNonInscrit/self.effectif, 2))
             return s

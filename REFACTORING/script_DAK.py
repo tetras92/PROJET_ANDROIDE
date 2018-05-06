@@ -1,6 +1,6 @@
 import tkFileDialog
 
-# from DAK_Optimizer import *
+from DAK_Optimizer import *
 
 
 class Script():
@@ -13,7 +13,7 @@ class Script():
         self.file_edt = ''
         self.file_parcours = ''
         self.dir_dossier_voeux = ''
-        # self.optimizer = DAK_Optimizer()
+        self.optimizer = DAK_Optimizer()
 
 
     def start(self):

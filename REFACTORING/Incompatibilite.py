@@ -21,15 +21,9 @@ class Incompatibilite:
         def ajouterContrainteModeleGurobi(self, modelGurobi):
             if not self.vide:
                 for etuName in self.ensEtuConcernes:
-
-                    # try:
                     modelGurobi.addConstr(modelGurobi.getVarByName(etuName+"_%d"%self.ueGroup1[0]+"_%d"%self.ueGroup1[1]) + modelGurobi.getVarByName(etuName+"_%d"%self.ueGroup2[0]+"_%d"%self.ueGroup2[1]) <= 1)
-                    # except:
-                    #     print self
-                    #     print etuName+"_%d"%self.ueGroup1[0]+"_%d"%self.ueGroup1[1]
-                    #     print etuName+"_%d"%self.ueGroup2[0]+"_%d"%self.ueGroup2[1]
                     modelGurobi.update()
-                modelGurobi.update()
+
 
         def m_a_j_EnsEtuConcernes(self):
             self.ensEtuConcernes = self.optimizer.ListeDesUEs[self.ueGroup1[0]].getEnsEtu() & self.optimizer.ListeDesUEs[self.ueGroup2[0]].getEnsEtu()
@@ -37,7 +31,7 @@ class Incompatibilite:
             # if not self.vide:
             #     print self.ensEtuConcernes
 
-        def reset_incompatibilite(self):
-            #vide juste self.ensEtuConcernes
-            self.ensEtuConcernes.clear()
-            self.vide = (len(self.ensEtuConcernes) == 0)
+        # def reset_incompatibilite(self):
+        #     #vide juste self.ensEtuConcernes
+        #     self.ensEtuConcernes.clear()
+        #     self.vide = (len(self.ensEtuConcernes) == 0)
