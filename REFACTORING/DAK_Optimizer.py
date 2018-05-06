@@ -45,25 +45,25 @@ class DAK_Optimizer:
         print "DAK_Optimizer Powered by DAK"
 
     def charger_edt(self, fileUE):
-        DAK_Optimizer.EDT = [dict()] + [generer_model_dict_creneau(DAK_Optimizer.Parameters.nbMaxGroupeParUE) for i in range(0, DAK_Optimizer.Parameters.nbCreneauxParSemaine)]
+        self.EDT = [dict()] + [generer_model_dict_creneau(DAK_Optimizer.Parameters.nbMaxGroupeParUE) for i in range(0, DAK_Optimizer.Parameters.nbCreneauxParSemaine)]
         self.capaciteTotaleAccueil = 0
         f_ue = open(fileUE)
         data = csv.DictReader(f_ue)
         for ligneUE in data:
             # print ligneUE
             currentUE = UE(ligneUE, self) #Generation de l'objet UE
-            currentUE.actualiseEDT(DAK_Optimizer.EDT)
-            DAK_Optimizer.ListeDesUEs[currentUE.get_id()] = currentUE             #Rajout a la listeUe
-            DAK_Optimizer.DictUEs[currentUE.intitule] = currentUE                  #Rajout au DictUe
+            currentUE.actualiseEDT(self.EDT)
+            self.ListeDesUEs[currentUE.get_id()] = currentUE             #Rajout a la listeUe
+            self.DictUEs[currentUE.intitule] = currentUE                  #Rajout au DictUe
 
             #NETTOYER EDT : supprimer les associations de numeros de groupe avec des ensembles vides
-        for creneau in range(1, len(DAK_Optimizer.EDT)):
-            dictCopy = DAK_Optimizer.EDT[creneau].copy()
+        for creneau in range(1, len(self.EDT)):
+            dictCopy = self.EDT[creneau].copy()
             for id in dictCopy:
                 if len(dictCopy[id]) == 0:
-                    del DAK_Optimizer.EDT[creneau][id]
+                    del self.EDT[creneau][id]
             # FIN NETTOYAGE EDT
-        print DAK_Optimizer.EDT
+        # print self.EDT
         self.generer_incompatibilites()
 
 
@@ -73,17 +73,17 @@ class DAK_Optimizer:
 
         for parcoursCsvLine in parcoursreader:
             current_parcours = Parcours(parcoursCsvLine, self)
-            DAK_Optimizer.ListeDesParcours.append(current_parcours)
+            self.ListeDesParcours.append(current_parcours)
 
         csvfile.close()
 
 
     def generer_incompatibilites(self):
         #GERER LES INCOMPATIBILITES
-        DAK_Optimizer.EnsIncompatibilites.clear()
-        for creneauId in range(1, len(DAK_Optimizer.EDT)):
+        self.EnsIncompatibilites.clear()
+        for creneauId in range(1, len(self.EDT)):
             #incompatibilites groupesTdTme
-            dictCreneau = DAK_Optimizer.EDT[creneauId]
+            dictCreneau = self.EDT[creneauId]
 
             for (idGroup1, EnsUE1) in dictCreneau.items():
                 if idGroup1 != 0:
@@ -93,8 +93,8 @@ class DAK_Optimizer:
                             if ueIntra1 < ueIntra2:
                                 currentIncompatibilite = Incompatibilite(ueIntra1, idGroup1, ueIntra2, idGroup1, self)
                                 #Instruction Rajout au model
-                                # currentIncompatibilite.ajouterContrainteModeleGurobi(DAK_Optimizer.modelGurobi)
-                                DAK_Optimizer.EnsIncompatibilites.add(currentIncompatibilite)
+                                # currentIncompatibilite.ajouterContrainteModeleGurobi(self.modelGurobi)
+                                self.EnsIncompatibilites.add(currentIncompatibilite)
                 #Fin Incompatibilite intra meme numeroGroup
                 for (idGroup2, EnsUE2) in dictCreneau.items():
                     if idGroup1 > 0 and idGroup1 < idGroup2: # CONVENTION IdGroup1 < IdGroup2:
@@ -105,22 +105,22 @@ class DAK_Optimizer:
                                     #Instruction Rajout au model
                                     # currentIncompatibilite.ajouterContrainteModeleGurobi(DAK_Optimizer.modelGurobi)
                                     #Fin
-                                    DAK_Optimizer.EnsIncompatibilites.add(currentIncompatibilite)
+                                    self.EnsIncompatibilites.add(currentIncompatibilite)
 
             #Incompatibilite intra cours meme creneau + incompatibilite inter cours et td tme
             try:
                 for ue1 in dictCreneau[0]:
                     #Incompatibilite intra cours meme creneau
-                    nb_group_ue1 = DAK_Optimizer.ListeDesUEs[ue1].get_nb_groupes()
+                    nb_group_ue1 = self.ListeDesUEs[ue1].get_nb_groupes()
                     for ue2 in dictCreneau[0]:
                         if ue1 < ue2:
 
-                            nb_group_ue2 = DAK_Optimizer.ListeDesUEs[ue2].get_nb_groupes() #CORRECTION ...  ListeDesUEs[ue2] au lieu de ListeDesUEs[ue1]
+                            nb_group_ue2 = self.ListeDesUEs[ue2].get_nb_groupes() #CORRECTION ...  ListeDesUEs[ue2] au lieu de ListeDesUEs[ue1]
                             for idGroup1 in range(1, nb_group_ue1+1):
                                 for idGroup2 in range(1, nb_group_ue2):
                                     currentIncompatibilite = Incompatibilite(ue1, idGroup1, ue2, idGroup2, self)
 
-                                    DAK_Optimizer.EnsIncompatibilites.add(currentIncompatibilite)
+                                    self.EnsIncompatibilites.add(currentIncompatibilite)
 
                     # incompatibilite inter cours et td tme
                     for (idGroupTdTme, EnsUE2) in dictCreneau.items():
@@ -129,7 +129,7 @@ class DAK_Optimizer:
                                 for idGroup1 in range(1, nb_group_ue1+1):
                                     currentIncompatibilite = Incompatibilite(ue1, idGroup1, ue2, idGroupTdTme, self)
 
-                                    DAK_Optimizer.EnsIncompatibilites.add(currentIncompatibilite)
+                                    self.EnsIncompatibilites.add(currentIncompatibilite)
 
             except:
                 pass
@@ -149,32 +149,32 @@ class DAK_Optimizer:
 
                 for ligneEtu in data:
                     currentEtu = Etudiant(ligneEtu, Obj_Parcours, self) #generation de l'objet etudiant
-                    DAK_Optimizer.ListeDesEtudiants.append(currentEtu)
+                    self.ListeDesEtudiants.append(currentEtu)
                     currentEtu.enregistrer_interet_pour_UE()
             except:
                 pass
 
 
     def get_Parcours(self, nom):
-        for Parcours_Obj in DAK_Optimizer.ListeDesParcours:
+        for Parcours_Obj in self.ListeDesParcours:
             if Parcours_Obj.get_intitule() == nom:
                 return Parcours_Obj
 
     def effacer_donnees_affectation_UEs(self):
-        for Ue in DAK_Optimizer.ListeDesUEs[1:]:
+        for Ue in self.ListeDesUEs[1:]:
             Ue.restaurer_places_apres_affectation()
-        DAK_Optimizer.ListedesVarY = list()
-        DAK_Optimizer.ListedesVarN = list()
+        self.ListedesVarY = list()
+        self.ListedesVarN = list()
 
     def effacer_donnees_affectation_Parcours(self):
-        for Parcours_Obj in DAK_Optimizer.ListeDesParcours:
+        for Parcours_Obj in self.ListeDesParcours:
             Parcours_Obj.effacer_donnees_problemes_affectation()
 
     def match(self, equilibre=True, tauxEquilibre=0.10, path='',analyzer=None):
-        if DAK_Optimizer.restaurer_UEsParcours:
+        if self.restaurer_UEsParcours:
             self.effacer_donnees_affectation_UEs()
             self.effacer_donnees_affectation_Parcours()
-            DAK_Optimizer.restaurer_UEsParcours = False
+            self.restaurer_UEsParcours = False
 
         if tauxEquilibre >= 0 and tauxEquilibre <= 1.0:
             DAK_Optimizer.Parameters.tauxEquilibre = tauxEquilibre
@@ -186,26 +186,28 @@ class DAK_Optimizer:
         return value
 
     def nettoyer_les_Ues_et_les_Incompatibilites(self):
-        for Ue in DAK_Optimizer.ListeDesUEs[1:]:
+        for Ue in self.ListeDesUEs[1:]:
             Ue.remise_a_zero()
 
-        for Incompatibilite in DAK_Optimizer.EnsIncompatibilites:
+        for Incompatibilite in self.EnsIncompatibilites:
             Incompatibilite.reset_incompatibilite()
 
     def reinitialiser_les_parcours(self, sauvegarde=True):
-        for Parcours_Obj in DAK_Optimizer.ListeDesParcours:
+        for Parcours_Obj in self.ListeDesParcours:
             Parcours_Obj.reinitialiser_parcours(sauvegarde)
 
 
 #----------EPROUVER
     def eprouver_edt(self, nombreDeDossierGeneres=50, directoryName='VOEUX_RANDOM',equilibre=True, tauxEquilibre=0.10):
-        if DAK_Optimizer.UE_modifiees:
+        if self.UE_modifiees:
+            print "sauvegarde"
             self.sauvegarde_UEs(".edt.csv")
             self.charger_edt(".edt.csv")
-            print DAK_Optimizer.capaciteTotaleAccueil
-            for Parcours_Obj in DAK_Optimizer.ListeDesParcours:
+            print self.capaciteTotaleAccueil
+            for Parcours_Obj in self.ListeDesParcours:
                 Parcours_Obj.generer_dico_Nbconfig()
-            DAK_Optimizer.UE_modifiees = False
+            self.UE_modifiees = False
+            self.AD_afficher_carte_augmentee_incompatibilites("and")
 
         G = GenerateurDeVoeux(directoryName, self)
         G.generer(nombreDeDossierGeneres)
@@ -215,21 +217,21 @@ class DAK_Optimizer:
         # #RESTAURATION A L'ETAT DE DEPART
         self.reinitialiser_les_parcours(sauvegarde=False) #Au cas ou il y aurait eu un matching avant
         self.nettoyer_les_Ues_et_les_Incompatibilites()
-        DAK_Optimizer.ListedesVarY = list()
-        DAK_Optimizer.ListedesVarN = list()
-        DAK_Optimizer.ListeDesEtudiants = list()
+        self.ListedesVarY = list()
+        self.ListedesVarN = list()
+        self.ListeDesEtudiants = list()
         #FIN RESTAURATION
         analyseur =  Analyzer(self)
         for dossierId in range(nombreDeDossierGeneres):
             self.traiter_dossier_voeux(directoryName+"/"+str(dossierId))
             self.match(equilibre,tauxEquilibre,path=directoryName+"/"+str(dossierId),analyzer=analyseur)
-            DAK_Optimizer.iModelAlea += 1
+            self.iModelAlea += 1
             # RESTAURATION A L'ETAT DE DEPART
             self.reinitialiser_les_parcours()
             self.nettoyer_les_Ues_et_les_Incompatibilites()
-            DAK_Optimizer.ListedesVarY = list()
-            DAK_Optimizer.ListedesVarN = list()
-            DAK_Optimizer.ListeDesEtudiants = list()
+            self.ListedesVarY = list()
+            self.ListedesVarN = list()
+            self.ListeDesEtudiants = list()
             # FIN RESTAURATION
         analyseur.analyze()
 
@@ -237,55 +239,55 @@ class DAK_Optimizer:
 
 
     def AS_modifier_capacite(self, idUE, numeroGroupe, nouvelleCapacite):
-        if nouvelleCapacite != 0:
-            DAK_Optimizer.ListeDesUEs[idUE].modifier_capacite_groupe(numeroGroupe, nouvelleCapacite)
-            DAK_Optimizer.restaurer_UEsParcours = True
-        else:
-            print "pour supprimer un groupe utiliser la fonction adequate"
+        # if nouvelleCapacite != 0:
+        self.ListeDesUEs[idUE].modifier_capacite_groupe(numeroGroupe, nouvelleCapacite)
+        self.restaurer_UEsParcours = True
+        # else:
+        #     print "pour supprimer un groupe utiliser la fonction adequate"
 
     def AS_supprimer_groupe(self, idUE, numeroGroupe):
         self.AS_modifier_capacite(idUE, numeroGroupe, 0)
-        DAK_Optimizer.UE_modifiees = True               #5/5
+        self.UE_modifiees = True               #5/5
 
     def AS_ajouter_groupe(self, ueId, creneauTd, creneauTme, capacite):
-        numNouveauGroupe = DAK_Optimizer.ListeDesUEs[ueId].ajouter_un_groupe(creneauTd, creneauTme, capacite)
+        numNouveauGroupe = self.ListeDesUEs[ueId].ajouter_un_groupe(creneauTd, creneauTme, capacite)
         #MAJ_EDT
-        dictCreneauTd = DAK_Optimizer.EDT[creneauTd]
+        dictCreneauTd = self.EDT[creneauTd]
         if numNouveauGroupe not in dictCreneauTd:
             dictCreneauTd[numNouveauGroupe] = set([ueId])
         else:
             dictCreneauTd[numNouveauGroupe].add(ueId)
 
-        dictCreneauTme = DAK_Optimizer.EDT[creneauTme]
+        dictCreneauTme = self.EDT[creneauTme]
         if numNouveauGroupe not in dictCreneauTme:
             dictCreneauTme[numNouveauGroupe] = set([ueId])
         else:
             dictCreneauTme[numNouveauGroupe].add(ueId)
 
-        DAK_Optimizer.EnsIncompatibilites.clear()
+        self.EnsIncompatibilites.clear()
         self.generer_incompatibilites()
 
-        DAK_Optimizer.restaurer_UEsParcours = True
-        DAK_Optimizer.UE_modifiees = True
+        self.restaurer_UEsParcours = True
+        self.UE_modifiees = True
 
     def AD_afficher_carte_augmentee_incompatibilites(self, nomParcours, taille=5):
 
         indexParcours = 0
-        while nomParcours != DAK_Optimizer.ListeDesParcours[indexParcours].get_intitule():
+        while nomParcours != self.ListeDesParcours[indexParcours].get_intitule():
             indexParcours += 1
 
-        DAK_Optimizer.ListeDesParcours[indexParcours].afficher_carte_augmentee_incompatibilites(taille)
+        self.ListeDesParcours[indexParcours].afficher_carte_augmentee_incompatibilites(taille)
 
     def maj_interets_etudiants_pour_les_ues(self):
-        for Etu in DAK_Optimizer.ListeDesEtudiants:
+        for Etu in self.ListeDesEtudiants:
             Etu.enregistrer_interet_pour_UE()
 
     def RL_introduire_les_indifferences_etudiants(self):
-        for Etu in DAK_Optimizer.ListeDesEtudiants:
+        for Etu in self.ListeDesEtudiants:
             Etu.generer_aleatoirement_mes_indifferences()
 
     def RL_voisinage(self):
-        for Etu in DAK_Optimizer.ListeDesEtudiants:
+        for Etu in self.ListeDesEtudiants:
             if Etu.get_statut():
                 Etu.changer_mes_ues_non_obligatoires()
 
@@ -296,17 +298,17 @@ class DAK_Optimizer:
         while time_ < timeLimit:
             time_ += 1
             self.RL_voisinage()
-            # DAK_Optimizer.restaurer_UEsParcours = True
+            # self.restaurer_UEsParcours = True
             self.nettoyer_les_Ues_et_les_Incompatibilites()
-            # for Ue in DAK_Optimizer.ListeDesUEs[1:]:
+            # for Ue in self.ListeDesUEs[1:]:
             #     print Ue
             self.maj_interets_etudiants_pour_les_ues()
-            # for Ue in DAK_Optimizer.ListeDesUEs[1:]:
+            # for Ue in self.ListeDesUEs[1:]:
             #     print Ue
             #     print Ue.getEnsEtu()
 
-            DAK_Optimizer.ListedesVarY = list()
-            DAK_Optimizer.ListedesVarN = list()
+            self.ListedesVarY = list()
+            self.ListedesVarN = list()
             self.effacer_donnees_affectation_Parcours()
             value = self.match()
             if value > objectif:
@@ -324,7 +326,7 @@ class DAK_Optimizer:
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
 
-        for Ue in DAK_Optimizer.ListeDesUEs[1:]:
+        for Ue in self.ListeDesUEs[1:]:
             csvLine = Ue.ue_sauvegarde()
             writer.writerow(csvLine)
         file.close()
@@ -335,7 +337,7 @@ Optim = DAK_Optimizer()
 Optim.charger_edt("edt.csv")
 Optim.charger_parcours("parcours.csv")
 # print Optim.DictUEs
-print Optim.capaciteTotaleAccueil
+
 
 # Optim.match()
 # Optim.eprouver_edt(nombreDeDossierGeneres=5)
@@ -348,7 +350,13 @@ print Optim.capaciteTotaleAccueil
 # Optim.AS_modifier_capacite(4, 3, 36)   # AUX GROUPES DE ARES
 # Optim.AS_modifier_capacite(4, 2, 36)
 # Optim.traiter_dossier_voeux("../VOEUX")
-Optim.AS_supprimer_groupe(11, 3) #Groupe 3 Mapsi
+# Optim.AS_supprimer_groupe(11, 3) #Groupe 3 Mapsi
+
+Optim.AS_supprimer_groupe(13, 4)          #DEPLACEMENT DES CRENEAUX MLBDA
+Optim.AS_ajouter_groupe(13,24,25,32)
+
+Optim.AS_supprimer_groupe(6,1)
+Optim.AS_ajouter_groupe(6,5,10,50)
 # #
 # Optim.AS_modifier_capacite(10, 1, 36)
 # Optim.AS_modifier_capacite(10, 3, 36)   # AUX GROUPES DE LRC
@@ -356,8 +364,9 @@ Optim.AS_supprimer_groupe(11, 3) #Groupe 3 Mapsi
 # Optim.AS_modifier_capacite(10, 4, 36)
 # Optim.match()
 # Optim.sauvegarde_UEs("edt.csv")
-# Optim.AD_afficher_carte_augmentee_incompatibilites("and")
 Optim.eprouver_edt(nombreDeDossierGeneres=25)
+Optim.AD_afficher_carte_augmentee_incompatibilites("and")
+
 print Optim.capaciteTotaleAccueil
 # Optim.AD_afficher_carte_augmentee_incompatibilites("and")
 # #
