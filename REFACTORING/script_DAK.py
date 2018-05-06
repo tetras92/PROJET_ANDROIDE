@@ -84,6 +84,9 @@ class Script():
         pass
 
     def eprouver_edt(self):
+        print "\n\n_________________________________ Eprouver l'EDT _________________________________\n\n"+\
+            "Veuillez renseigner un chemin pour stocker les donnees qui seront generes par le test \n"
+
         pass
 
     def appliquer_rl(self) :
