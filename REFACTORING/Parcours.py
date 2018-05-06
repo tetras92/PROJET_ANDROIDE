@@ -73,6 +73,7 @@ class Parcours:
             contrat = contratUEObligatoires + contratUEConseillees
             # contrat.sort()
             if len(self.DicoConfigurations) != 0 and len(contrat) > 1 and self.DicoConfigurations[tuple(contrat)] == 0.0: #l'orde oblig avant conseilles importants
+                    print "Peut pas creer", tuple(contrat)
                     # print("incompatible cree")
                     return self.constituer_voeu(k)
             return contratUEObligatoires, contratUEConseillees
