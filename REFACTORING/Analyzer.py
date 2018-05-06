@@ -1,10 +1,18 @@
 import matplotlib.pyplot as plt
+import os
+import csv
+import matplotlib
+import random
+
 
 class Analyzer:
 
     def __init__(self, optimizer):
         self.ListeMatchingModel = list()
         self.optimizer = optimizer
+        self.dico_recapitulatif_interet_ue_conseillees_par_parcours = dict()
+
+        self.id_subplot = 1
 
     def add_MatchingModel(self, MM):
         self.ListeMatchingModel.append(MM)
@@ -41,3 +49,47 @@ class Analyzer:
         plt.legend()
         plt.grid(True)
         plt.show()
+
+    def calculer_interet_pour_ue_conseillees_par_parcours(self, dossierVoeux=''):
+        if dossierVoeux == '':
+            print "analyse des donnees courantes"
+        else:
+            for fichierVoeux in os.listdir(dossierVoeux):
+                try: #POUR EVITER LES ERREURS DE SPLIT SUR LE DOSSIER DE VOEUX PAR PARCOURS
+                    parcours = fichierVoeux.split('.')[1]
+                    path = dossierVoeux+"/"+fichierVoeux
+                    f_voeux = open(path)
+                    data = csv.DictReader(f_voeux)
+                    D = dict()
+                    for ligneEtu in data:
+                        ListeUEsConseilleesDeEtudiant = [ligneEtu["cons"+str(id)] for id in range(1, self.optimizer.Parameters.nbMaxUEConseillees+1) if ligneEtu["cons"+str(id)] != ""]
+                        for ue in ListeUEsConseilleesDeEtudiant:
+                            if ue not in D:
+                                D[ue] = 1
+                            else:
+                                D[ue] += 1
+                    self.dico_recapitulatif_interet_ue_conseillees_par_parcours[parcours] = D
+                except:
+                    print "Erreur lors de la lecture du dossier : {}".format(dossierVoeux)
+                    pass
+            for parcours, D in self.dico_recapitulatif_interet_ue_conseillees_par_parcours.items():
+                self.generer_histogramme_des_interest(parcours, D)
+            plt.show()
+
+    def generer_histogramme_des_interest(self, parcours, D):
+        Liste_ues = list()
+        Liste_effectif = list()
+        colorNames = matplotlib.colors.cnames.keys()
+        colorNames = list(colorNames)
+        color = random.randint(0,len(colorNames)-1)
+        plt.figure(1)
+        for ue, effectif in D.items():
+            Liste_ues.append(ue)
+            Liste_effectif.append(effectif)
+        plt.subplot(3,3,self.id_subplot)
+        self.id_subplot += 1
+        plt.bar(range(len(Liste_ues)), Liste_effectif, width = 0.4, color=colorNames[color], label=parcours)# color=[colorNames[random.randint(0,len(colorNames)-1)] for i in range(len(Liste_effectif))])
+        plt.xticks([x for x in range(len(Liste_effectif))],[str(Liste_ues[i])+"("+str(Liste_effectif[i])+")" for i in range(len(Liste_ues))], rotation=15)
+        plt.legend()
+        # plt.title("Mesure du choix des UE conseillees en fonction du parcours : {}".format(parcours))
+        # plt.show()

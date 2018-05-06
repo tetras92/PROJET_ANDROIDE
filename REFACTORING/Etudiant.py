@@ -15,16 +15,20 @@ class Etudiant:
             self.nombreDeVoeux = len(self.ue_obligatoires) + len(self.ue_non_obligatoires)
             self.varName = "x_{}_{}".format(self.indexParcours, self.idRelatif)
             self.ListeDesInscriptions = list()
-            Parcours_Obj.rajouter_etudiant(self) #L'etudiant se rajoute a son parcours
+            # Parcours_Obj.rajouter_etudiant(self) #L'etudiant se rajoute a son parcours
             self.non_entierement_satisfait = False
 
-        def gerer_variables_contraintes_ue_obligatoires(self,modelGurobi):
+        def s_inscrire_dans_son_parcours(self):
+            self.Parcours.rajouter_etudiant(self)
+
+        def gerer_variables_contraintes_ue_obligatoires(self, matchingModel):
             """ajoute les contraintes relatives aux ue obligatoires"""
             # objectif = modelGurobi.getObjective()
-
+            modelGurobi = matchingModel.modelGurobi
             for id_ue in self.ue_obligatoires:
                 var = modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name="y_%d"%self.indexParcours+"_%d"%self.idRelatif+"_%d"%id_ue)
-                self.optimizer.ListedesVarY.append("y_{}_{}_{}".format(self.indexParcours, self.idRelatif, id_ue))
+                # self.optimizer.ListedesVarY.append(var) #append("y_{}_{}_{}".format(self.indexParcours, self.idRelatif, id_ue))
+                matchingModel.ListedesVarY.append(var)
                 contrainte = LinExpr()
                 for num_group in range(1, self.optimizer.ListeDesUEs[id_ue].get_nb_groupes()+1):
                     contrainte += modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name=self.varName+"_%d"%id_ue+"_%d"%num_group)
@@ -38,17 +42,19 @@ class Etudiant:
             # modelGurobi.setObjective(objectif,GRB.MAXIMIZE) # NE PEUt-ON PAS S'EN PASSER
             modelGurobi.update()
 
-        def gerer_variables_contraintes_ue_non_obligatoires(self, modelGurobi):
+        def gerer_variables_contraintes_ue_non_obligatoires(self, matchingModel):
             """ajoute les contraintes relatives aux ue non obligatoires"""
             # objectif = modelGurobi.getObjective()
+            modelGurobi = matchingModel.modelGurobi
             varN = modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name="n_%d"%self.indexParcours+"_%d"%self.idRelatif)
-            self.optimizer.ListedesVarN.append(varN)
+            matchingModel.ListedesVarN.append(varN)
 
             ListeCouranteVarYij = list()
             for id_ue in self.ue_non_obligatoires:
                 var = modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name="y_%d"%self.indexParcours+"_%d"%self.idRelatif+"_%d"%id_ue)
                 ListeCouranteVarYij.append(var)
-                self.optimizer.ListedesVarY.append("y_{}_{}_{}".format(self.indexParcours, self.idRelatif, id_ue))
+                # self.optimizer.ListedesVarY.append("y_{}_{}_{}".format(self.indexParcours, self.idRelatif, id_ue))
+                matchingModel.ListedesVarY.append(var)
                 contrainte = LinExpr()
                 for num_group in range(1, self.optimizer.ListeDesUEs[id_ue].get_nb_groupes()+1):
                     contrainte += modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name=self.varName+"_%d"%id_ue+"_%d"%num_group)
