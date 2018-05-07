@@ -214,6 +214,8 @@ class DAK_Optimizer:
             if self.affectationFaite:
                 # print "2222222222222222222222222222222222222222222222222"
                 self.preparer_condition_matching_courant()
+            if self.UE_modifiees_significativement:
+                self.maj_suite_a_une_modification_significative_ue()
 
             if tauxEquilibre >= 0 and tauxEquilibre <= 1.0:
                 self.Parameters.tauxEquilibre = tauxEquilibre      #un changement de taux d'equilibre persiste
@@ -238,19 +240,21 @@ class DAK_Optimizer:
         for Parcours_Obj in self.ListeDesParcours:
             Parcours_Obj.reinitialiser_parcours(sauvegarde)
 
+    def maj_suite_a_une_modification_significative_ue(self):
+        self.sauvegarde_UEs(".edt.csv")
+        self.charger_edt(".edt.csv")
+
+        for Parcours_Obj in self.ListeDesParcours:
+            Parcours_Obj.generer_dico_Nbconfig()
+
+        self.UE_modifiees_significativement = False
 
 #----------EPROUVER
     def eprouver_edt(self, nombreDeDossierGeneres=50, directoryName='VOEUX_RANDOM',equilibre=True, tauxEquilibre=0.10):
         print "Mesure de la resistance de l'edt avec {} dossier(s) aleatoire(s)\n".format(nombreDeDossierGeneres)
         self.analyseur.reset()
-        if self.UE_modifiees_significativement:
-            self.sauvegarde_UEs(".edt.csv")
-            self.charger_edt(".edt.csv")
-
-            for Parcours_Obj in self.ListeDesParcours:
-                Parcours_Obj.generer_dico_Nbconfig()
-
-            self.UE_modifiees_significativement = False
+        # if self.UE_modifiees_significativement:
+        #     self.maj_suite_a_une_modification_significative_ue()
             # self.AD_afficher_carte_augmentee_incompatibilites("and")
 
         G = GenerateurDeVoeux(directoryName, self)
@@ -364,43 +368,45 @@ class DAK_Optimizer:
 
 Optim = DAK_Optimizer()
 Optim.charger_edt("edt.csv")
-Optim.charger_parcours("parcours_.csv")
-# print Optim.DictUEs
-
-Optim.AD_afficher_carte_incompatibilites("and")
-# Optim.match()
-Optim.eprouver_edt(nombreDeDossierGeneres=5)
-
-Optim.eprouver_edt(nombreDeDossierGeneres=10)
+Optim.charger_parcours("parcours.csv")
+# # print Optim.DictUEs
+#
+# Optim.AD_afficher_carte_incompatibilites("and")
+# # Optim.match()
+# Optim.eprouver_edt(nombreDeDossierGeneres=5)
+#
+# Optim.eprouver_edt(nombreDeDossierGeneres=10)
 # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
 # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
-# Optim.traiter_dossier_voeux("../VOEUX")
-# Optim.match()
+Optim.traiter_dossier_voeux("../VOEUX")
+Optim.match()
 # print Optim.dict_nombre_de_contrats_incompatibles_par_parcours
 # Optim.RL_appliquer(10)
-# Optim.AS_ajouter_groupe(5, 23, 24, 16) #Bima
-# Optim.AS_modifier_capacite(4, 1, 36)
+Optim.AS_ajouter_groupe(5, 23, 24, 16) #Bima
+Optim.AS_modifier_capacite(5, 1, 33)
 # Optim.AS_modifier_capacite(4, 3, 36)   # AUX GROUPES DE ARES
 # Optim.AS_modifier_capacite(4, 2, 36)
 # Optim.AD_interets_ue_conseillees_par_parcours("VOEUX_RANDOM/0")
 # Optim.RL_appliquer(10)
 # Optim.match()
 # Optim.AS_supprimer_groupe(11, 3) #Groupe 3 Mapsi
-
+Optim.match()
+Optim.AD_afficher_carte_augmentee_incompatibilites("and")
 # Optim.AS_supprimer_groupe(13, 4)          #DEPLACEMENT DES CRENEAUX MLBDA
 # Optim.AS_ajouter_groupe(13,24,25,32)
 #
 # Optim.AS_supprimer_groupe(6,1)
-# Optim.AS_ajouter_groupe(6,5,10,50)
+Optim.AS_deplacer_groupe(6,1,1,22)
 # #
-# Optim.AS_modifier_capacite(10, 1, 36)
-# Optim.AS_modifier_capacite(10, 3, 36)   # AUX GROUPES DE LRC
-# Optim.AS_modifier_capacite(10, 2, 36)
-# Optim.AS_modifier_capacite(10, 4, 36)
-# Optim.match()
+Optim.AS_modifier_capacite(10, 1, 36)
+Optim.AS_modifier_capacite(10, 3, 36)   # AUX GROUPES DE LRC
+Optim.AS_modifier_capacite(10, 2, 36)
+Optim.AS_modifier_capacite(10, 4, 36)
+Optim.match()
+Optim.AD_afficher_carte_augmentee_incompatibilites("and")
 # Optim.sauvegarde_UEs("edt.csv")
-# Optim.eprouver_edt(nombreDeDossierGeneres=25)
-# Optim.AD_afficher_carte_augmentee_incompatibilites("and")
+# Optim.eprouver_edt(nombreDeDossierGeneres=5)
+
 #
 # print Optim.capaciteTotaleAccueil
 # Optim.AD_afficher_carte_augmentee_incompatibilites("and")

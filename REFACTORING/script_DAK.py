@@ -1,5 +1,8 @@
+import Tkinter
 import tkFileDialog
 
+# !/usr/bin/env python
+# _*_ coding:utf-8 _*_
 from DAK_Optimizer import *
 
 
@@ -19,10 +22,9 @@ class Script():
     def start(self):
         while True:
             print"__________________________________Bienvenue au DAK_OPTIMIZER__________________________________\n\n"
-            # self.charger_donnees(recharge=False)
-            # self.optimizer.charger_edt(self.file_edt)
-            # self.optimizer.charger_parcours(self.file_parcours)
-            # self.optimizer.generer_incompatibilites()
+            self.charger_donnees(recharge=False)
+            self.optimizer.charger_edt(self.file_edt)
+            self.optimizer.charger_parcours(self.file_parcours)
             self.menu_principal()
 
 
@@ -84,6 +86,9 @@ class Script():
         pass
 
     def eprouver_edt(self):
+        print "\n\n_________________________________ Eprouver l'EDT _________________________________\n\n"+\
+            "Veuillez renseigner un chemin pour stocker les donnees qui seront generes par le test \n"
+
         pass
 
     def appliquer_rl(self) :
@@ -124,13 +129,12 @@ class Script():
 
     def charger_donnees(self,recharge=True):
 
-        fichiers_chargees = [self.file_edt,self.file_parcours,self.dir_dossier_voeux]
-        while not('' in fichiers_chargees) or not(recharge):
-
-            s = "---------------------------- Chargement des fichiers ----------------------------\n\n\t\t(1) Charger le fichier EDT\t\t{} \n\t\t(2) Charger le fichier Parcours\t\t{} \n\t\t(3) Charger le dossier de voeux (donnees de depart)\t\t{}\n".format(self.file_edt, self.file_parcours, self.dir_dossier_voeux)
-            if recharge :
-                s+="\t\t(4) Retourner au Menu principal\n"
+        while not(() in [self.file_parcours,self.file_edt]) or not(recharge):
+            s = "---------------------------- Chargement des fichiers ----------------------------\n\n\t\t(1) Charger le fichier EDT\t\t{} \n\t\t(2) Charger le fichier Parcours\t\t{} \n\t\t{}\n".format(self.file_edt, self.file_parcours, self.dir_dossier_voeux)
+            # if recharge :
+            #     s+="\t\t(3) Retourner au Menu principal\n"
             s += "\t\t(0) Quitter\n\n " + "Tapez Entree pour valider votre saisie.\n\n"
+            root = Tkinter.Tk()
 
             print (s)
 
@@ -140,19 +144,12 @@ class Script():
                 exit(0)
             elif chargement == '1':
                 self.file_edt = tkFileDialog.askopenfilename(filetypes=[('CSV', '.csv')])
-                if self.file_edt==():
-                 fichiers_chargees[0]= ''
             elif chargement == '2':
                 self.file_parcours = tkFileDialog.askopenfilename(filetypes=[('CSV', '.csv')])
-                if self.file_parcours==():
-                  fichiers_chargees[1]= self.file_parcours
-            elif chargement == '3':
-                self.dir_dossier_voeux = tkFileDialog.askdirectory(title='Choisissez un repertoire')
-                fichiers_chargees[2]= self.dir_dossier_voeux
-            elif chargement == '4' and recharge:
-                self.menu_principal()
-            elif chargement == '':
-                if not('' in fichiers_chargees):
+            # elif chargement == '3' and recharge:
+            #     self.menu_principal()
+            elif chargement == '':          #Entree
+                if not(() in [self.file_edt,self.file_parcours]):
                     break
                 else:
                     print "Vous n'avez pas entre toutes les donnees necessaires.\n\n"
@@ -160,7 +157,9 @@ class Script():
             else:
                 print "Commande incorrecte.\n\n"
                 continue
-
+            root.withdraw
+            root.mainloop()
+            root.quit()
             print "\n\n ================== fichier enregistre ==================\n\n"
 
 
@@ -200,4 +199,3 @@ class Script():
 
 s = Script()
 s.start()
-
