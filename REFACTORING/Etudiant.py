@@ -1,6 +1,8 @@
-from gurobipy import *
-import numpy as np
+# from gurobipy import *
 import random
+
+import numpy as np
+
 
 class Etudiant:
         """ Classe representant un etudiant"""

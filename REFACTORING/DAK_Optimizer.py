@@ -1,10 +1,10 @@
-from UE import *
-from Etudiant import *
-from Incompatibilite import *
-from Parcours import *
-from MatchingModel import *
-from GenerateurDeVoeux import *
 from Analyzer import *
+from Etudiant import *
+from GenerateurDeVoeux import *
+from Incompatibilite import *
+from MatchingModel import *
+from UE import *
+
 
 class DAK_Optimizer:
 
@@ -49,7 +49,7 @@ class DAK_Optimizer:
 
     def __init__(self):
         print "DAK_Optimizer Powered by DAK"
-        self.analyseur =  Analyzer(self)
+        # self.analyseur =  Analyzer(self)
 
     def operations_pre_chargement_edt(self):
         self.EDT = [dict()] + [generer_model_dict_creneau(DAK_Optimizer.Parameters.nbMaxGroupeParUE) for i in range(0, DAK_Optimizer.Parameters.nbCreneauxParSemaine)]
@@ -278,6 +278,7 @@ class DAK_Optimizer:
         self.AS_modifier_capacite(idUE, numeroGroupe, 0)
         self.UE_modifiees_significativement = True              #5/5
 
+
     def AS_ajouter_groupe(self, ueId, creneauTd, creneauTme, capacite):
         numNouveauGroupe = self.ListeDesUEs[ueId].ajouter_un_groupe(creneauTd, creneauTme, capacite)
         #MAJ_EDT
@@ -361,12 +362,12 @@ class DAK_Optimizer:
 
 
 
-Optim = DAK_Optimizer()
-Optim.charger_edt("edt.csv")
-Optim.charger_parcours("parcours.csv")
+# Optim = DAK_Optimizer()
+# Optim.charger_edt("edt.csv")
+# Optim.charger_parcours("parcours.csv")
 # print Optim.DictUEs
 
-Optim.AD_afficher_carte_incompatibilites("and")
+# Optim.AD_afficher_carte_incompatibilites("and")
 # Optim.match()
 # Optim.eprouver_edt(nombreDeDossierGeneres=5)
 # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)

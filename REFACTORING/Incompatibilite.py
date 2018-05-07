@@ -1,4 +1,4 @@
-from gurobipy import *
+# from gurobipy import *
 
 class Incompatibilite:
         """Classe definissant une incompatibilite"""
