@@ -91,5 +91,6 @@ class Analyzer:
         plt.bar(range(len(Liste_ues)), Liste_effectif, width = 0.4, color=colorNames[color], label=parcours)# color=[colorNames[random.randint(0,len(colorNames)-1)] for i in range(len(Liste_effectif))])
         plt.xticks([x for x in range(len(Liste_effectif))],[str(Liste_ues[i])+"("+str(Liste_effectif[i])+")" for i in range(len(Liste_ues))], rotation=15)
         plt.legend()
+        # plt.title("Mesure du choix des UE conseillees en fonction du parcours")
         # plt.title("Mesure du choix des UE conseillees en fonction du parcours : {}".format(parcours))
         # plt.show()

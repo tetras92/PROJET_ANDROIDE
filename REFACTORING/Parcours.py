@@ -141,8 +141,10 @@ class Parcours:
                             Contrat = ss_ContratOblig + ss_ContratCons
 
                             self.optimizer.effacer_donnees_affectation_UEs()
+                            # deb = time.time()
                             cM = CompatibilityModel(Contrat, self.optimizer)
                             ContratStr, nb_config = cM.resoudre()
+                            # print time.time() - deb
                             # self.optimizer.nettoyer_les_Ues_et_les_Incompatibilites()
 
                             ContratStr = tuple(ContratStr)
@@ -150,7 +152,15 @@ class Parcours:
                             self.DicoConfigurations[ContratStr] = nb_config
             print "{} : FIN Generation des contrats incompatibles\n".format(self.nom)
             self.optimizer.effacer_donnees_affectation_UEs()
+            self.actualiser_dico_crontrats_compatibles()
             return self.DicoConfigurations
+
+        def actualiser_dico_crontrats_compatibles(self):
+            nb_contrat_incompatible_de_taille_5 = 0
+            for contrat, nbConfig in self.DicoConfigurations.items():
+                if len(contrat) == self.optimizer.Parameters.TailleMaxContrat and nbConfig == 0:
+                    nb_contrat_incompatible_de_taille_5 += 1
+            self.optimizer.dict_nombre_de_contrats_incompatibles_par_parcours[self.nom] = nb_contrat_incompatible_de_taille_5
 
         def rajouter_etudiant(self, Etu):
             self.mesEtudiants.append(Etu)
@@ -176,14 +186,14 @@ class Parcours:
         def str_nb_etudiants_insatisfaits(self):
             return self.nom + "(" + str(self.effectifNonInscrit) + ")[{}%]  ".format(round(100. - 100.0*self.effectifNonInscrit/self.effectif, 2))
 
-        def afficher_carte_augmentee_incompatibilites(self,taille):
+        def afficher_carte_incompatibilites(self,taille):
             Liste = list()
             for tuple_, nbConfig in self.DicoConfigurations.items():
                 if taille == len(tuple_) and nbConfig == 0:
                     Liste.append((tuple_, nbConfig))
-            Liste.sort(key=lambda elmt:elmt[1])
+            # Liste.sort(key=lambda elmt:elmt[1])
             for elmt in Liste:
-                print elmt
+                print list(elmt[0])
 
         def get_Liste_ue_conseillees(self):
             return [self.optimizer.DictUEs[ue].get_id() for ue in self.ListeUEConseilles]
