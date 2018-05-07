@@ -130,6 +130,8 @@ class MatchingModel:
         #VERIFICATION DE L'EQUILIBRE DES GROUPES
         for Ue in self.ListeDesUEs[1:]:
             Ue.set_equilibre()
+        self.calculer_nombre_total_contrats_incompatibles()
+
 
     def get_identifiantModele(self):
         return self.identifiantModele
@@ -143,6 +145,19 @@ class MatchingModel:
     def get_PsatisfactionN(self):
         return self.proportionSatisfactionN
 
+    def calculer_nombre_total_contrats_incompatibles(self):
+        self.nombre_total_contrat_incompatible = 0
+        for parc, eff in self.optimizer.dict_nombre_de_contrats_incompatibles_par_parcours.items():
+            self.nombre_total_contrat_incompatible += eff
+
+    def chaine_nombre_contrats_incompatible_par_parcours(self):
+        s = ""
+        L = list(self.optimizer.dict_nombre_de_contrats_incompatibles_par_parcours.keys())
+        L.sort()
+        for parc in L:
+            s += "{}({})  ".format(parc, self.optimizer.dict_nombre_de_contrats_incompatibles_par_parcours[parc])
+        return s
+
     def __str__(self):
         """Affiche les UES du Modele"""
 
@@ -152,11 +167,15 @@ class MatchingModel:
         s += "Nombre Total d'inscriptions a satisfaire : {} \n".format(self.nombreTotalDemandesInscriptions)
         s += "Nombre Maximal d'inscriptions pouvant etre satisfaites : {} \n".format(self.capaciteTotaleAccueilUEs)
         s += "Nombre total d'etudiants du master : {}\n".format(self.nombreTotalEtudiants)
-        s += "Charge : {}% \nDesequilibre maximal autorise : {} %\n\n\t\t\t*LES RESULTATS D'AFFECTATION*\n".format(self.charge, self.tauxEquilibre*100)
+        s += "Charge : {}% \nDesequilibre maximal autorise : {} %".format(self.charge, self.tauxEquilibre*100)
+
+        s += "\n\nCaracteristiques de l'EDT :\n\tNombre total de contrats incompatibles (de taille {}) : {}".format(self.optimizer.Parameters.TailleMaxContrat, self.nombre_total_contrat_incompatible)
+        s += "\n\tPar parcours : {}".format(self.chaine_nombre_contrats_incompatible_par_parcours())
+        s += "\n\n\t\t\t*LES RESULTATS D'AFFECTATION*\n"
 
         # proportionSatisfaction = round(100.0*MainModel.nbInscriptionsSatisfaites/len(MainModel.ListedesVarY),2)
-        s += "Nombre d'inscriptions satisfaites : {} soit {}%\n".format(self.objectif1_Value, self.proportionSatisfactionY)
-        s += "Nombre d'etudiants entierement satisfaits : {} soit {}%\n".format(self.objectif2_Value, self.proportionSatisfactionN)
+        s += "Nombre d'inscriptions satisfaites : {} soit {}%\n".format(int(self.objectif1_Value), self.proportionSatisfactionY)
+        s += "Nombre d'etudiants entierement satisfaits : {} soit {}%\n".format(int(self.objectif2_Value), self.proportionSatisfactionN)
         s += "Detail des inscriptions non satisfaites : \n\t\tNombre de demandes non satisfaites par parcours :\n\t\t\t"
         for Parcours_Obj in self.ListeDesParcours:
             s += Parcours_Obj.str_nb_etudiants_insatisfaits()

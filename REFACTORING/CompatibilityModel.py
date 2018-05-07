@@ -1,6 +1,6 @@
 from gurobipy import *
 from HelpingFunctions import *
-
+import time
 
 class CompatibilityModel():
 
@@ -43,6 +43,7 @@ class CompatibilityModel():
 
 
     def resoudre(self):
+
         L_L_Groupe_ListeVoeux = [[i + 1 for i in range(self.ListeDesUEs[ueId].get_nb_groupes())] for ueId in self.ListeVoeuxId]
         L_Combi = produit_cartesien_mult(L_L_Groupe_ListeVoeux)
 

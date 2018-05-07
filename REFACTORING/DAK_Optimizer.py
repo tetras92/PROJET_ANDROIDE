@@ -304,13 +304,13 @@ class DAK_Optimizer:
         self.AS_supprimer_groupe(ueId, numeroGroupe)
         self.AS_ajouter_groupe(ueId, new_creneautd, new_creneautme, capacite)
 
-    def AD_afficher_carte_augmentee_incompatibilites(self, nomParcours, taille=5):
+    def AD_afficher_carte_incompatibilites(self, nomParcours, taille=5):
 
         indexParcours = 0
         while nomParcours != self.ListeDesParcours[indexParcours].get_intitule():
             indexParcours += 1
 
-        self.ListeDesParcours[indexParcours].afficher_carte_augmentee_incompatibilites(taille)
+        self.ListeDesParcours[indexParcours].afficher_carte_incompatibilites(taille)
 
     # def maj_interets_etudiants_pour_les_ues(self):
     #     for Etu in self.ListeDesEtudiants:
@@ -366,18 +366,20 @@ Optim.charger_edt("edt.csv")
 Optim.charger_parcours("parcours.csv")
 # print Optim.DictUEs
 
-
+Optim.AD_afficher_carte_incompatibilites("and")
 # Optim.match()
 # Optim.eprouver_edt(nombreDeDossierGeneres=5)
 # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
 # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
-#
+# Optim.traiter_dossier_voeux("../VOEUX")
+# Optim.match()
+# print Optim.dict_nombre_de_contrats_incompatibles_par_parcours
 # Optim.RL_appliquer(10)
 # Optim.AS_ajouter_groupe(5, 23, 24, 16) #Bima
 # Optim.AS_modifier_capacite(4, 1, 36)
 # Optim.AS_modifier_capacite(4, 3, 36)   # AUX GROUPES DE ARES
 # Optim.AS_modifier_capacite(4, 2, 36)
-Optim.AD_interets_ue_conseillees_par_parcours("VOEUX_RANDOM/0")
+# Optim.AD_interets_ue_conseillees_par_parcours("VOEUX_RANDOM/18")
 # Optim.RL_appliquer(10)
 # Optim.match()
 # Optim.AS_supprimer_groupe(11, 3) #Groupe 3 Mapsi
@@ -394,7 +396,7 @@ Optim.AD_interets_ue_conseillees_par_parcours("VOEUX_RANDOM/0")
 # Optim.AS_modifier_capacite(10, 4, 36)
 # Optim.match()
 # Optim.sauvegarde_UEs("edt.csv")
-# Optim.eprouver_edt(nombreDeDossierGeneres=2)
+# Optim.eprouver_edt(nombreDeDossierGeneres=25)
 # Optim.AD_afficher_carte_augmentee_incompatibilites("and")
 #
 # print Optim.capaciteTotaleAccueil
