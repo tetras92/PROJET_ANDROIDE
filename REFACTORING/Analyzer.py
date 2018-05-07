@@ -11,24 +11,37 @@ class Analyzer:
         self.ListeMatchingModel = list()
         self.optimizer = optimizer
         self.dico_recapitulatif_interet_ue_conseillees_par_parcours = dict()
-
         self.id_subplot = 1
+        self.colorNames = list(matplotlib.colors.cnames.keys())
 
     def add_MatchingModel(self, MM):
         self.ListeMatchingModel.append(MM)
 
 
     def analyze(self):
+        self.dico_etat_demande_ue = {ue.intitule : 0 for ue in self.optimizer.ListeDesUEs[1:]}
         Liste_idMM = list()
         Liste_charge = list()
         Liste_satisfaction_Y = list()
         Liste_satisfaction_N = list()
+
+
 
         for MM in self.ListeMatchingModel:
             Liste_idMM.append(MM.get_identifiantModele())
             Liste_charge.append(MM.get_charge())
             Liste_satisfaction_N.append(MM.get_PsatisfactionN())
             Liste_satisfaction_Y.append(MM.get_PsatisfactionY())
+            for ue, surbook in MM.DictUeSurdemandees.items():
+                self.dico_etat_demande_ue[ue] += surbook
+
+        L = list(self.dico_etat_demande_ue.keys())
+        L.sort()
+        plt.bar(range(len(L)), [self.dico_etat_demande_ue[ue] for ue in L], width = 0.4, color=[self.colorNames[random.randint(0,len(self.colorNames)-1)] for i in range(len(L))], edgecolor = 'black')
+        plt.xticks([x for x in range(len(L))], L, rotation=15)
+        plt.title("Analyse UE susceptibles d'etre saturees : Mesure de la sur-demande")
+        plt.legend()
+        plt.show()
 
         L_Y_copy = [val for val in Liste_satisfaction_Y]
         L_Y_copy.sort()
@@ -46,7 +59,6 @@ class Analyzer:
             plt.annotate(Liste_idMM[i], (Liste_charge[i], Liste_satisfaction_N[i]))
 
         plt.title("Mesure de la resistance d'un EDT : Evolution des pourcentages de satisfaction en fonction de la charge.")
-        plt.legend()
         plt.grid(True)
         plt.show()
 
@@ -74,23 +86,29 @@ class Analyzer:
                     pass
             for parcours, D in self.dico_recapitulatif_interet_ue_conseillees_par_parcours.items():
                 self.generer_histogramme_des_interest(parcours, D)
+            plt.suptitle("Mesure du choix des UE conseillees en fonction du parcours")
             plt.show()
 
     def generer_histogramme_des_interest(self, parcours, D):
         Liste_ues = list()
         Liste_effectif = list()
-        colorNames = matplotlib.colors.cnames.keys()
-        colorNames = list(colorNames)
-        color = random.randint(0,len(colorNames)-1)
+
+        color = random.randint(0,len(self.colorNames)-1)
         plt.figure(1)
         for ue, effectif in D.items():
             Liste_ues.append(ue)
             Liste_effectif.append(effectif)
         plt.subplot(3,3,self.id_subplot)
         self.id_subplot += 1
-        plt.bar(range(len(Liste_ues)), Liste_effectif, width = 0.4, color=colorNames[color], label=parcours)# color=[colorNames[random.randint(0,len(colorNames)-1)] for i in range(len(Liste_effectif))])
+        plt.bar(range(len(Liste_ues)), Liste_effectif, width = 0.4, color=self.colorNames[color], edgecolor = 'black', label=parcours)# color=[colorNames[random.randint(0,len(colorNames)-1)] for i in range(len(Liste_effectif))])
         plt.xticks([x for x in range(len(Liste_effectif))],[str(Liste_ues[i])+"("+str(Liste_effectif[i])+")" for i in range(len(Liste_ues))], rotation=15)
         plt.legend()
-        # plt.title("Mesure du choix des UE conseillees en fonction du parcours")
+        #
         # plt.title("Mesure du choix des UE conseillees en fonction du parcours : {}".format(parcours))
         # plt.show()
+
+    def reset(self):
+        self.ListeMatchingModel = list()
+        self.dico_recapitulatif_interet_ue_conseillees_par_parcours = dict()
+        self.id_subplot = 1
+        self.dico_etat_demande_ue = dict()

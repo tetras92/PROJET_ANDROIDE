@@ -40,7 +40,12 @@ class MatchingModel:
         if equilibre:
             for Ue in self.ListeDesUEs[1:]:
                 Ue.ajouterContraintesEquilibre(self.modelGurobi)
-        #Contraintes d'UE (Equilibre)
+        #fIN Contraintes d'UE (Equilibre)
+
+        #pour ANALYZER : UE SURDEMANDEES
+        self.DictUeSurdemandees = dict()
+        for Ue in self.ListeDesUEs[1:]:
+            Ue.etat_demande(self.DictUeSurdemandees)
 
         self.nombreTotalDemandesInscriptions = len(self.ListedesVarY)#(self.optimizer.ListedesVarY)
         self.nombreTotalEtudiants = len(self.ListedesVarN)#(self.optimizer.ListedesVarN)
@@ -128,6 +133,7 @@ class MatchingModel:
 
             f.close()
         #VERIFICATION DE L'EQUILIBRE DES GROUPES
+        #On en profite POUR
         for Ue in self.ListeDesUEs[1:]:
             Ue.set_equilibre()
         self.calculer_nombre_total_contrats_incompatibles()

@@ -207,6 +207,8 @@ class UE:
 
             return Dict_Ue
 
+        def etat_demande(self, D):
+            D[self.intitule] = len(self.EnsEtuInteresses) - self.capaciteTotale
 
         def __str__(self):
             """ Retourne la chaine representant une UE"""

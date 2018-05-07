@@ -242,6 +242,7 @@ class DAK_Optimizer:
 #----------EPROUVER
     def eprouver_edt(self, nombreDeDossierGeneres=50, directoryName='VOEUX_RANDOM',equilibre=True, tauxEquilibre=0.10):
         print "Mesure de la resistance de l'edt avec {} dossier(s) aleatoire(s)\n".format(nombreDeDossierGeneres)
+        self.analyseur.reset()
         if self.UE_modifiees_significativement:
             self.sauvegarde_UEs(".edt.csv")
             self.charger_edt(".edt.csv")
@@ -363,12 +364,14 @@ class DAK_Optimizer:
 
 Optim = DAK_Optimizer()
 Optim.charger_edt("edt.csv")
-Optim.charger_parcours("parcours.csv")
+Optim.charger_parcours("parcours_.csv")
 # print Optim.DictUEs
 
 Optim.AD_afficher_carte_incompatibilites("and")
 # Optim.match()
-# Optim.eprouver_edt(nombreDeDossierGeneres=5)
+Optim.eprouver_edt(nombreDeDossierGeneres=5)
+
+Optim.eprouver_edt(nombreDeDossierGeneres=10)
 # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
 # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
 # Optim.traiter_dossier_voeux("../VOEUX")
@@ -379,7 +382,7 @@ Optim.AD_afficher_carte_incompatibilites("and")
 # Optim.AS_modifier_capacite(4, 1, 36)
 # Optim.AS_modifier_capacite(4, 3, 36)   # AUX GROUPES DE ARES
 # Optim.AS_modifier_capacite(4, 2, 36)
-# Optim.AD_interets_ue_conseillees_par_parcours("VOEUX_RANDOM/18")
+# Optim.AD_interets_ue_conseillees_par_parcours("VOEUX_RANDOM/0")
 # Optim.RL_appliquer(10)
 # Optim.match()
 # Optim.AS_supprimer_groupe(11, 3) #Groupe 3 Mapsi
