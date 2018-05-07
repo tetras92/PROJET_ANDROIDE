@@ -202,7 +202,7 @@ class DAK_Optimizer:
             Parcours_Obj.effacer_donnees_problemes_affectation()
             # print Parcours_Obj.nom,  Parcours_Obj.effectif
 
-    def preparer_condition_matching_courant(self):
+    def operations_pre_traitement_voeux(self):
         self.effacer_donnees_affectation_UEs()
         self.effacer_donnees_affectation_Parcours()
         self.affectationFaite = False
