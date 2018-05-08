@@ -1,6 +1,6 @@
 import Tkinter
 import tkFileDialog
-
+from DAK_Optimizer import DAK_Optimizer
 # !/usr/bin/env python
 # _*_ coding:utf-8 _*_
 
@@ -11,25 +11,22 @@ class Script():
     def __init__(self):
         print "DAK_Optimizer Powered by DAK"
 
-        self.fichiers_chargees = set()
+        # self.fichiers_chargees = set()
         self.file_edt = ''
         self.file_parcours = ''
         self.dirname_dossier_voeux = ''
-        self.dirname_tout_dossier = ''
-        self.equilibrage = True
+        # self.dirname_tout_dossier = ''
+        # self.equilibrage = True
         # self.dir_dossier_voeux = ''
-        # self.optimizer = DAK_Optimizer()
+        self.optimizer = DAK_Optimizer()
 
 
     def start(self):
         while True:
             print"__________________________________Bienvenue au DAK_OPTIMIZER__________________________________\n\n"
             self.charger_donnees(recharge=False)
-            self.optimizer.operations_pre_chargement_edt()
             self.optimizer.charger_edt(self.file_edt)
-            self.optimizer.operations_pre_chargement_parcours()
             self.optimizer.charger_parcours(self.file_parcours)
-            # self.optimizer.generer_incompatibilites()
             self.menu_principal()
 
 
@@ -190,26 +187,21 @@ class Script():
     def faire_le_matching(self):
         while True:
             print "\n\n____________________________ Affectation ____________________________\n\n"
-            eq_qst = raw_input("\tActiver l'equilibrage dans les groupes ? (Par defaut 0.1)\n\t\t\t (1) Oui \t\t (0) Non\n\n>>> ")
-            if eq_qst == '1':
-                while True:
-                    change_eq = raw_input("\n\nChanger le taux d'equilibre ? (Tapez Entree si par defaut, Sinon veuillez indiquer sa nouvelle valeur  : )")
-                    if change_eq != '' and change_eq.replace('.','',1).isdigit():
-                        self.tauxEquilibre = float(change_eq)
-                        print"\n\n================= Modification de l'equilibrage enregistre =================\n\n"
-
-                        return
-                    else:
-                        print "\nValeur incorrecte. Veuillez re-essayer\n"
-
-            elif eq_qst == '0' :
-                self.equilibrage = False
+            # eq_qst = raw_input("\tActiver l'equilibrage dans les groupes ? (Par defaut 0.1)\n\t\t\t (1) Oui \t\t (0) Non\n\n>>> ")
+            options = input("1 : Equilibrage avec valeur par defaut ({}%)\n2 : Equilibrage avec taux max desequilibre a1 specifier\n3 : Sans equilibrage\n0: Quitter\nSaisir une valeur (0-3) : ".format(self.optimizer.tauxEquilibre*100))
+            if options == 1:
+                self.optimizer.match()
+            elif options == 2:
+                tauxMaxDesequilibre = input("\nSaisir taux max desequilibre : ")
+                print"\n\n================= Modification de l'equilibrage enregistre =================\n\n"
+                tauxMaxDequilibre = float(tauxMaxDesequilibre)
+                self.optimizer.match(equilibre=True,tauxEquilibre=tauxMaxDesequilibre)
+            elif options == 3:
+                self.optimizer.match(equilibre=False)
+            elif options == 0:
                 break
-
             else:
-                print "Commande incorrecte.\n\n"
-                continue
-
+                print "Saisir une valeur valide!"
 
     def menu_principal(self):
         while True:
@@ -228,40 +220,39 @@ class Script():
             if choix == '0':
                 exit(0)
             elif choix == '1':
-                self.optimizer.operations_pre_traitement_voeux()
                 if self.charger_dossier_voeux() == False:
                     continue
-                while True :
-                    self.optimizer.AD_interets_ue_conseillees_par_parcours(self.dirname_dossier_voeux)
-                    print "\n\n=========== Generation du graphique representant les interets des etudiants aux UE par parcours ===========\n\n"
-                    self.optimizer.operations_pre_traitement_voeux()
-                    self.optimizer.traiter_dossier_voeux(self.dirname_dossier_voeux)
-                    print "\n=========================== Traitement du dossier des voeux ===========================\n\n"
+                # choix_menu_affectation = True
+
+                print "\n\n=========== Generation du graphique representant les interets des etudiants aux UE par parcours ===========\n\n"
+                self.optimizer.AD_interets_ue_conseillees_par_parcours(self.dirname_dossier_voeux)
+                print "\n=========================== Traitement du dossier des voeux ===========================\n\n"
+                self.optimizer.traiter_dossier_voeux(self.dirname_dossier_voeux)
+                goto_menu2 = False
+                while not goto_menu2 :
                     self.faire_le_matching()
                     print "\n\n=========================== Affectation effectue ===========================\n\n"
                     while True:
-                        choix_menu_affectation = raw_input("Vous voulez continuer ?\n\t(1) Oui \t\t(0) Retour au Menu principal\n\n")
-
-                        if choix_menu_affectation == '0':
+                        continuer_avec_dautre_taux_equilibre = input("Voulez-vous realiser une autre affectation du meme dossier avec d'autres options par exemple?\n(1) Oui \t(0) Retour au Menu principal\nSaisir une valeur(0-1) : ")
+                        if continuer_avec_dautre_taux_equilibre == '1':
                             break
-                        elif choix_menu_affectation != '1':
-                            print "Commande incorrecte.\n\n"
-                            continue
+                        elif continuer_avec_dautre_taux_equilibre == '0':
+                            goto_menu2 = True
+                        else:
+                            print "\nCommande incorrecte.\n"
 
-                continue
-
-            elif choix == '2':
-                self.modifier_cap()
-            elif choix == '3':
-                self.afficher_incompatibilites()
-            elif choix == '4':
-                self.eprouver_edt()
-            elif choix == '5':
-                self.charger_donnees(True)
-            elif choix == '7':
-                self.reinitialiser_donnees()
-            elif choix == '8':
-                self.sauvegarder()
+            # elif choix == '2':
+            #     self.modifier_cap()
+            # elif choix == '3':
+            #     self.afficher_incompatibilites()
+            # elif choix == '4':
+            #     self.eprouver_edt()
+            # elif choix == '5':
+            #     self.charger_donnees(True)
+            # elif choix == '7':
+            #     self.reinitialiser_donnees()
+            # elif choix == '8':
+            #     self.sauvegarder()
 
 
 

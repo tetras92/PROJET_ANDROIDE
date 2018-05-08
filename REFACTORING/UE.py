@@ -71,8 +71,8 @@ class UE:
             for idGroup1 in range(1, self.nb_groupes+1):
                 for idGroup2 in range(idGroup1+1, self.nb_groupes+1):
                     if idGroup1 not in self.groupes_supprimes and idGroup2 not in self.groupes_supprimes:
-                        modelGurobi.addConstr(quicksum((1./self.ListeCapacites[idGroup1-1])*modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup1) for etu in self.EnsEtuInteresses) + quicksum((-1./self.ListeCapacites[idGroup2-1])*modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup2) for etu in self.EnsEtuInteresses) <= self.optimizer_Params.tauxEquilibre)
-                        modelGurobi.addConstr(quicksum((1./self.ListeCapacites[idGroup1-1])*modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup1) for etu in self.EnsEtuInteresses) + quicksum((-1./self.ListeCapacites[idGroup2-1])*modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup2) for etu in self.EnsEtuInteresses) >= -1.*self.optimizer_Params.tauxEquilibre)
+                        modelGurobi.addConstr(quicksum((1./self.ListeCapacites[idGroup1-1])*modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup1) for etu in self.EnsEtuInteresses) + quicksum((-1./self.ListeCapacites[idGroup2-1])*modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup2) for etu in self.EnsEtuInteresses) <= self.optimizer.tauxEquilibre)
+                        modelGurobi.addConstr(quicksum((1./self.ListeCapacites[idGroup1-1])*modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup1) for etu in self.EnsEtuInteresses) + quicksum((-1./self.ListeCapacites[idGroup2-1])*modelGurobi.getVarByName(etu+"_%d"%self.id+"_%d"%idGroup2) for etu in self.EnsEtuInteresses) >= -1.*self.optimizer.tauxEquilibre)
             modelGurobi.update()
 
 
@@ -162,7 +162,7 @@ class UE:
                         # print("groupe1", idL1, "groupe2", idL2)
                             difference = abs(1.0*len(self.ListeEtudiantsGroupes[idL1])/(1.0*self.ListeCapacites[idL1-1])- 1.0*len(self.ListeEtudiantsGroupes[idL2])/(1.0*self.ListeCapacites[idL2-1]))
 
-                            if difference > self.optimizer_Params.tauxEquilibre:
+                            if difference > self.optimizer.tauxEquilibre:
                                 self.equilibre = False
                                 break
 
@@ -207,6 +207,8 @@ class UE:
 
             return Dict_Ue
 
+        def etat_demande(self, D):
+            D[self.intitule] = len(self.EnsEtuInteresses) - self.capaciteTotale
 
         def __str__(self):
             """ Retourne la chaine representant une UE"""
