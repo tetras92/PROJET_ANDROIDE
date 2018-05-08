@@ -391,7 +391,7 @@ Optim.AS_modifier_capacite(5, 1, 33)
 # Optim.match()
 # Optim.AS_supprimer_groupe(11, 3) #Groupe 3 Mapsi
 Optim.match()
-Optim.AD_afficher_carte_augmentee_incompatibilites("and")
+Optim.AD_afficher_carte_incompatibilites("and")
 # Optim.AS_supprimer_groupe(13, 4)          #DEPLACEMENT DES CRENEAUX MLBDA
 # Optim.AS_ajouter_groupe(13,24,25,32)
 #
@@ -403,7 +403,7 @@ Optim.AS_modifier_capacite(10, 3, 36)   # AUX GROUPES DE LRC
 Optim.AS_modifier_capacite(10, 2, 36)
 Optim.AS_modifier_capacite(10, 4, 36)
 Optim.match()
-Optim.AD_afficher_carte_augmentee_incompatibilites("and")
+Optim.AD_afficher_carte_incompatibilites("and")
 # Optim.sauvegarde_UEs("edt.csv")
 # Optim.eprouver_edt(nombreDeDossierGeneres=5)
 
