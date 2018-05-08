@@ -1,7 +1,7 @@
-import matplotlib.pyplot as plt
-import os
 import csv
 import matplotlib
+import matplotlib.pyplot as plt
+import os
 import random
 
 

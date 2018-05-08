@@ -1,9 +1,12 @@
-import random
-import numpy as np
-import itertools as it
 import csv
-from CompatibilityModel import *
+import itertools as it
+import random
 import time
+
+import numpy as np
+
+from CompatibilityModel import *
+
 
 class Parcours:
 
