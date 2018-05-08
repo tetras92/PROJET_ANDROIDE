@@ -180,7 +180,7 @@ class Script():
                 root.quit
                 if self.dirname_dossier_voeux != '':
                     print "\n\n ================== dossier enregistre ==================\n\n"
-                    break
+                    return True
             elif chargement == '0':
                 return False
             else :
@@ -197,17 +197,19 @@ class Script():
                     if change_eq != '' and change_eq.replace('.','',1).isdigit():
                         self.tauxEquilibre = float(change_eq)
                         print"\n\n================= Modification de l'equilibrage enregistre =================\n\n"
+
                         return
                     else:
                         print "\nValeur incorrecte. Veuillez re-essayer\n"
 
             elif eq_qst == '0' :
                 self.equilibrage = False
-                return
+                break
 
             else:
                 print "Commande incorrecte.\n\n"
                 continue
+
 
     def menu_principal(self):
         while True:
@@ -229,25 +231,23 @@ class Script():
                 self.optimizer.operations_pre_traitement_voeux()
                 if self.charger_dossier_voeux() == False:
                     continue
-                choix_menu_affectation = True
-                while choix_menu_affectation :
+                while True :
                     self.optimizer.AD_interets_ue_conseillees_par_parcours(self.dirname_dossier_voeux)
                     print "\n\n=========== Generation du graphique representant les interets des etudiants aux UE par parcours ===========\n\n"
                     self.optimizer.operations_pre_traitement_voeux()
                     self.optimizer.traiter_dossier_voeux(self.dirname_dossier_voeux)
                     print "\n=========================== Traitement du dossier des voeux ===========================\n\n"
-                    self.optimizer.preparer_condition_matching_courant()
                     self.faire_le_matching()
-                    self.optimizer.match(self.equilibrage,self.tauxEquilibre,self.dirname_tout_dossier,self.optimizer.analyseur)
                     print "\n\n=========================== Affectation effectue ===========================\n\n"
-                    choix_menu_affectation = raw_input("Vous voulez continuer ?\n\t(1) Oui \t\t(0) Retour au Menu principal\n\n")
-                    if choix_menu_affectation == '1':
-                        choix_menu_affectation = True
-                    elif choix_menu_affectation == '0':
-                        break
-                    else:
-                        print "Commande incorrecte.\n\n"
-                        continue
+                    while True:
+                        choix_menu_affectation = raw_input("Vous voulez continuer ?\n\t(1) Oui \t\t(0) Retour au Menu principal\n\n")
+
+                        if choix_menu_affectation == '0':
+                            break
+                        elif choix_menu_affectation != '1':
+                            print "Commande incorrecte.\n\n"
+                            continue
+
                 continue
 
             elif choix == '2':
