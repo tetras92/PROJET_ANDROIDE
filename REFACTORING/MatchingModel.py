@@ -6,7 +6,7 @@ class MatchingModel:
         self.optimizer = optimizer
         self.Params = optimizer.Parameters
         self.modelGurobi = Model("OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK)")
-        self.tauxEquilibre = self.Params.tauxEquilibre
+        self.tauxEquilibre = self.optimizer.tauxEquilibre
         self.ListeDesUEs = optimizer.ListeDesUEs
         self.EnsIncompatibilites = optimizer.EnsIncompatibilites
         self.ListeDesEtudiants = optimizer.ListeDesEtudiants
