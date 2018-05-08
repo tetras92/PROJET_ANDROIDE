@@ -152,10 +152,10 @@ class Parcours:
                             self.DicoConfigurations[ContratStr] = nb_config
             print "{} : FIN Generation des contrats incompatibles\n".format(self.nom)
             self.optimizer.effacer_donnees_affectation_UEs()
-            self.actualiser_dico_crontrats_compatibles()
+            self.actualiser_dico_contrats_incompatibles()
             return self.DicoConfigurations
 
-        def actualiser_dico_crontrats_compatibles(self):
+        def actualiser_dico_contrats_incompatibles(self):
             nb_contrat_incompatible_de_taille_5 = 0
             for contrat, nbConfig in self.DicoConfigurations.items():
                 if len(contrat) == self.optimizer.Parameters.TailleMaxContrat and nbConfig == 0:

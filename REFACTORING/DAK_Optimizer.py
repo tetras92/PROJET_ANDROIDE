@@ -396,7 +396,8 @@ Optim.AD_afficher_carte_incompatibilites("and")
 # Optim.AS_ajouter_groupe(13,24,25,32)
 #
 # Optim.AS_supprimer_groupe(6,1)
-Optim.AS_deplacer_groupe(6,1,1,22)
+Optim.AS_deplacer_groupe(6,2,5,10)
+# Optim.AS_deplacer_groupe(6,2,5,10)
 # #
 Optim.AS_modifier_capacite(10, 1, 36)
 Optim.AS_modifier_capacite(10, 3, 36)   # AUX GROUPES DE LRC
