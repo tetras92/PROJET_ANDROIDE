@@ -1,11 +1,12 @@
-from UE import *
-from Etudiant import *
-from Incompatibilite import *
-from Parcours import *
-from MatchingModel import *
-from GenerateurDeVoeux import *
-from Analyzer import *
 from heapq import heappop, heappush
+
+from Analyzer import *
+from Etudiant import *
+from GenerateurDeVoeux import *
+from Incompatibilite import *
+from MatchingModel import *
+from UE import *
+
 
 class DAK_Optimizer:
 
