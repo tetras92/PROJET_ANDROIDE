@@ -46,7 +46,7 @@ class DAK_Optimizer:
     nbTotalIncompatibilites = 0
     EnsIncompatibilites = set()
 
-
+    nbDossiersParDefaut = 50
 
 
     def __init__(self):
@@ -252,7 +252,7 @@ class DAK_Optimizer:
         self.UE_modifiees_significativement = False
 
 #----------EPROUVER
-    def eprouver_edt(self, nombreDeDossierGeneres=50, directoryName='VOEUX_RANDOM',equilibre=True, tauxEquilibre=0.10):
+    def eprouver_edt(self, nombreDeDossierGeneres=nbDossiersParDefaut, directoryName='VOEUX_RANDOM',equilibre=True, tauxEquilibre=0.10):
         print "Mesure de la resistance de l'edt avec {} dossier(s) aleatoire(s)\n".format(nombreDeDossierGeneres)
         self.analyseur.reset()
         # if self.UE_modifiees_significativement:
