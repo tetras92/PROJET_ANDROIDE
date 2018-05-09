@@ -5,6 +5,7 @@ from Parcours import *
 from MatchingModel import *
 from GenerateurDeVoeux import *
 from Analyzer import *
+from heapq import heappop, heappush
 
 class DAK_Optimizer:
 
@@ -366,10 +367,25 @@ class DAK_Optimizer:
             writer.writerow(csvLine)
         file.close()
 
+    def afficher_EDT(self):
+        EDT_str = [[] for i in range(DAK_Optimizer.Parameters.nbCreneauxParSemaine+1)]
+        for creneauId in range(1, DAK_Optimizer.Parameters.nbCreneauxParSemaine+1):
+            Dict_creneau = self.EDT[creneauId]
+
+            for num_group, setUE in Dict_creneau.items():
+                if num_group == 0: #il s'agit d'un cours
+                    for ue_ayant_cours in setUE:
+                        heappush(EDT_str[creneauId], self.ListeDesUEs[ue_ayant_cours].intitule.upper())
+                else:
+                    for ue_ayant_td_tme in setUE:
+                        heappush(EDT_str[creneauId], self.ListeDesUEs[ue_ayant_td_tme].intitule +str(num_group))
+        return EDT_str
 
 
-# Optim = DAK_Optimizer()
-# Optim.charger_edt("edt.csv")
+
+Optim = DAK_Optimizer()
+Optim.charger_edt("edt.csv")
+print Optim.afficher_EDT()
 # Optim.charger_parcours("parcours.csv")
 # # # # # print Optim.DictUEs
 # # # #
