@@ -87,7 +87,7 @@ class Analyzer:
             for parcours, D in self.dico_recapitulatif_interet_ue_conseillees_par_parcours.items():
                 self.generer_histogramme_des_interest(parcours, D)
             plt.suptitle("Mesure du choix des UE conseillees en fonction du parcours")
-            plt.show()
+            plt.show(block=False)
 
     def generer_histogramme_des_interest(self, parcours, D):
         Liste_ues = list()

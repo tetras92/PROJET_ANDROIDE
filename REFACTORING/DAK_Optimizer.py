@@ -1,10 +1,10 @@
-from Analyzer import *
-from Etudiant import *
-from GenerateurDeVoeux import *
-from Incompatibilite import *
-from MatchingModel import *
 from UE import *
-
+from Etudiant import *
+from Incompatibilite import *
+from Parcours import *
+from MatchingModel import *
+from GenerateurDeVoeux import *
+from Analyzer import *
 
 class DAK_Optimizer:
 
@@ -38,7 +38,7 @@ class DAK_Optimizer:
     voeux_charges = False
 
     tauxEquilibre = 0.10
-    nombreDeDossierGeneres = 50
+
     ListeDesParcours = list()
 
     dict_nombre_de_contrats_incompatibles_par_parcours = dict()
@@ -46,7 +46,7 @@ class DAK_Optimizer:
     nbTotalIncompatibilites = 0
     EnsIncompatibilites = set()
 
-
+    nbDossiersParDefaut = 50
 
 
     def __init__(self):
@@ -211,7 +211,7 @@ class DAK_Optimizer:
 
 
 
-    def match(self, equilibre=True, tauxEquilibre=tauxEquilibre, path='',analyzer=None):
+    def match(self, equilibre=True, tauxEquilibre=0.10, path='',analyzer=None):
         if self.edt_charge and self.parcours_charge and self.voeux_charges:
             if self.affectationFaite:
                 # print "2222222222222222222222222222222222222222222222222"
@@ -252,7 +252,7 @@ class DAK_Optimizer:
         self.UE_modifiees_significativement = False
 
 #----------EPROUVER
-    def eprouver_edt(self, nombreDeDossierGeneres=nombreDeDossierGeneres, directoryName='VOEUX_RANDOM',equilibre=True, tauxEquilibre=tauxEquilibre):
+    def eprouver_edt(self, nombreDeDossierGeneres=nbDossiersParDefaut, directoryName='VOEUX_RANDOM',equilibre=True, tauxEquilibre=0.10):
         print "Mesure de la resistance de l'edt avec {} dossier(s) aleatoire(s)\n".format(nombreDeDossierGeneres)
         self.analyseur.reset()
         # if self.UE_modifiees_significativement:
