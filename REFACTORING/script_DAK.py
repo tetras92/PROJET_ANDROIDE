@@ -69,8 +69,8 @@ class Script():
 
     def print_equilibrage(self):
         print "\n\n_________________________________ Parametre d'equilibrage _________________________________\n\n"
-        options = input("(1) Equilibrage avec valeur par defaut ({}%)\n(2) Equilibrage avec taux max desequilibre a 1 specifier\n(3) Sans equilibrage\n"
-                        "(0) Quitter\nSaisir une valeur (0-3) : ".format(self.optimizer.tauxEquilibre*100))
+        options = input("(1) Equilibrage avec valeur par defaut ({}%)\n(2) Taux equilibrage a specifier (entre 0.0 et 1.0)\n(3) Sans equilibrage\n"
+                        "(0) Retour au Menu Principal\nSaisir une valeur (0-3) : ".format(self.optimizer.tauxEquilibre*100))
         return options
 
 
@@ -84,12 +84,13 @@ class Script():
 
             elif options == 2:
                 while True:
-                    tauxMaxDesequilibre = raw_input("\nSaisir taux max desequilibre : ")
-                    if tauxMaxDesequilibre.replace('.','',1).isdigit():
-                        print"\n\n================= Modification de l'equilibrage enregistre =================\n\n"
-                        tauxMaxDesequilibre = float(tauxMaxDesequilibre)
-                        self.optimizer.match(equilibre=True,tauxEquilibre=tauxMaxDesequilibre)
-                        break
+                    tauxMaxDesequilibre = raw_input("\nSaisir taux max desequilibre (entre 0.0 et 1.0) : ")
+                    if tauxMaxDesequilibre.replace('.','',1).isdigit() or str.isdigit(tauxMaxDesequilibre):
+                        if float(tauxMaxDesequilibre) <= 1 and float(tauxMaxDesequilibre) >=0:
+                            print"\n\n================= Modification de l'equilibrage enregistre =================\n\n"
+                            tauxMaxDesequilibre = float(tauxMaxDesequilibre)
+                            self.optimizer.match(equilibre=True,tauxEquilibre=tauxMaxDesequilibre)
+                            break
 
             elif options == 3:
                 self.optimizer.match(equilibre=False)
@@ -127,7 +128,7 @@ class Script():
         self.dirname_dossier_voeux = tkFileDialog.askdirectory()
         print"\n\n========================== Chemin enregistre ==========================\n\n"
         nbDossier = raw_input("Veuillez indiquer le nombre de dossier voeux a generer afin de mesurer la robustesse de l'EDT.\n"
-                          " Par defaut le nombre de dossiers est a {}\n(Tapez Entree si par defaut)  : ".format(self.optimizer.nombreDeDossierGeneres))
+                          " Par defaut le nombre de dossiers est a {}\n(Tapez Entree si par defaut)  : ".format(self.optimizer.nbDossiersParDefaut))
         if nbDossier=='':
             nbDossier = 50
         else:
@@ -137,7 +138,7 @@ class Script():
             option = self.print_equilibrage()
             if option == 1:
                 self.optimizer.eprouver_edt(nbDossier,directoryName=self.dirname_dossier_voeux)
-                pass
+
             elif option == 2:
 
                 while True:
@@ -171,8 +172,53 @@ class Script():
     def sauvegarder(self):
         pass
 
-    def operation_sur_groupes(self):
-        pass
+    def ajouter_groupe(self,id_ue):
+        while True:
+            print"\n\n___________________________ Ajouter un nouveau groupe _____________________________\n\n"
+            print self.optimizer.ListeDesUEs[id_ue].print_groupe()+"\n\n"+\
+                "Veuillez indiquer les creneaux TD, TME et la capacite du nouveau groupe.\nNB : Les creneaux sont numerotes de 1 a 25 (5 creneaux par jour ex: Mardi 10h45 - 12h45 est note 7)\n\n"
+            try:
+                creneau_td = input("Creneau TD  : ")
+                creneau_tme = input("Creneau TME  : ")
+                capacite = input("Capacite du groupe  : ")
+            except:
+                continue
+
+            self.optimizer.AS_ajouter_groupe(id_ue, creneau_td, creneau_tme, capacite)
+            print"\n============================ AJOUT ENREGISTRE ============================\n\n"
+            print self.optimizer.ListeDesUEs[id_ue].print_groupe()
+            break
+
+
+    def supprimer_groupe(self,id_ue):
+        while True:
+            print"\n\n___________________________ Supprimer un groupe _____________________________\n\n"
+            print self.optimizer.ListeDesUEs[id_ue].print_groupe()+"\n\n"
+            try:
+                numGroupe = input("Numero du groupe a supprimer  : ")
+            except:
+                continue
+            self.optimizer.AS_supprimer_groupe(id_ue,numGroupe)
+            print"\n============================ SUPPRESSION ENREGISTREE ============================\n\n"
+            print self.optimizer.ListeDesUEs[id_ue].print_groupe()
+            break
+
+
+    def modifier_capacite_groupe(self,id_ue):
+        while True:
+            print"\n\n___________________________ Modifier capacite d'un groupe _____________________________\n\n"
+            print self.optimizer.ListeDesUEs[id_ue].print_groupe()+"\n\n"
+            try:
+                numGroupe = input("Numero du groupe  : ")
+                nouvelle_capacite = input("Nouvelle capacite du groupe : ")
+            except:
+                continue
+            self.optimizer.AS_modifier_capacite(id_ue,numGroupe,nouvelle_capacite)
+            print"\n============================ MODIFICATION ENREGISTREE ============================\n\n"
+            print self.optimizer.ListeDesUEs[id_ue].print_groupe()
+            break
+
+
 
 
 
@@ -237,14 +283,48 @@ class Script():
     ############################################################################################################################################
 
             elif choix == '3': #_________________________NEW
+
+                def get_all_ue_name():
+                    Liste_id_ues = list(self.optimizer.DictUEs.keys())
+                    Liste_id_ues.sort()
+                    s = "\n"
+                    nb_ue = len(Liste_id_ues)
+                    for ue,i in zip(Liste_id_ues,range(1,nb_ue + 1)):
+                        s += "\t({}) {}\t\t".format(i,ue)
+                        if ((i-1)%(len(nb_ue)/2))==0:
+                          s+="\n"
+                    return s
+
                 while True:
-                    print"\n\n__________________________ Operation sur l'EDT __________________________\n\n\t(1) Afficher l'EDT\n\t(2) Modifier les groupes d'UE\n\t(3) Sauvegarder les modifications apporte sur l'EDT\n\t" \
+                    print"\n\n__________________________ Operation sur l'EDT __________________________\n\n\t(1) Afficher l'EDT\n\t(2) Modifications sur les groupes d'UE\n\t(3) Sauvegarder les modifications apportees sur l'EDT\n\t" \
                             "(0) Retour au Menu principal\n\n"
                     changement_edt = input(" >>> ")
                     if changement_edt == 1:
                         pass
                     elif changement_edt == 2:
-                        self.operation_sur_groupes()
+                        print "\n\n_______________________ Modification des groupes d'UE _______________________\n\n"
+                        intit_ue = get_all_ue_name()
+                        while True:
+                            print "\tVeuillez selectionner une UE a modifie : \n\n"+intit_ue
+                            try:
+                                ue_a_modifie = input(">>> ")
+                            except:
+                                print"im in expction input"
+                                continue
+                            break
+                        if ue_a_modifie <= len(self.optimizer.DictUEs) or ue_a_modifie >0 :
+                            while True:
+                                print "\n\t(1) Ajouter un nouveau groupe\n\t(2) Supprimer un groupe\n\t(3) Modifier la capacite d'un groupe\n\t(0) Retour au menu precedent\n"
+                                choix = raw_input(">>> ")
+                                if choix == '1':
+                                    self.ajouter_groupe(ue_a_modifie)
+                                elif choix == '2':
+                                    self.supprimer_groupe(ue_a_modifie)
+                                elif choix == '3':
+                                    self.modifier_capacite_groupe(ue_a_modifie)
+                                elif choix == '0':
+                                   break
+
                     elif changement_edt == 3:
                         self.sauvegarder()
                     elif changement_edt == 0:

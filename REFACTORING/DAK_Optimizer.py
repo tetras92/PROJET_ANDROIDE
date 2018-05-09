@@ -1,10 +1,11 @@
-from Analyzer import *
-from Etudiant import *
-from GenerateurDeVoeux import *
-from Incompatibilite import *
-from MatchingModel import *
 from UE import *
-
+from Etudiant import *
+from Incompatibilite import *
+from Parcours import *
+from MatchingModel import *
+from GenerateurDeVoeux import *
+from Analyzer import *
+from heapq import heappop, heappush
 
 class DAK_Optimizer:
 
@@ -18,6 +19,9 @@ class DAK_Optimizer:
         nbCreneauxParSemaine = 25
         nbMaxGroupeParUE = 5
         TailleMaxContrat = 5
+        nbJoursOuvres = 5
+        nbCreneauxParJour = 5
+
 
     ListeDesParcours = list()
     DictUEs = dict()
@@ -38,7 +42,7 @@ class DAK_Optimizer:
     voeux_charges = False
 
     tauxEquilibre = 0.10
-    nombreDeDossierGeneres = 50
+
     ListeDesParcours = list()
 
     dict_nombre_de_contrats_incompatibles_par_parcours = dict()
@@ -46,7 +50,7 @@ class DAK_Optimizer:
     nbTotalIncompatibilites = 0
     EnsIncompatibilites = set()
 
-
+    nbDossiersParDefaut = 50
 
 
     def __init__(self):
@@ -211,7 +215,7 @@ class DAK_Optimizer:
 
 
 
-    def match(self, equilibre=True, tauxEquilibre=tauxEquilibre, path='',analyzer=None):
+    def match(self, equilibre=True, tauxEquilibre=0.10, path='',analyzer=None):
         if self.edt_charge and self.parcours_charge and self.voeux_charges:
             if self.affectationFaite:
                 # print "2222222222222222222222222222222222222222222222222"
@@ -252,7 +256,7 @@ class DAK_Optimizer:
         self.UE_modifiees_significativement = False
 
 #----------EPROUVER
-    def eprouver_edt(self, nombreDeDossierGeneres=nombreDeDossierGeneres, directoryName='VOEUX_RANDOM',equilibre=True, tauxEquilibre=tauxEquilibre):
+    def eprouver_edt(self, nombreDeDossierGeneres=nbDossiersParDefaut, directoryName='VOEUX_RANDOM',equilibre=True, tauxEquilibre=0.10):
         print "Mesure de la resistance de l'edt avec {} dossier(s) aleatoire(s)\n".format(nombreDeDossierGeneres)
         self.analyseur.reset()
         # if self.UE_modifiees_significativement:
@@ -366,10 +370,63 @@ class DAK_Optimizer:
             writer.writerow(csvLine)
         file.close()
 
+    def afficher_EDT(self):
+        if self.UE_modifiees_significativement:
+            self.maj_suite_a_une_modification_significative_ue()
+
+        EDT_str = [[] for i in range(DAK_Optimizer.Parameters.nbCreneauxParSemaine+1)]
+        for creneauId in range(1, DAK_Optimizer.Parameters.nbCreneauxParSemaine+1):
+            Dict_creneau = self.EDT[creneauId]
+
+            for num_group, setUE in Dict_creneau.items():
+                if num_group == 0: #il s'agit d'un cours
+                    for ue_ayant_cours in setUE:
+                        heappush(EDT_str[creneauId], self.ListeDesUEs[ue_ayant_cours].intitule.upper())
+                else:
+                    for ue_ayant_td_tme in setUE:
+                        heappush(EDT_str[creneauId], self.ListeDesUEs[ue_ayant_td_tme].intitule +str(num_group))
+
+        def prochain_element_creneau(T):
+            if len(T) == 0:
+                return ''
+            return heappop(T)
+
+        def une_ligne(j):
+            s = ""
+            for i in range(0, DAK_Optimizer.Parameters.nbCreneauxParSemaine, DAK_Optimizer.Parameters.nbJoursOuvres):
+                s += '{:12s}| '.format(prochain_element_creneau(EDT_str[i+j]))
+            s += "\n"
+            return s
+        def un_bloc(j_):
+            s = ""
+            nb_max_ligne = max([len(EDT_str[i + j_]) for i in range(0, DAK_Optimizer.Parameters.nbCreneauxParSemaine, DAK_Optimizer.Parameters.nbJoursOuvres)])
+            for i in range(nb_max_ligne):
+                s += une_ligne(j_)
+            s += "\n\n"
+
+            return s
+
+        def en_tete():
+            s = "{:12s}| {:12s}| {:12s}| {:12s}| {:12s}\n".format("Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi")
+            s += "_"*14*5
+            s += "\n"
+            return s
+        s = en_tete()
+        for bloc in range(1, DAK_Optimizer.Parameters.nbCreneauxParJour+1):
+            s += un_bloc(bloc)
+            s += "_"*14*5
+            s += "\n"
 
 
-# Optim = DAK_Optimizer()
-# Optim.charger_edt("edt.csv")
+
+        return s
+
+
+
+Optim = DAK_Optimizer()
+Optim.charger_edt("edt.csv")
+
+
 # Optim.charger_parcours("parcours.csv")
 # # # # # print Optim.DictUEs
 # # # #
@@ -381,7 +438,7 @@ class DAK_Optimizer:
 # # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
 # # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
 # Optim.traiter_dossier_voeux("../VOEUX")
-# Optim.match()
+#
 # # # print Optim.dict_nombre_de_contrats_incompatibles_par_parcours
 # # Optim.RL_appliquer(10)
 # Optim.AS_ajouter_groupe(5, 23, 24, 16) #Bima
@@ -391,7 +448,9 @@ class DAK_Optimizer:
 # # Optim.AD_interets_ue_conseillees_par_parcours("VOEUX_RANDOM/0")
 # # Optim.RL_appliquer(10)
 # # Optim.match()
-# # Optim.AS_supprimer_groupe(11, 3) #Groupe 3 Mapsi
+# Optim.AS_supprimer_groupe(6, 2) #Groupe 3 Mapsi
+# Optim.match()
+# print Optim.afficher_EDT()
 # Optim.match()
 # Optim.AD_afficher_carte_incompatibilites("and")
 # # Optim.AS_supprimer_groupe(13, 4)          #DEPLACEMENT DES CRENEAUX MLBDA
