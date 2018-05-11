@@ -355,6 +355,7 @@ class DAK_Optimizer:
 
 
     def sauvegarde_UEs(self, path):
+        
         file = open(path, "w")
         fieldnames = ["id_ue", "intitule", "nb_groupes"] + ["capac"+str(i) for i in range(1, DAK_Optimizer.Parameters.nbMaxGroupeParUE+1)]
         fieldnames += ["cours"+str(i) for i in range(1, DAK_Optimizer.Parameters.nbMaxCoursParUE+1)]
@@ -421,10 +422,10 @@ class DAK_Optimizer:
 
 
 
-Optim = DAK_Optimizer()
-Optim.charger_edt("edt.csv")
-#
-print Optim.afficher_EDT()
+# Optim = DAK_Optimizer()
+# Optim.charger_edt("edt.csv")
+# #
+# print Optim.afficher_EDT()
 # Optim.charger_parcours("parcours.csv")
 #
 #
