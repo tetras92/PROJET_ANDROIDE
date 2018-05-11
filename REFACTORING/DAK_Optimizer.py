@@ -1,11 +1,11 @@
-from UE import *
-from Etudiant import *
-from Incompatibilite import *
-from Parcours import *
-from MatchingModel import *
-from GenerateurDeVoeux import *
 from Analyzer import *
+from Etudiant import *
+from GenerateurDeVoeux import *
+from Incompatibilite import *
+from MatchingModel import *
+from UE import *
 from heapq import heappop, heappush
+
 
 class DAK_Optimizer:
 
@@ -42,7 +42,7 @@ class DAK_Optimizer:
     voeux_charges = False
 
     tauxEquilibre = 0.10
-
+    nombreDeDossierGeneres = 50
     ListeDesParcours = list()
 
     dict_nombre_de_contrats_incompatibles_par_parcours = dict()
@@ -215,7 +215,7 @@ class DAK_Optimizer:
 
 
 
-    def match(self, equilibre=True, tauxEquilibre=0.10, path='',analyzer=None):
+    def match(self, equilibre=True, tauxEquilibre=tauxEquilibre, path='',analyzer=None):
         if self.edt_charge and self.parcours_charge and self.voeux_charges:
             if self.affectationFaite:
                 # print "2222222222222222222222222222222222222222222222222"
@@ -256,6 +256,7 @@ class DAK_Optimizer:
         self.UE_modifiees_significativement = False
 
 #----------EPROUVER
+
     def eprouver_edt(self, nombreDeDossierGeneres=nbDossiersParDefaut, directoryName='VOEUX_RANDOM',equilibre=True, tauxEquilibre=0.10):
         print "Mesure de la resistance de l'edt avec {} dossier(s) aleatoire(s)\n".format(nombreDeDossierGeneres)
         self.analyseur.reset()
@@ -355,7 +356,6 @@ class DAK_Optimizer:
 
 
     def sauvegarde_UEs(self, path):
-        
         file = open(path, "w")
         fieldnames = ["id_ue", "intitule", "nb_groupes"] + ["capac"+str(i) for i in range(1, DAK_Optimizer.Parameters.nbMaxGroupeParUE+1)]
         fieldnames += ["cours"+str(i) for i in range(1, DAK_Optimizer.Parameters.nbMaxCoursParUE+1)]
@@ -403,7 +403,7 @@ class DAK_Optimizer:
             nb_max_ligne = max([len(EDT_str[i + j_]) for i in range(0, DAK_Optimizer.Parameters.nbCreneauxParSemaine, DAK_Optimizer.Parameters.nbJoursOuvres)])
             for i in range(nb_max_ligne):
                 s += une_ligne(j_)
-            s += "\n"
+            s += "\n\n"
 
             return s
 
@@ -418,45 +418,42 @@ class DAK_Optimizer:
             s += "_"*14*5
             s += "\n"
 
+
+
         return s
 
 
 
-# Optim = DAK_Optimizer()
-# Optim.charger_edt("edt.csv")
-# #
-# print Optim.afficher_EDT()
+Optim = DAK_Optimizer()
+Optim.charger_edt("edt.csv")
+
+
 # Optim.charger_parcours("parcours.csv")
+# # # # # print Optim.DictUEs
+# # # #
+# # # # Optim.AD_afficher_carte_incompatibilites("and")
+# # # # # Optim.match()
+# # # # Optim.eprouver_edt(nombreDeDossierGeneres=5)
+# # # #
+# # # # Optim.eprouver_edt(nombreDeDossierGeneres=10)
+# # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
+# # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
+# Optim.traiter_dossier_voeux("../VOEUX")
 #
-#
-#
-# # # # # # print Optim.DictUEs
-# # # # #
-# # # # # Optim.AD_afficher_carte_incompatibilites("and")
-# # # # # # Optim.match()
-# # Optim.eprouver_edt(nombreDeDossierGeneres=25)
-# # # # #
-# # # # # Optim.eprouver_edt(nombreDeDossierGeneres=10)
-# # # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
-# # # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
-# # Optim.traiter_dossier_voeux("../VOEUX")
-# Optim.traiter_dossier_voeux("VOEUX_RANDOM/0")
-# Optim.AS_supprimer_groupe(9,1)
-# #
-# # # # print Optim.dict_nombre_de_contrats_incompatibles_par_parcours
-# # # Optim.RL_appliquer(10)
-# # Optim.AS_ajouter_groupe(5, 23, 24, 16) #Bima
-# # Optim.AS_modifier_capacite(5, 1, 33)
-# # # Optim.AS_modifier_capacite(4, 3, 36)   # AUX GROUPES DE ARES
-# # # Optim.AS_modifier_capacite(4, 2, 36)
+# # # print Optim.dict_nombre_de_contrats_incompatibles_par_parcours
+# # Optim.RL_appliquer(10)
+# Optim.AS_ajouter_groupe(5, 23, 24, 16) #Bima
+# Optim.AS_modifier_capacite(5, 1, 33)
+# # Optim.AS_modifier_capacite(4, 3, 36)   # AUX GROUPES DE ARES
+# # Optim.AS_modifier_capacite(4, 2, 36)
 # # Optim.AD_interets_ue_conseillees_par_parcours("VOEUX_RANDOM/0")
-# # # Optim.RL_appliquer(10)
-# # # Optim.match()
-# Optim.AS_supprimer_groupe(11, 3) #Groupe 3 Mapsi
-# # # Optim.match()
-#
+# # Optim.RL_appliquer(10)
+# # Optim.match()
+Optim.AS_supprimer_groupe(6, 2) #Groupe 3 Mapsi
 # Optim.match()
-# # Optim.AD_afficher_carte_incompatibilites("and")
+print Optim.afficher_EDT()
+# Optim.match()
+# Optim.AD_afficher_carte_incompatibilites("and")
 # # Optim.AS_supprimer_groupe(13, 4)          #DEPLACEMENT DES CRENEAUX MLBDA
 # # Optim.AS_ajouter_groupe(13,24,25,32)
 # #
