@@ -5,6 +5,7 @@ from Parcours import *
 from MatchingModel import *
 from GenerateurDeVoeux import *
 from Analyzer import *
+from heapq import heappop, heappush
 
 class DAK_Optimizer:
 
@@ -18,6 +19,9 @@ class DAK_Optimizer:
         nbCreneauxParSemaine = 25
         nbMaxGroupeParUE = 5
         TailleMaxContrat = 5
+        nbJoursOuvres = 5
+        nbCreneauxParJour = 5
+
 
     ListeDesParcours = list()
     DictUEs = dict()
@@ -366,34 +370,92 @@ class DAK_Optimizer:
             writer.writerow(csvLine)
         file.close()
 
+    def afficher_EDT(self):
+        if self.UE_modifiees_significativement:
+            self.maj_suite_a_une_modification_significative_ue()
+
+        EDT_str = [[] for i in range(DAK_Optimizer.Parameters.nbCreneauxParSemaine+1)]
+        for creneauId in range(1, DAK_Optimizer.Parameters.nbCreneauxParSemaine+1):
+            Dict_creneau = self.EDT[creneauId]
+
+            for num_group, setUE in Dict_creneau.items():
+                if num_group == 0: #il s'agit d'un cours
+                    for ue_ayant_cours in setUE:
+                        heappush(EDT_str[creneauId], self.ListeDesUEs[ue_ayant_cours].intitule.upper())
+                else:
+                    for ue_ayant_td_tme in setUE:
+                        heappush(EDT_str[creneauId], self.ListeDesUEs[ue_ayant_td_tme].intitule +str(num_group))
+
+        def prochain_element_creneau(T):
+            if len(T) == 0:
+                return ''
+            return heappop(T)
+
+        def une_ligne(j):
+            s = ""
+            for i in range(0, DAK_Optimizer.Parameters.nbCreneauxParSemaine, DAK_Optimizer.Parameters.nbJoursOuvres):
+                s += '{:12s}| '.format(prochain_element_creneau(EDT_str[i+j]))
+            s += "\n"
+            return s
+        def un_bloc(j_):
+            s = ""
+            nb_max_ligne = max([len(EDT_str[i + j_]) for i in range(0, DAK_Optimizer.Parameters.nbCreneauxParSemaine, DAK_Optimizer.Parameters.nbJoursOuvres)])
+            for i in range(nb_max_ligne):
+                s += une_ligne(j_)
+            s += "\n"
+
+            return s
+
+        def en_tete():
+            s = "{:12s}| {:12s}| {:12s}| {:12s}| {:12s}\n".format("Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi")
+            s += "_"*14*5
+            s += "\n"
+            return s
+        s = en_tete()
+        for bloc in range(1, DAK_Optimizer.Parameters.nbCreneauxParJour+1):
+            s += un_bloc(bloc)
+            s += "_"*14*5
+            s += "\n"
+
+        return s
 
 
-# Optim = DAK_Optimizer()
-# Optim.charger_edt("edt.csv")
+
+Optim = DAK_Optimizer()
+Optim.charger_edt("edt.csv")
+#
+print Optim.afficher_EDT()
 # Optim.charger_parcours("parcours.csv")
-# # # # # print Optim.DictUEs
-# # # #
-# # # # Optim.AD_afficher_carte_incompatibilites("and")
-# # # # # Optim.match()
-# # # # Optim.eprouver_edt(nombreDeDossierGeneres=5)
-# # # #
-# # # # Optim.eprouver_edt(nombreDeDossierGeneres=10)
-# # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
-# # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
-# Optim.traiter_dossier_voeux("../VOEUX")
-# Optim.match()
-# # # print Optim.dict_nombre_de_contrats_incompatibles_par_parcours
-# # Optim.RL_appliquer(10)
-# Optim.AS_ajouter_groupe(5, 23, 24, 16) #Bima
-# Optim.AS_modifier_capacite(5, 1, 33)
-# # Optim.AS_modifier_capacite(4, 3, 36)   # AUX GROUPES DE ARES
-# # Optim.AS_modifier_capacite(4, 2, 36)
+#
+#
+#
+# # # # # # print Optim.DictUEs
+# # # # #
+# # # # # Optim.AD_afficher_carte_incompatibilites("and")
+# # # # # # Optim.match()
+# # Optim.eprouver_edt(nombreDeDossierGeneres=25)
+# # # # #
+# # # # # Optim.eprouver_edt(nombreDeDossierGeneres=10)
+# # # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
+# # # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
+# # Optim.traiter_dossier_voeux("../VOEUX")
+# Optim.traiter_dossier_voeux("VOEUX_RANDOM/0")
+# Optim.AS_supprimer_groupe(9,1)
+# #
+# # # # print Optim.dict_nombre_de_contrats_incompatibles_par_parcours
+# # # Optim.RL_appliquer(10)
+# # Optim.AS_ajouter_groupe(5, 23, 24, 16) #Bima
+# # Optim.AS_modifier_capacite(5, 1, 33)
+# # # Optim.AS_modifier_capacite(4, 3, 36)   # AUX GROUPES DE ARES
+# # # Optim.AS_modifier_capacite(4, 2, 36)
 # # Optim.AD_interets_ue_conseillees_par_parcours("VOEUX_RANDOM/0")
-# # Optim.RL_appliquer(10)
-# # Optim.match()
-# # Optim.AS_supprimer_groupe(11, 3) #Groupe 3 Mapsi
+# # # Optim.RL_appliquer(10)
+# # # Optim.match()
+# Optim.AS_supprimer_groupe(11, 3) #Groupe 3 Mapsi
+# # # Optim.match()
+#
 # Optim.match()
-# Optim.AD_afficher_carte_incompatibilites("and")
+# # Optim.AD_afficher_carte_incompatibilites("and")
 # # Optim.AS_supprimer_groupe(13, 4)          #DEPLACEMENT DES CRENEAUX MLBDA
 # # Optim.AS_ajouter_groupe(13,24,25,32)
 # #

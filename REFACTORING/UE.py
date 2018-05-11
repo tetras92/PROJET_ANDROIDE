@@ -233,3 +233,18 @@ class UE:
 
 
             return s
+
+
+        def print_groupe(self):
+            s = ""
+            for i in range(1,len(self.ListeCreneauxCours)+1):
+              s += "\t  COURS {}    :   {}  \n".format(i,self.ListeCreneauxCours[i-1])
+            # s += "UE {} :\n\tNombre de groupes : {}\n\tCapacite totale d'accueil: {}\n".format(self.intitule, self.nb_groupes - len(self.groupes_supprimes), self.capaciteTotale)
+            s += "\n\n|\t Num groupe \t|\t Capacite \t|\t Creneau TD \t|\t Creneau TME \t|\n"+\
+                 "-------------------------------------------------------------------\n"
+
+            for i in range(1,self.nb_groupes+1):
+                if i not in self.groupes_supprimes:
+                    s += "\t     {}     \t|\t     {}    \t|\t     {}     \t|\t     {}      \t|\n".format(i,self.ListeCapacites[i-1],self.ListeCreneauxTdTme[i][0],self.ListeCreneauxTdTme[i][1])+\
+                         "-------------------------------------------------------------------\n"
+            return s

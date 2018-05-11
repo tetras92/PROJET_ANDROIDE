@@ -18,6 +18,12 @@ class Analyzer:
         self.ListeMatchingModel.append(MM)
 
 
+    def etoile_si_moyenne_sup_a_capacite_un_groupe(self, ue):
+        L = self.optimizer.DictUEs[ue].ListeCapacites
+        if - self.dico_etat_demande_ue[ue] > min(L):
+            return "*"
+        return ""
+
     def analyze(self):
         self.dico_etat_demande_ue = {ue.intitule : 0 for ue in self.optimizer.ListeDesUEs[1:]}
         Liste_idMM = list()
@@ -35,13 +41,20 @@ class Analyzer:
             for ue, surbook in MM.DictUeSurdemandees.items():
                 self.dico_etat_demande_ue[ue] += surbook
 
+        #normalisation
+        for ue in self.dico_etat_demande_ue:
+            self.dico_etat_demande_ue[ue] /= len(self.ListeMatchingModel)
+
         L = list(self.dico_etat_demande_ue.keys())
         L.sort()
         plt.bar(range(len(L)), [self.dico_etat_demande_ue[ue] for ue in L], width = 0.4, color=[self.colorNames[random.randint(0,len(self.colorNames)-1)] for i in range(len(L))], edgecolor = 'black')
-        plt.xticks([x for x in range(len(L))], L, rotation=15)
-        plt.title("Analyse UE susceptibles d'etre saturees : Mesure de la sur-demande")
-        plt.legend()
+
+        plt.xticks([x for x in range(len(L))], [ue+self.etoile_si_moyenne_sup_a_capacite_un_groupe(ue) for ue in L], rotation=15)
+        plt.suptitle("Analyse UE susceptibles d'etre saturees : Mesure de la sur-demande")
+        plt.title("Une * symbolise le fait que la moyenne des places encore disponibles apres affectation depasse la capacite d'au moins un groupe de l'ue concernee et suggere donc une suppression.")
         plt.show()
+
+
 
         L_Y_copy = [val for val in Liste_satisfaction_Y]
         L_Y_copy.sort()
@@ -57,7 +70,7 @@ class Analyzer:
             plt.annotate(Liste_idMM[i], (Liste_charge[i], Liste_satisfaction_Y[i]))
         for i in range(len(Liste_idMM)):
             plt.annotate(Liste_idMM[i], (Liste_charge[i], Liste_satisfaction_N[i]))
-
+        plt.legend()
         plt.title("Mesure de la resistance d'un EDT : Evolution des pourcentages de satisfaction en fonction de la charge.")
         plt.grid(True)
         plt.show()
