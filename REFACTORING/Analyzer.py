@@ -1,7 +1,7 @@
-import csv
-import matplotlib
 import matplotlib.pyplot as plt
 import os
+import csv
+import matplotlib
 import random
 
 
@@ -24,7 +24,14 @@ class Analyzer:
             return "*"
         return ""
 
+    def drawing(args):
+        plt.bar(args)
+        plt.show(block=False)
+
     def analyze(self):
+        plt.close()
+        plt.close()
+
         self.dico_etat_demande_ue = {ue.intitule : 0 for ue in self.optimizer.ListeDesUEs[1:]}
         Liste_idMM = list()
         Liste_charge = list()
@@ -47,12 +54,13 @@ class Analyzer:
 
         L = list(self.dico_etat_demande_ue.keys())
         L.sort()
+        fig1 = plt.figure(1,figsize=(10,10))
         plt.bar(range(len(L)), [self.dico_etat_demande_ue[ue] for ue in L], width = 0.4, color=[self.colorNames[random.randint(0,len(self.colorNames)-1)] for i in range(len(L))], edgecolor = 'black')
 
         plt.xticks([x for x in range(len(L))], [ue+self.etoile_si_moyenne_sup_a_capacite_un_groupe(ue) for ue in L], rotation=15)
         plt.suptitle("Analyse UE susceptibles d'etre saturees : Mesure de la sur-demande")
         plt.title("Une * symbolise le fait que la moyenne des places encore disponibles apres affectation depasse la capacite d'au moins un groupe de l'ue concernee et suggere donc une suppression.")
-        plt.show()
+        plt.show(block=False)
 
 
 
@@ -62,6 +70,8 @@ class Analyzer:
         L_N_copy.sort()
         labelY = '%Inscriptions_satisfaites. Min : {}% Mediane : {}% Max : {}%'.format(L_Y_copy[0], L_Y_copy[len(L_Y_copy)//2], L_Y_copy[-1])
         labelN = '%Etudiants_satisfaits. Min : {}% Mediane : {}% Max : {}%'.format(L_N_copy[0], L_N_copy[len(L_N_copy)//2], L_N_copy[-1])
+
+        fig2 = plt.figure(2,figsize=(10,10))
         plt.scatter(Liste_charge, Liste_satisfaction_Y, c='y', label=labelY)
 
         plt.scatter(Liste_charge, Liste_satisfaction_N, c='r', label=labelN)
@@ -73,12 +83,14 @@ class Analyzer:
         plt.legend()
         plt.title("Mesure de la resistance d'un EDT : Evolution des pourcentages de satisfaction en fonction de la charge.")
         plt.grid(True)
-        plt.show()
+        # fig2.draw()
+        plt.show(block=False)
 
     def calculer_interet_pour_ue_conseillees_par_parcours(self, dossierVoeux=''):
         if dossierVoeux == '':
             print "analyse des donnees courantes"
         else:
+            plt.close()
             for fichierVoeux in os.listdir(dossierVoeux):
                 try: #POUR EVITER LES ERREURS DE SPLIT SUR LE DOSSIER DE VOEUX PAR PARCOURS
                     parcours = fichierVoeux.split('.')[1]
@@ -100,6 +112,8 @@ class Analyzer:
             for parcours, D in self.dico_recapitulatif_interet_ue_conseillees_par_parcours.items():
                 self.generer_histogramme_des_interest(parcours, D)
             plt.suptitle("Mesure du choix des UE conseillees en fonction du parcours")
+            # plt.show(block=False)
+            plt.draw()
             plt.show(block=False)
 
     def generer_histogramme_des_interest(self, parcours, D):

@@ -1,11 +1,12 @@
-from UE import *
-from Etudiant import *
-from Incompatibilite import *
-from Parcours import *
-from MatchingModel import *
-from GenerateurDeVoeux import *
-from Analyzer import *
 from heapq import heappop, heappush
+
+from Analyzer import *
+from Etudiant import *
+from GenerateurDeVoeux import *
+from Incompatibilite import *
+from MatchingModel import *
+from UE import *
+
 
 class DAK_Optimizer:
 
@@ -433,34 +434,44 @@ class DAK_Optimizer:
 
 Optim = DAK_Optimizer()
 Optim.charger_edt("edt.csv")
-
-
-# Optim.charger_parcours("parcours.csv")
-# # # # # print Optim.DictUEs
-# # # #
-# # # # Optim.AD_afficher_carte_incompatibilites("and")
-# # # # # Optim.match()
-# # # # Optim.eprouver_edt(nombreDeDossierGeneres=5)
-# # # #
-# # # # Optim.eprouver_edt(nombreDeDossierGeneres=10)
-# # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
-# # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
-# Optim.traiter_dossier_voeux("../VOEUX")
 #
-# # # print Optim.dict_nombre_de_contrats_incompatibles_par_parcours
-# # Optim.RL_appliquer(10)
-# Optim.AS_ajouter_groupe(5, 23, 24, 16) #Bima
-# Optim.AS_modifier_capacite(5, 1, 33)
-# # Optim.AS_modifier_capacite(4, 3, 36)   # AUX GROUPES DE ARES
-# # Optim.AS_modifier_capacite(4, 2, 36)
+print Optim.afficher_EDT()
+# Optim.charger_parcours("parcours.csv")
+#
+#
+#
+# # # # # # print Optim.DictUEs
+# # # # #
+# # # # # Optim.AD_afficher_carte_incompatibilites("and")
+# # # # # # Optim.match()
+# # Optim.eprouver_edt(nombreDeDossierGeneres=25)
+# # # # #
+# # # # # Optim.eprouver_edt(nombreDeDossierGeneres=10)
+# # # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
+# # # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
+# # Optim.traiter_dossier_voeux("../VOEUX")
+# Optim.traiter_dossier_voeux("VOEUX_RANDOM/0")
+# Optim.AS_supprimer_groupe(9,1)
+# #
+# # # # print Optim.dict_nombre_de_contrats_incompatibles_par_parcours
+# # # Optim.RL_appliquer(10)
+# # Optim.AS_ajouter_groupe(5, 23, 24, 16) #Bima
+# # Optim.AS_modifier_capacite(5, 1, 33)
+# # # Optim.AS_modifier_capacite(4, 3, 36)   # AUX GROUPES DE ARES
+# # # Optim.AS_modifier_capacite(4, 2, 36)
 # # Optim.AD_interets_ue_conseillees_par_parcours("VOEUX_RANDOM/0")
 # # Optim.RL_appliquer(10)
 # # Optim.match()
-Optim.AS_supprimer_groupe(6, 2) #Groupe 3 Mapsi
+# Optim.AS_supprimer_groupe(6, 2) #Groupe 3 Mapsi
 # Optim.match()
 # print Optim.afficher_EDT()
+# # # Optim.RL_appliquer(10)
+# # # Optim.match()
+# Optim.AS_supprimer_groupe(11, 3) #Groupe 3 Mapsi
+# # # Optim.match()
+#
 # Optim.match()
-# Optim.AD_afficher_carte_incompatibilites("and")
+# # Optim.AD_afficher_carte_incompatibilites("and")
 # # Optim.AS_supprimer_groupe(13, 4)          #DEPLACEMENT DES CRENEAUX MLBDA
 # # Optim.AS_ajouter_groupe(13,24,25,32)
 # #

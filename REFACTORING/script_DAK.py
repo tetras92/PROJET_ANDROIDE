@@ -106,14 +106,14 @@ class Script():
         while True:
             print"\n\n____________________ Chargement du dossier des voeux ____________________\n\n"
             print "\t(0) Retour au Menu Principal\n\n"
-            chargement = raw_input("Veuillez specifier l'emplacement du dossier voeux (Tapez sur Entree)  : ")
-            if chargement == '':
-                root = Tkinter.Tk()
-                root.withdraw()
-                self.dirname_dossier_voeux = tkFileDialog.askdirectory(title =" Veuillez indiquer l'emplacement du dossier des voeux")
-                if self.dirname_dossier_voeux != '':
-                    print "\n\n ================== dossier enregistre ==================\n\n"
-                    return True
+            chargement = raw_input("Veuillez specifier l'emplacement du dossier voeux : \n>>> ")
+            # if chargement == '':
+            root = Tkinter.Tk()
+            root.withdraw()
+            self.dirname_dossier_voeux = tkFileDialog.askdirectory(title =" Veuillez indiquer l'emplacement du dossier des voeux")
+            if self.dirname_dossier_voeux != '':
+                print "\n\n ================== dossier enregistre ==================\n\n"
+                return True
             elif chargement == '0':
                 return False
             else :
@@ -159,18 +159,26 @@ class Script():
             elif option == 0:
                 return
 
-            choix = input("\n\nSouhaiteriez vous avoir une presentation des interets aux UE a partir d'un des dossiers de voeux genere ?\n\t\t(1) Oui\t\t(0) Non\n\n >>> ")
-            if choix == 1:
-                idDossierVoeux = input("\nVeuillez saisir le numero du dossier de voeux souhaite\n >>> ")
-                if idDossierVoeux != '' and idDossierVoeux <nbDossier and idDossierVoeux >= 0:
-                    self.optimizer.AD_interets_ue_conseillees_par_parcours(idDossierVoeux)
+            # choix = input("\n\nSouhaiteriez vous avoir une presentation des interets aux UE a partir d'un des dossiers de voeux genere ?\n\t\t(1) Oui\t\t(0) Non\n\n >>> ")
+            # if choix == 1:
+            #     idDossierVoeux = input("\nVeuillez saisir le numero du dossier de voeux souhaite\n >>> ")
+            #     if idDossierVoeux != '' and idDossierVoeux <nbDossier and idDossierVoeux >= 0:
+            #         self.optimizer.AD_interets_ue_conseillees_par_parcours(idDossierVoeux)
 
             # elif choix == 0:
             #     break
 
 
     def sauvegarder(self):
-        pass
+        root = Tkinter.Tk()
+        root.withdraw()
+        save_file_edt = tkFileDialog.asksaveasfile(title="Veuillez indiquer l'emplacement de la sauvegarde")
+        if save_file_edt !='':
+            print "save file  "+save_file_edt.name
+            self.optimizer.sauvegarde_UEs(save_file_edt.name)
+            print "============================== SAUVEGARDE REUSSIE ==============================\n\n"
+        else:
+            print "!!!________________ SAUVEGARDE ECHOUE ________________!!\n\n"
 
     def ajouter_groupe(self,id_ue):
         while True:
@@ -261,19 +269,19 @@ class Script():
                 self.optimizer.AD_interets_ue_conseillees_par_parcours(self.dirname_dossier_voeux)
                 print "\n=========================== Traitement du dossier des voeux ===========================\n\n"
                 self.optimizer.traiter_dossier_voeux(self.dirname_dossier_voeux)
-                goto_menu2 = False
-                while not goto_menu2 :
-                    self.faire_le_matching()
-                    print "\n\n=========================== Affectation effectue ===========================\n\n"
-                    while True:
-                        continuer_avec_dautre_taux_equilibre = raw_input("Voulez-vous realiser une autre affectation du meme dossier avec d'autres options par exemple?\n\n(1) Oui \t(0) Retour au Menu principal\nSaisir une valeur(0-1) : ")
-                        if continuer_avec_dautre_taux_equilibre == '1':
-                            break
-                        if continuer_avec_dautre_taux_equilibre == '0':
-                            goto_menu2 = True
-                            break
-                        else:
-                            print "\nCommande incorrecte.\n"
+                # goto_menu2 = False
+                # while not goto_menu2 :
+                self.faire_le_matching()
+                print "\n\n=========================== Affectation effectue ===========================\n\n"
+                    # while True:
+                    #     continuer_avec_dautre_taux_equilibre = raw_input("Voulez-vous realiser une autre affectation du meme dossier avec d'autres options par exemple?\n\n(1) Oui \t(0) Retour au Menu principal\nSaisir une valeur(0-1) : ")
+                    #     if continuer_avec_dautre_taux_equilibre == '1':
+                    #         break
+                    #     if continuer_avec_dautre_taux_equilibre == '0':
+                    #         goto_menu2 = True
+                    #         break
+                    #     else:
+                    #         print "\nCommande incorrecte.\n"
 
     ############################################################################################################################################
 
@@ -291,7 +299,7 @@ class Script():
                     nb_ue = len(Liste_id_ues)
                     for ue,i in zip(Liste_id_ues,range(1,nb_ue + 1)):
                         s += "\t({}) {}\t\t".format(i,ue)
-                        if ((i-1)%(len(nb_ue)/2))==0:
+                        if ((i-1)%(nb_ue/2))==0:
                           s+="\n"
                     return s
 
@@ -300,7 +308,7 @@ class Script():
                             "(0) Retour au Menu principal\n\n"
                     changement_edt = input(" >>> ")
                     if changement_edt == 1:
-                        pass
+                        print self.optimizer.afficher_EDT()
                     elif changement_edt == 2:
                         print "\n\n_______________________ Modification des groupes d'UE _______________________\n\n"
                         intit_ue = get_all_ue_name()
@@ -331,6 +339,15 @@ class Script():
                         break
                     else:
                         print "\nCommande incorrecte.\n"
+
+
+            elif choix == '4':
+                print"_____________________ Afficher la carte d'incompatibilites dans un Parcours "
+
+                parcours = raw_input("Veuillez indiquer le nom du parcours : ")
+                if parcours !='':
+                    taille = input(" Veuillez indiquez la taille : ")
+                    self.optimizer.AD_afficher_carte_incompatibilites(parcours,taille)
 
     ############################################################################################################################################
             # elif choix == '3':
