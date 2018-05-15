@@ -1,12 +1,11 @@
-from heapq import heappop, heappush
-
-from Analyzer import *
-from Etudiant import *
-from GenerateurDeVoeux import *
-from Incompatibilite import *
-from MatchingModel import *
 from UE import *
-
+from Etudiant import *
+from Incompatibilite import *
+from Parcours import *
+from MatchingModel import *
+from GenerateurDeVoeux import *
+from Analyzer import *
+from heapq import heappop, heappush
 
 class DAK_Optimizer:
 
@@ -316,6 +315,14 @@ class DAK_Optimizer:
         self.AS_supprimer_groupe(ueId, numeroGroupe)
         self.AS_ajouter_groupe(ueId, new_creneautd, new_creneautme, capacite)
 
+    def AS_deplacer_cours(self, ueId, creneau_actuel, nouveau_creneau):
+        self.ListeDesUEs[ueId].modifier_creneau_cours(creneau_actuel, nouveau_creneau)
+        self.EnsIncompatibilites.clear()
+        self.generer_incompatibilites()
+        self.UE_modifiees_significativement = True
+
+
+
     def AD_afficher_carte_incompatibilites(self, nomParcours, taille=5):
 
         indexParcours = 0
@@ -449,7 +456,7 @@ Optim.charger_edt("edt.csv")
 # # Optim.AD_interets_ue_conseillees_par_parcours("VOEUX_RANDOM/0")
 # # Optim.RL_appliquer(10)
 # # Optim.match()
-# Optim.AS_supprimer_groupe(6, 2) #Groupe 3 Mapsi
+Optim.AS_supprimer_groupe(6, 2) #Groupe 3 Mapsi
 # Optim.match()
 # print Optim.afficher_EDT()
 # Optim.match()
