@@ -431,22 +431,22 @@ class DAK_Optimizer:
 
 
 
-Optim = DAK_Optimizer()
-Optim.charger_edt("edt.csv")
+# Optim = DAK_Optimizer()
+# Optim.charger_edt("edt.csv")
 #
-Optim.charger_parcours("parcours.csv")
+# Optim.charger_parcours("parcours.csv")
 
-print Optim.afficher_EDT()
+# print Optim.afficher_EDT()
 
-Optim.AS_deplacer_cours(6, 17, 20)
+# Optim.AS_deplacer_cours(6, 17, 20)
 
 
 
-Optim.AS_deplacer_groupe(6,2,5,10)
+# Optim.AS_deplacer_groupe(6,2,5,10)
+#
+# Optim.AS_deplacer_cours(10, 13, 15)
 
-Optim.AS_deplacer_cours(10, 13, 15)
-
-print Optim.afficher_EDT()
+# print Optim.afficher_EDT()
 
 #
 #
