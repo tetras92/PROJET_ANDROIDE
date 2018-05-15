@@ -212,7 +212,6 @@ class MatchingModel:
         # s += "\n{:150s}{}\n".format(" ", "^")
         # s += "\n{:150s}{}\n".format(" ", "^")
         # s += "\n{:150s}{}\n".format(" ", "^")
-
         s += "\033[0;32;40m ********** ^^^ OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK) ^^^ **********"
         # for i in range(1, len(self.ListeDesUEs)):
         #     s += str(self.ListeDesUEs[-i])
