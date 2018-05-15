@@ -303,7 +303,6 @@ class Script():
                           s+="\n"
                     return s
 
-
                 while True:
                     print"\n\n__________________________ Operation sur l'EDT __________________________\n\n\t(1) Afficher l'EDT\n\t(2) Modifications sur les groupes d'UE\n\t(3) Sauvegarder les modifications apportees sur l'EDT\n\t" \
                             "(0) Retour au Menu principal\n\n"
@@ -340,7 +339,6 @@ class Script():
                         break
                     else:
                         print "\nCommande incorrecte.\n"
-
 
 
             elif choix == '4':
