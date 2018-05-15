@@ -178,6 +178,9 @@ class UE:
             # except:
             #     print "Groupe {} de l'UE {} est inexistant dans la base.".format(numeroGroupe,self.intitule)
 
+        def modifier_creneau_cours(self, ancien_creneau, nouveau_creneau):
+            pos_ancien_creneau = self.ListeCreneauxCours.index(ancien_creneau) #0 ou 1
+            self.ListeCreneauxCours[pos_ancien_creneau] = nouveau_creneau
 
         def ue_sauvegarde(self):
             Dict_Ue = dict()

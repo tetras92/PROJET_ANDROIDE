@@ -315,6 +315,14 @@ class DAK_Optimizer:
         self.AS_supprimer_groupe(ueId, numeroGroupe)
         self.AS_ajouter_groupe(ueId, new_creneautd, new_creneautme, capacite)
 
+    def AS_deplacer_cours(self, ueId, creneau_actuel, nouveau_creneau):
+        self.ListeDesUEs[ueId].modifier_creneau_cours(creneau_actuel, nouveau_creneau)
+        self.EnsIncompatibilites.clear()
+        self.generer_incompatibilites()
+        self.UE_modifiees_significativement = True
+
+
+
     def AD_afficher_carte_incompatibilites(self, nomParcours, taille=5):
 
         indexParcours = 0
@@ -371,9 +379,11 @@ class DAK_Optimizer:
         file.close()
 
     def afficher_EDT(self):
+        # print "debut afficher", self.EDT[17]
         if self.UE_modifiees_significativement:
             self.maj_suite_a_une_modification_significative_ue()
 
+        # print self.EDT[17]
         EDT_str = [[] for i in range(DAK_Optimizer.Parameters.nbCreneauxParSemaine+1)]
         for creneauId in range(1, DAK_Optimizer.Parameters.nbCreneauxParSemaine+1):
             Dict_creneau = self.EDT[creneauId]
@@ -424,8 +434,20 @@ class DAK_Optimizer:
 Optim = DAK_Optimizer()
 Optim.charger_edt("edt.csv")
 #
-print Optim.afficher_EDT()
 Optim.charger_parcours("parcours.csv")
+
+print Optim.afficher_EDT()
+
+Optim.AS_deplacer_cours(6, 17, 20)
+
+
+
+Optim.AS_deplacer_groupe(6,2,5,10)
+
+Optim.AS_deplacer_cours(10, 13, 15)
+
+print Optim.afficher_EDT()
+
 #
 #
 #
@@ -438,7 +460,7 @@ Optim.charger_parcours("parcours.csv")
 # # # # # Optim.eprouver_edt(nombreDeDossierGeneres=10)
 # # # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
 # # # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
-Optim.traiter_dossier_voeux("../VOEUX")
+# Optim.traiter_dossier_voeux("../VOEUX")
 # Optim.traiter_dossier_voeux("VOEUX_RANDOM/0")
 # Optim.AS_supprimer_groupe(9,1)
 # #
@@ -452,7 +474,7 @@ Optim.traiter_dossier_voeux("../VOEUX")
 # # # Optim.RL_appliquer(10)
 # # # Optim.match()
 # Optim.AS_supprimer_groupe(11, 3) #Groupe 3 Mapsi
-Optim.match()
+# Optim.match()
 #
 # Optim.match()
 # # Optim.AD_afficher_carte_incompatibilites("and")
@@ -460,7 +482,7 @@ Optim.match()
 # # Optim.AS_ajouter_groupe(13,24,25,32)
 # #
 # # Optim.AS_supprimer_groupe(6,1)
-# Optim.AS_deplacer_groupe(6,2,5,10)
+
 # # Optim.AS_deplacer_groupe(6,2,5,10)
 # # #
 # Optim.AS_modifier_capacite(10, 1, 36)
