@@ -425,7 +425,7 @@ Optim = DAK_Optimizer()
 Optim.charger_edt("edt.csv")
 #
 print Optim.afficher_EDT()
-# Optim.charger_parcours("parcours.csv")
+Optim.charger_parcours("parcours.csv")
 #
 #
 #
@@ -438,7 +438,7 @@ print Optim.afficher_EDT()
 # # # # # Optim.eprouver_edt(nombreDeDossierGeneres=10)
 # # # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
 # # # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
-# # Optim.traiter_dossier_voeux("../VOEUX")
+Optim.traiter_dossier_voeux("../VOEUX")
 # Optim.traiter_dossier_voeux("VOEUX_RANDOM/0")
 # Optim.AS_supprimer_groupe(9,1)
 # #
@@ -452,7 +452,7 @@ print Optim.afficher_EDT()
 # # # Optim.RL_appliquer(10)
 # # # Optim.match()
 # Optim.AS_supprimer_groupe(11, 3) #Groupe 3 Mapsi
-# # # Optim.match()
+Optim.match()
 #
 # Optim.match()
 # # Optim.AD_afficher_carte_incompatibilites("and")

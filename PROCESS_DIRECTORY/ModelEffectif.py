@@ -24,7 +24,7 @@ class ModelEffectif:
         # print ModelEffectif.modelGurobi.NumVars
 
         self.ajouter_contrainte_capacite_par_ue()
-        self.ajouter_contrainte_Min()
+        # self.ajouter_contrainte_Min()
         self.ajouterObjectif()
 
         self.resoudre()
@@ -91,24 +91,25 @@ class ModelEffectif:
     def ajouterObjectif(self):
         # for c in ModelEffectif.modelGurobi.getConstrs():
         #     print c
-        # objectif = ModelEffectif.modelGurobi.getObjective()
+        objectif = ModelEffectif.modelGurobi.getObjective()
         # # objectif += ModelEffectif.modelGurobi.getVarByName('dac')
-        # for var in ModelEffectif.modelGurobi.getVars():
-        #     objectif += var
-        self.modelGurobi.NumObj = 2
-        objectif1 = ModelEffectif.modelGurobi.getVarByName("Min")
-        objectif2 = LinExpr()
         for var in ModelEffectif.modelGurobi.getVars():
-            if var.VarName != "Min":
-                objectif2 += var
+            objectif += var
+        print objectif
+        # self.modelGurobi.NumObj = 2
+        # objectif1 = ModelEffectif.modelGurobi.getVarByName("Min")
+        # objectif2 = LinExpr()
+        # for var in ModelEffectif.modelGurobi.getVars():
+        #     if var.VarName != "Min":
+        #         objectif2 += var
         ModelEffectif.modelGurobi.update()
-        self.modelGurobi.setObjectiveN(objectif1,0,1)
-        self.modelGurobi.setObjectiveN(objectif2,1,0)
-        self.modelGurobi.modelSense = 1
-        ModelEffectif.modelGurobi.optimize()
+        # self.modelGurobi.setObjectiveN(objectif1,0,1)
+        # self.modelGurobi.setObjectiveN(objectif2,1,0)
+        # self.modelGurobi.modelSense = -1
+        # ModelEffectif.modelGurobi.optimize()
 
 
-        # ModelEffectif.modelGurobi.setObjective(objectif,GRB.MAXIMIZE)
+        ModelEffectif.modelGurobi.setObjective(objectif,GRB.MAXIMIZE)
 
 
     def resoudre(self):

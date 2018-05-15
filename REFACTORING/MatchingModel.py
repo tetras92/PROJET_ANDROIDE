@@ -167,7 +167,12 @@ class MatchingModel:
     def __str__(self):
         """Affiche les UES du Modele"""
 
-        s = "\n\n**********OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK)**********\n\n"
+        s = ""
+        for i in range(1, len(self.ListeDesUEs)):
+            s += str(self.ListeDesUEs[-i])
+        s += "\t\t\t*** ^^ DETAIL DES AFFECTATIONS PAR UE ^^ ***\n\n"
+
+
         if self.optimizer.modeleAleatoire:
             s += "\t\t\tDossier aleatoire n. {}\n\n".format(self.identifiantModele)
         s += "Nombre Total d'inscriptions a satisfaire : {} \n".format(self.nombreTotalDemandesInscriptions)
@@ -177,8 +182,8 @@ class MatchingModel:
 
         s += "\n\nCaracteristiques de l'EDT :\n\tNombre total de contrats incompatibles (de taille {}) : {}".format(self.optimizer.Parameters.TailleMaxContrat, self.nombre_total_contrat_incompatible)
         s += "\n\tPar parcours : {}".format(self.chaine_nombre_contrats_incompatible_par_parcours())
-        s += "\n\n\t\t\t*LES RESULTATS D'AFFECTATION*\n"
-
+        # s += "\n\n\t\t\t*LES RESULTATS D'AFFECTATION*\n"
+        s += "\n\t\t\t** ^^ AUTRES INFORMATIONS ^^ **\n\n"
         # proportionSatisfaction = round(100.0*MainModel.nbInscriptionsSatisfaites/len(MainModel.ListedesVarY),2)
         s += "Nombre d'inscriptions satisfaites : {} soit {}%\n".format(int(self.objectif1_Value), self.proportionSatisfactionY)
         s += "Nombre d'etudiants entierement satisfaits : {} soit {}%\n".format(int(self.objectif2_Value), self.proportionSatisfactionN)
@@ -189,11 +194,15 @@ class MatchingModel:
         s += "\n\t\tNombre de demandes non satisfaites par UE (**Saturee):\n\t\t\t"
         for Ue in self.ListeDesUEs[1:]:
             s += Ue.str_nb_non_inscrits()
-        s += "\n\n\n\t\t\t*DETAIL DES AFFECTATIONS PAR UE*\n\n"
+        # s += "\n\n\n\t\t\t*DETAIL DES AFFECTATIONS PAR UE*\n\n"
+        s += "\n\t\t\t\t\t** ^^ LES RESULTATS D'AFFECTATION ^^ **\n"
+        s += "\n\t\t\t*** ^^ DONNEES RECAPITULATIVES DE L'AFFECTATION ^^ ***\n"
 
-
-        for Ue in self.ListeDesUEs[1:]:
-            s += str(Ue)
+        s += "\n\n\n********** ^^^ OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK) ^^^ **********"
+        # for i in range(1, len(self.ListeDesUEs)):
+        #     s += str(self.ListeDesUEs[-i])
+        # for Ue in self.ListeDesUEs[1:]:
+        #     s += str(Ue)
         return s
 
 
