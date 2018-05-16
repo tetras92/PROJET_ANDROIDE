@@ -432,7 +432,7 @@ class DAK_Optimizer:
 
 
 # Optim = DAK_Optimizer()
-# Optim.charger_edt("edt.csv")
+# Optim.charger_edt(".edt.csv")
 #
 # Optim.charger_parcours("parcours.csv")
 
@@ -474,7 +474,7 @@ class DAK_Optimizer:
 # # # Optim.RL_appliquer(10)
 # # # Optim.match()
 # Optim.AS_supprimer_groupe(11, 3) #Groupe 3 Mapsi
-# Optim.match()
+# Optim.match(tauxEquilibre=0.01)
 #
 # Optim.match()
 # # Optim.AD_afficher_carte_incompatibilites("and")

@@ -3,7 +3,7 @@ import os
 import csv
 import matplotlib
 import random
-
+from PIL import Image
 
 class Analyzer:
 
@@ -99,15 +99,21 @@ class Analyzer:
                     pass
             for parcours, D in self.dico_recapitulatif_interet_ue_conseillees_par_parcours.items():
                 self.generer_histogramme_des_interest(parcours, D)
+            self.id_subplot = 1                  #evite les crash de reouverture
             plt.suptitle("Mesure du choix des UE conseillees en fonction du parcours")
-            plt.show(block=False)
+            plt.savefig(".interets_ue_conseilles.png")
+            # plt.show()
+            img = Image.open(".interets_ue_conseilles.png")
+            img.show()
+            # print("Close")
+            plt.close()
 
     def generer_histogramme_des_interest(self, parcours, D):
         Liste_ues = list()
         Liste_effectif = list()
 
         color = random.randint(0,len(self.colorNames)-1)
-        plt.figure(1)
+        plt.figure(1, figsize=(15,10))
         for ue, effectif in D.items():
             Liste_ues.append(ue)
             Liste_effectif.append(effectif)

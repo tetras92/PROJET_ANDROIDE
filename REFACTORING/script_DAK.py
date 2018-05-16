@@ -14,8 +14,8 @@ class Script():
     def __init__(self):
         print "DAK_Optimizer Powered by DAK"
 
-        self.file_edt = ()
-        self.file_parcours = ()
+        self.file_edt = "..."
+        self.file_parcours = "..."
         self.dirname_dossier_voeux = ''
         # self.dirname_tout_dossier = ''
         self.optimizer = DAK_Optimizer()
@@ -23,7 +23,7 @@ class Script():
 
 
         while True:
-            print"__________________________________Bienvenue au DAK_OPTIMIZER__________________________________\n\n"
+            print"P-ANDROIDE : OPTIMISATION DES INSCRIPTIONS AUX UES (PAR DAK)\n\n"
             self.charger_donnees(recharge=False)
             self.optimizer.charger_edt(self.file_edt)
             self.optimizer.charger_parcours(self.file_parcours)
@@ -34,11 +34,11 @@ class Script():
 
     def charger_donnees(self,recharge=True):
 
-        while not(() in [self.file_parcours,self.file_edt]) or not(recharge):
-            s = "---------------------------- Chargement des fichiers ----------------------------\n\n\t\t(1) Charger le fichier EDT\t\t{} \n\t\t(2) Charger le fichier Parcours\t\t{} \n\n".format(self.file_edt, self.file_parcours)
+        while not("..." in [self.file_parcours,self.file_edt]) or not(recharge):
+            s = "---------------------------- Chargement des fichiers ----------------------------\n\n\t\t{:50s}{}\n\t\t{:50s}{}\n\n".format("(1) Charger le fichier EDT",self.file_edt,"(2) Charger le fichier decrivant les parcours",self.file_parcours)
             # if recharge :
             #     s+="\t\t(3) Retourner au Menu principal\n"
-            s += "\t\t(0) Quitter\n\n " + "Tapez Entree pour valider votre saisie.\n\n"
+            s += "\t\t(0) Quitter\n\n " + "\"Entree\" pour Continuer.\n\n"
             print (s)
 
             root = Tkinter.Tk()
@@ -49,13 +49,22 @@ class Script():
                 exit(0)
             elif chargement == '1':
                 self.file_edt  = tkFileDialog.askopenfilename(filetypes=[('CSV', '.csv')])
-
+                if self.file_edt == () or self.file_edt == "":
+                    self.file_edt = "..."
+                else:
+                    print "\n ================== Chargement EDT termine ==================\n"
             elif chargement == '2':
                 self.file_parcours = tkFileDialog.askopenfilename(filetypes=[('CSV', '.csv')])
+                # print "lolo" , self.file_parcours
+                if self.file_parcours == () or self.file_parcours == "":
+                    self.file_parcours = "..."
+                else:
+                    print "\n ================== Chargement fichier descriptif des parcours termine ==================\n"
             # elif chargement == '3' and recharge:
             #     self.menu_principal()
             elif chargement == '':          #Entree
-                if not(() in [self.file_edt,self.file_parcours]):
+                if not("..." in [self.file_edt,self.file_parcours]):
+
                     break
                 else:
                     print "Vous n'avez pas entre toutes les donnees necessaires.\n\n"
@@ -63,36 +72,33 @@ class Script():
             else:
                 print "Commande incorrecte.\n\n"
                 continue
-            print "\n\n ================== fichier enregistre ==================\n\n"
+
+            # 1
+            # print "\n\n ================== fichier enregistre ==================\n\n"
 
 
 
     def print_equilibrage(self):
-        print "\n\n_________________________________ Parametre d'equilibrage _________________________________\n\n"
-        options = input("(1) Equilibrage avec valeur par defaut ({}%)\n(2) Taux equilibrage a specifier (entre 0.0 et 1.0)\n(3) Sans equilibrage\n"
-                        "(0) Retour au Menu Principal\nSaisir une valeur (0-3) : ".format(self.optimizer.tauxEquilibre*100))
+        print "\n\n_________________________________ Option Equilibrage au sein des groupes de chaque UE _________________________________\n"
+        options = input("Choisir le pourcentage maximal de desequilibre a tolerer :\n(1) Valeur par defaut : ({}%)\n(2) 20%\n(3) 5%\n(4) Sans equilibrage (100%)\n"
+                        "(0) Retour au Menu Principal\nSaisir une valeur (0-4) : ".format(DAK_Optimizer.tauxEquilibre*100))
         return options
 
 
     def faire_le_matching(self):
         while True:
-            print "\n\n____________________________ Affectation ____________________________\n\n"
+            # print "\n\n____________________________ Affectation ____________________________\n\n"
             # eq_qst = raw_input("\tActiver l'equilibrage dans les groupes ? (Par defaut 0.1)\n\t\t\t (1) Oui \t\t (0) Non\n\n>>> ")
             options = self.print_equilibrage()
             if options == 1:
                 self.optimizer.match()
 
             elif options == 2:
-                while True:
-                    tauxMaxDesequilibre = raw_input("\nSaisir taux max desequilibre (entre 0.0 et 1.0) : ")
-                    if tauxMaxDesequilibre.replace('.','',1).isdigit() or str.isdigit(tauxMaxDesequilibre):
-                        if float(tauxMaxDesequilibre) <= 1 and float(tauxMaxDesequilibre) >=0:
-                            print"\n\n================= Modification de l'equilibrage enregistre =================\n\n"
-                            tauxMaxDesequilibre = float(tauxMaxDesequilibre)
-                            self.optimizer.match(equilibre=True,tauxEquilibre=tauxMaxDesequilibre)
-                            break
+                self.optimizer.match(equilibre=True,tauxEquilibre=0.20)
 
             elif options == 3:
+                self.optimizer.match(equilibre=True, tauxEquilibre=0.05)
+            elif options == 4:
                 self.optimizer.match(equilibre=False)
             elif options == 0:
                 break
@@ -100,19 +106,25 @@ class Script():
                 print "Saisir une valeur valide!"
                 continue
 
-            print"\n\n================= - - - - - MATCHING - - - - - =================\n\n"
+            # print"\n\n================= - - - - - MATCHING - - - - - =================\n\n"
 
     def charger_dossier_voeux(self):
-        while True:
+        annuler = False
+        while not annuler:
             print"\n\n____________________ Chargement du dossier des voeux ____________________\n\n"
-            print "\t(0) Retour au Menu Principal\n\n"
-            chargement = raw_input("Veuillez specifier l'emplacement du dossier voeux : \n>>> ")
-            # if chargement == '':
+            # print "\t\n\n"
             root = Tkinter.Tk()
             root.withdraw()
-            self.dirname_dossier_voeux = tkFileDialog.askdirectory(title =" Veuillez indiquer l'emplacement du dossier des voeux")
+            self.dirname_dossier_voeux = tkFileDialog.askdirectory(title =" Veuillez selectionner l'emplacement du dossier des voeux")
+            if self.dirname_dossier_voeux != () and self.dirname_dossier_voeux != "":
+                print "\n ================== dossier de voeux charge ==================\n"
+            else:
+                return False
+            chargement = raw_input("(0) Retour au Menu Principal\n\"Entree\" pour realiser les affectations.\n>>> ")
+            # if chargement == '':
+
+            # self.dirname_dossier_voeux = tkFileDialog.askdirectory(title =" Veuillez selectionner l'emplacement du dossier des voeux")
             if self.dirname_dossier_voeux != '':
-                print "\n\n ================== dossier enregistre ==================\n\n"
                 return True
             elif chargement == '0':
                 return False
@@ -245,8 +257,8 @@ class Script():
             #         "\t(6) Recharger un fichier EDT\t\t ( courant : {} ) \n\t(7) Recharger un fichier Parcours\t\t ( courant : {} ) \n\t(8) Recharger un dossier de voeux\t\t ( courant : {} )\n".format(file_edt,file_parcours,dir_dossier_voeux)+\
 
             print"\n\n____________________________Menu principal____________________________\n\n" + \
-                "\t(1) Charger et Executer un dossier de voeux\n\t(2) Mesurer la resistance de l'EDT actif\n\t(3) Operation sur l'EDT (afficher, modifier, sauvegarder)\n" \
-                "\t(4) Afficher les incompatibilites par Parcours \n\n\t(5) Retour au Menu precedent\n\t(0) Quitter\n\n"
+                "\t(1) Charger un dossier de voeux et effectuer les inscriptions pedagogiques\n\t(2) Mesurer la resistance de l'EDT actif : Generation aleatoire de dossiers de voeux\n\t(3) EDT : Afficher, Modifier, Sauvegarder\n" \
+                "\t(4) Contrats incompatibilites par parcours : Visualiser\n\n\t(5) Retour au Menu chargement\n\t(0) Quitter\n\n"
                  # "\t(1) Modifier l'EDT (ajouter/supprimer un groupe) \n\t(2) Modifier les donnees sur les UE (capacite des groupes) \n-------------------------------------------------------------\n" + \
                  # "\t(3) Afficher la carte des incompatibilites des UE \n\t(4) Eprouver l'EDT \n\t(5) Recherche locale \n-------------------------------------------------------------\n" + \
                  # "\t(6) Recharger des fichiers (edt, parcours, dossier voeux)\n-------------------------------------------------------------\n" + \
@@ -265,14 +277,14 @@ class Script():
                 if self.charger_dossier_voeux() == False:
                     continue
 
-                print "\n\n=========== Generation du graphique representant les interets des etudiants aux UE par parcours ===========\n\n"
+                print "\n\n=========== Generation du graphique representant les interets des etudiants aux UE non-obligatoires de leur parcours ===========\n\n"
                 self.optimizer.AD_interets_ue_conseillees_par_parcours(self.dirname_dossier_voeux)
-                print "\n=========================== Traitement du dossier des voeux ===========================\n\n"
+                # print "\n=========================== Traitement du dossier des voeux ===========================\n\n"
                 self.optimizer.traiter_dossier_voeux(self.dirname_dossier_voeux)
                 # goto_menu2 = False
                 # while not goto_menu2 :
                 self.faire_le_matching()
-                print "\n\n=========================== Affectation effectue ===========================\n\n"
+                # print "\n\n=========================== Affectation effectue ===========================\n\n"
                     # while True:
                     #     continuer_avec_dautre_taux_equilibre = raw_input("Voulez-vous realiser une autre affectation du meme dossier avec d'autres options par exemple?\n\n(1) Oui \t(0) Retour au Menu principal\nSaisir une valeur(0-1) : ")
                     #     if continuer_avec_dautre_taux_equilibre == '1':

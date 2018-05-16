@@ -57,8 +57,8 @@ class MatchingModel:
 
         self.objectif1 = quicksum(var for var in self.ListedesVarY) #(self.modelGurobi.getVarByName(var) for var in self.optimizer.ListedesVarY)
         self.objectif2 = quicksum(var for var in self.ListedesVarN)
-        self.modelGurobi.setObjectiveN(self.objectif1,0,1)
-        self.modelGurobi.setObjectiveN(self.objectif2,1,0)
+        self.modelGurobi.setObjectiveN(self.objectif1,0,1)                        #DEFAUT (self.objectif1,0,1)
+        self.modelGurobi.setObjectiveN(self.objectif2,1,0)                          #defaut (self.objectif2,1,0)
 
         self.modelGurobi.modelSense = -1        #MAXIMIZE
 
@@ -167,7 +167,7 @@ class MatchingModel:
     def __str__(self):
         """Affiche les UES du Modele"""
 
-        s = ""
+        s = "\033[0;32;40m "
         for i in range(1, len(self.ListeDesUEs)):
             s += str(self.ListeDesUEs[-i])
         s += "\t\t\t*** ^^ DETAIL DES AFFECTATIONS PAR UE ^^ ***"
@@ -212,7 +212,7 @@ class MatchingModel:
         # s += "\n{:150s}{}\n".format(" ", "^")
         # s += "\n{:150s}{}\n".format(" ", "^")
         # s += "\n{:150s}{}\n".format(" ", "^")
-        s += "\033[0;32;40m ********** ^^^ OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK) ^^^ **********"
+        s += "********** ^^^ OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK) ^^^ **********"
         # for i in range(1, len(self.ListeDesUEs)):
         #     s += str(self.ListeDesUEs[-i])
         # for Ue in self.ListeDesUEs[1:]:
