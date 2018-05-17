@@ -47,12 +47,16 @@ class Analyzer:
 
         L = list(self.dico_etat_demande_ue.keys())
         L.sort()
+        plt.figure(1, figsize=(15,10))
         plt.bar(range(len(L)), [self.dico_etat_demande_ue[ue] for ue in L], width = 0.4, color=[self.colorNames[random.randint(0,len(self.colorNames)-1)] for i in range(len(L))], edgecolor = 'black')
 
         plt.xticks([x for x in range(len(L))], [ue+self.etoile_si_moyenne_sup_a_capacite_un_groupe(ue) for ue in L], rotation=15)
         plt.suptitle("Analyse UE susceptibles d'etre saturees : Mesure de la sur-demande")
         plt.title("Une * symbolise le fait que la moyenne des places encore disponibles apres affectation depasse la capacite d'au moins un groupe de l'ue concernee et suggere donc une suppression.")
-        plt.show()
+        plt.savefig(".ue_saturees.png")
+        img = Image.open(".ue_saturees.png")
+        img.show()
+        plt.close()
 
 
 
@@ -62,6 +66,7 @@ class Analyzer:
         L_N_copy.sort()
         labelY = '%Inscriptions_satisfaites. Min : {}% Mediane : {}% Max : {}%'.format(L_Y_copy[0], L_Y_copy[len(L_Y_copy)//2], L_Y_copy[-1])
         labelN = '%Etudiants_satisfaits. Min : {}% Mediane : {}% Max : {}%'.format(L_N_copy[0], L_N_copy[len(L_N_copy)//2], L_N_copy[-1])
+        plt.figure(1, figsize=(15,10))
         plt.scatter(Liste_charge, Liste_satisfaction_Y, c='y', label=labelY)
 
         plt.scatter(Liste_charge, Liste_satisfaction_N, c='r', label=labelN)
@@ -73,7 +78,10 @@ class Analyzer:
         plt.legend()
         plt.title("Mesure de la resistance d'un EDT : Evolution des pourcentages de satisfaction en fonction de la charge.")
         plt.grid(True)
-        plt.show()
+        plt.savefig(".resistance_edt.png")
+        img = Image.open(".resistance_edt.png")
+        img.show()
+        plt.close()
 
     def calculer_interet_pour_ue_conseillees_par_parcours(self, dossierVoeux=''):
         if dossierVoeux == '':
