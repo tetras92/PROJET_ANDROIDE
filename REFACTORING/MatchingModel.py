@@ -16,7 +16,7 @@ class MatchingModel:
         self.identifiantModele = optimizer.iModelAlea
         self.ListedesVarY = list()
         self.ListedesVarN = list()
-
+        self.infeasible = False
         #Contraintes s'appliquant aux etudiants
         for Etu in self.ListeDesEtudiants:
             Etu.enregistrer_interet_pour_UE()
@@ -53,7 +53,7 @@ class MatchingModel:
 
     def match(self, path=''):
         self.modelGurobi.NumObj = 2
-        self.modelGurobi.setParam( 'OutputFlag', False)
+        self.modelGurobi.setParam(GRB.Param.OutputFlag, False)
 
         self.objectif1 = quicksum(var for var in self.ListedesVarY) #(self.modelGurobi.getVarByName(var) for var in self.optimizer.ListedesVarY)
         self.objectif2 = quicksum(var for var in self.ListedesVarN)
@@ -63,14 +63,19 @@ class MatchingModel:
         self.modelGurobi.modelSense = -1        #MAXIMIZE
 
         self.modelGurobi.optimize()
+        status = self.modelGurobi.Status
+        if status == GRB.Status.INFEASIBLE:
+            self.objectif1_Value = 0
+            self.objectif1_Value = 0
+            self.infeasible = True
+        else:
+            self.modelGurobi.setParam(GRB.Param.ObjNumber, 0)
+            self.objectif1_Value = self.modelGurobi.ObjNVal           #Nombre d'inscriptions satisfaites
+            self.modelGurobi.setParam(GRB.Param.ObjNumber, 1)
+            self.objectif2_Value = self.modelGurobi.ObjNVal           #Nombre d'etudiants entierement satisfaits
 
-        self.modelGurobi.setParam(GRB.Param.ObjNumber, 0)
-        self.objectif1_Value = self.modelGurobi.ObjNVal           #Nombre d'inscriptions satisfaites
-        self.modelGurobi.setParam(GRB.Param.ObjNumber, 1)
-        self.objectif2_Value = self.modelGurobi.ObjNVal           #Nombre d'etudiants entierement satisfaits
-
-        self.traitement_resolution(path)
-        return  self.objectif2_Value
+            self.traitement_resolution(path)
+            return  self.objectif2_Value
 
     def traitement_resolution(self, path=''):
         self.charge = round(100.0*self.nombreTotalDemandesInscriptions/self.capaciteTotaleAccueilUEs,2)
@@ -166,58 +171,69 @@ class MatchingModel:
 
     def __str__(self):
         """Affiche les UES du Modele"""
+        if not self.infeasible:
+            s = "\033[0;32;40m "
+            for i in range(1, len(self.ListeDesUEs)):
+                s += str(self.ListeDesUEs[-i])
+            s += "\t\t\t*** ^^ DETAIL DES AFFECTATIONS PAR UE ^^ ***"
 
-        s = "\033[0;32;40m "
-        for i in range(1, len(self.ListeDesUEs)):
-            s += str(self.ListeDesUEs[-i])
-        s += "\t\t\t*** ^^ DETAIL DES AFFECTATIONS PAR UE ^^ ***"
+            s += "\n{:150s}{}\n".format(" ", "^")
+            # s += "\n{:150s}{}\n".format(" ", "^")
+            if self.optimizer.modeleAleatoire:
+                s += "\t\t\tDossier aleatoire n. {}\n\n".format(self.identifiantModele)
+            s += "Nombre Total d'inscriptions a satisfaire : {} ".format(self.nombreTotalDemandesInscriptions)
+            # s += "\n{:150s}{}\n".format(" ", "^")
+            s += "Nombre Maximal d'inscriptions pouvant etre satisfaites : {}".format(self.capaciteTotaleAccueilUEs)
+            # s += "\n{:150s}{}\n".format(" ", "^")
+            s += "\nNombre total d'etudiants du master : {}".format(self.nombreTotalEtudiants)
 
-        s += "\n{:150s}{}\n".format(" ", "^")
-        # s += "\n{:150s}{}\n".format(" ", "^")
-        if self.optimizer.modeleAleatoire:
-            s += "\t\t\tDossier aleatoire n. {}\n\n".format(self.identifiantModele)
-        s += "Nombre Total d'inscriptions a satisfaire : {} ".format(self.nombreTotalDemandesInscriptions)
-        # s += "\n{:150s}{}\n".format(" ", "^")
-        s += "Nombre Maximal d'inscriptions pouvant etre satisfaites : {}".format(self.capaciteTotaleAccueilUEs)
-        # s += "\n{:150s}{}\n".format(" ", "^")
-        s += "\nNombre total d'etudiants du master : {}".format(self.nombreTotalEtudiants)
+            s += "\nCharge : {} % \nDesequilibre maximal autorise : {} %".format(self.charge, self.tauxEquilibre*100)
+            s += "\n{:150s}{}\n".format(" ", "^")
+            s += "Caracteristiques de l'EDT :\n\tNombre total de contrats incompatibles (de taille {}) : {}".format(self.optimizer.Parameters.TailleMaxContrat, self.nombre_total_contrat_incompatible)
+            # s += "\n{:150s}{}\n".format(" ", "^")
+            s += "\n\tPar parcours : {}".format(self.chaine_nombre_contrats_incompatible_par_parcours())
+            # s += "\n\n\t\t\t*LES RESULTATS D'AFFECTATION*\n"
+            s += "\n{:150s}{}\n".format(" ", "^")
+            s += "\t\t\t** ^^ AUTRES INFORMATIONS ^^ **"
+            s += "\n{:150s}{}\n".format(" ", "^")
+            # s += "\n{:150s}{}\n".format(" ", "^")
+            # proportionSatisfaction = round(100.0*MainModel.nbInscriptionsSatisfaites/len(MainModel.ListedesVarY),2)
+            s += "Nombre d'inscriptions satisfaites : {} soit {}%\n".format(int(self.objectif1_Value), self.proportionSatisfactionY)
+            s += "Nombre d'etudiants entierement satisfaits : {} soit {}%\n".format(int(self.objectif2_Value), self.proportionSatisfactionN)
+            s += "Detail des inscriptions non satisfaites : \n\t\tNombre de demandes non satisfaites par parcours :\n\t\t\t"
+            for Parcours_Obj in self.ListeDesParcours:
+                s += Parcours_Obj.str_nb_etudiants_insatisfaits()
+            s += "\n{:150s}{}\n".format(" ", "^")
+            s += "\t\tNombre de demandes non satisfaites par UE (**Saturee):\n\t\t\t"
+            for Ue in self.ListeDesUEs[1:]:
+                s += Ue.str_nb_non_inscrits()
+            # s += "\n\n\n\t\t\t*DETAIL DES AFFECTATIONS PAR UE*\n\n"
+            s += "\n{:150s}{}\n".format(" ", "^")
+            s += "\t\t\t\t\t** ^^ LES RESULTATS D'AFFECTATION ^^ **"
+            s += "\n{:150s}{}\n".format(" ", "^")
+            # s += "\n{:150s}{}\n".format(" ", "^")
+            s += "\t\t\t*** ^^ DONNEES RECAPITULATIVES DE L'AFFECTATION ^^ ***"
+            s += "\n{:150s}{}\n".format(" ", "^")
+            # s += "\n{:150s}{}\n".format(" ", "^")
+            # s += "\n{:150s}{}\n".format(" ", "^")
+            # s += "\n{:150s}{}\n".format(" ", "^")
+            s += "********** ^^^ OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK) ^^^ **********"
+            # for i in range(1, len(self.ListeDesUEs)):
+            #     s += str(self.ListeDesUEs[-i])
+            # for Ue in self.ListeDesUEs[1:]:
+            #     s += str(Ue)
+            return s
+        else:
+            s = "INSCRIPTION PEDAGOGIQUE DU "
+            if self.optimizer.modeleAleatoire:
+                s += "DOSSIER ALEATOIRE {} ".format(self.identifiantModele)
+            else:
+                s += "DOSSIER DE VOEUX "
 
-        s += "\nCharge : {} % \nDesequilibre maximal autorise : {} %".format(self.charge, self.tauxEquilibre*100)
-        s += "\n{:150s}{}\n".format(" ", "^")
-        s += "Caracteristiques de l'EDT :\n\tNombre total de contrats incompatibles (de taille {}) : {}".format(self.optimizer.Parameters.TailleMaxContrat, self.nombre_total_contrat_incompatible)
-        # s += "\n{:150s}{}\n".format(" ", "^")
-        s += "\n\tPar parcours : {}".format(self.chaine_nombre_contrats_incompatible_par_parcours())
-        # s += "\n\n\t\t\t*LES RESULTATS D'AFFECTATION*\n"
-        s += "\n{:150s}{}\n".format(" ", "^")
-        s += "\t\t\t** ^^ AUTRES INFORMATIONS ^^ **"
-        s += "\n{:150s}{}\n".format(" ", "^")
-        # s += "\n{:150s}{}\n".format(" ", "^")
-        # proportionSatisfaction = round(100.0*MainModel.nbInscriptionsSatisfaites/len(MainModel.ListedesVarY),2)
-        s += "Nombre d'inscriptions satisfaites : {} soit {}%\n".format(int(self.objectif1_Value), self.proportionSatisfactionY)
-        s += "Nombre d'etudiants entierement satisfaits : {} soit {}%\n".format(int(self.objectif2_Value), self.proportionSatisfactionN)
-        s += "Detail des inscriptions non satisfaites : \n\t\tNombre de demandes non satisfaites par parcours :\n\t\t\t"
-        for Parcours_Obj in self.ListeDesParcours:
-            s += Parcours_Obj.str_nb_etudiants_insatisfaits()
-        s += "\n{:150s}{}\n".format(" ", "^")
-        s += "\t\tNombre de demandes non satisfaites par UE (**Saturee):\n\t\t\t"
-        for Ue in self.ListeDesUEs[1:]:
-            s += Ue.str_nb_non_inscrits()
-        # s += "\n\n\n\t\t\t*DETAIL DES AFFECTATIONS PAR UE*\n\n"
-        s += "\n{:150s}{}\n".format(" ", "^")
-        s += "\t\t\t\t\t** ^^ LES RESULTATS D'AFFECTATION ^^ **"
-        s += "\n{:150s}{}\n".format(" ", "^")
-        # s += "\n{:150s}{}\n".format(" ", "^")
-        s += "\t\t\t*** ^^ DONNEES RECAPITULATIVES DE L'AFFECTATION ^^ ***"
-        s += "\n{:150s}{}\n".format(" ", "^")
-        # s += "\n{:150s}{}\n".format(" ", "^")
-        # s += "\n{:150s}{}\n".format(" ", "^")
-        # s += "\n{:150s}{}\n".format(" ", "^")
-        s += "********** ^^^ OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK) ^^^ **********"
-        # for i in range(1, len(self.ListeDesUEs)):
-        #     s += str(self.ListeDesUEs[-i])
-        # for Ue in self.ListeDesUEs[1:]:
-        #     s += str(Ue)
-        return s
+            s += "INFAISABLE : Certaines inscriptions obligatoires non satisfaites"
+
+            return s
+
 
 
 

@@ -29,7 +29,7 @@ class Parcours:
             self.mesEtudiants = list()
             self.DicoConfigurations = dict()
             deb = time.time()
-            # self.generer_dico_Nbconfig()
+            self.generer_dico_Nbconfig()
             # print ("....." * int(time.time() - deb + 1)*9)
             self.effectif = 0
 

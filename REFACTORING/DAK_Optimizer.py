@@ -431,10 +431,10 @@ class DAK_Optimizer:
 
 
 
-# Optim = DAK_Optimizer()
-# Optim.charger_edt(".edt.csv")
+Optim = DAK_Optimizer()
+Optim.charger_edt("edt.csv")
 #
-# Optim.charger_parcours("parcours.csv")
+Optim.charger_parcours("parcours.csv")
 
 # print Optim.afficher_EDT()
 
@@ -455,8 +455,10 @@ class DAK_Optimizer:
 # # # # #
 # # # # # Optim.AD_afficher_carte_incompatibilites("and")
 # # # # # # Optim.match()
-# # Optim.eprouver_edt(nombreDeDossierGeneres=25)
-# # # # #
+debut = time.time()
+Optim.eprouver_edt(nombreDeDossierGeneres=100)
+print (time.time() - debut)/60
+# # # #
 # # # # # Optim.eprouver_edt(nombreDeDossierGeneres=10)
 # # # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
 # # # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
