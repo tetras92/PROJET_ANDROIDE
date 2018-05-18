@@ -19,6 +19,7 @@ class Script():
         # self.dirname_tout_dossier = ''
         self.optimizer = DAK_Optimizer()
         self.dernier_taux_equilibre = DAK_Optimizer.tauxEquilibre
+        self.dernier_nb_dossiers = DAK_Optimizer.nbDossiersParDefaut
 
         print"\t\tP-ANDROIDE : OPTIMISATION DES INSCRIPTIONS AUX UES (PAR DAK)\n\n"
         # while True:
@@ -109,55 +110,55 @@ class Script():
 
             elif choix == '3': #_________________________NEW             ICI CE 18/05
 
-                def get_all_ue_name():
-                    Liste_id_ues = list(self.optimizer.DictUEs.keys())
-                    Liste_id_ues.sort()
-                    s = "\n"
-                    nb_ue = len(Liste_id_ues)
-                    for ue,i in zip(Liste_id_ues,range(1,nb_ue + 1)):
-                        s += "\t({}) {}\t\t".format(i,ue)
-                        if ((i-1)%(nb_ue/2))==0:
-                          s+="\n"
-                    return s
+                # def get_all_ue_name():
+                #     Liste_id_ues = list(self.optimizer.DictUEs.keys())
+                #     Liste_id_ues.sort()
+                #     s = "\n"
+                #     nb_ue = len(Liste_id_ues)
+                #     for ue,i in zip(Liste_id_ues,range(1,nb_ue + 1)):
+                #         s += "\t({}) {}\t\t".format(i,ue)
+                #         if ((i-1)%(nb_ue/2))==0:
+                #           s+="\n"
+                #     return s
+                #
+                # while True:
+                #     print"\n\n__________________________ Operation sur l'EDT __________________________\n\n\t(1) Afficher l'EDT\n\t(2) Modifications sur les groupes d'UE\n\t(3) Sauvegarder les modifications apportees sur l'EDT\n\t" \
+                #             "(0) Retour au Menu principal\n\n"
+                #     changement_edt = input(" >>> ")
+                #     if changement_edt == 1:
+                #         print self.optimizer.afficher_EDT()
+                #     elif changement_edt == 2:
+                #         print "\n\n_______________________ Modification des groupes d'UE _______________________\n\n"
+                #         intit_ue = get_all_ue_name()
+                #         while True:
+                #             print "\tVeuillez selectionner une UE a modifie : \n\n"+intit_ue
+                #             try:
+                #                 ue_a_modifie = input(">>> ")
+                #             except:
+                #                 print"im in expction input"
+                #                 continue
+                #             break
+                #         if ue_a_modifie <= len(self.optimizer.DictUEs) or ue_a_modifie >0 :
+                #             while True:
+                #                 print "\n\t(1) Ajouter un nouveau groupe\n\t(2) Supprimer un groupe\n\t(3) Modifier la capacite d'un groupe\n\t(0) Retour au menu precedent\n"
+                #                 choix = raw_input(">>> ")
+                #                 if choix == '1':
+                #                     self.ajouter_groupe(ue_a_modifie)
+                #                 elif choix == '2':
+                #                     self.supprimer_groupe(ue_a_modifie)
+                #                 elif choix == '3':
+                #                     self.modifier_capacite_groupe(ue_a_modifie)
+                #                 elif choix == '0':
+                #                    break
+                #
+                #     elif changement_edt == 3:
+                #         self.sauvegarder()
+                #     elif changement_edt == 0:
+                #         break
+                #     else:
+                #         print "\nCommande incorrecte.\n"
 
-                while True:
-                    print"\n\n__________________________ Operation sur l'EDT __________________________\n\n\t(1) Afficher l'EDT\n\t(2) Modifications sur les groupes d'UE\n\t(3) Sauvegarder les modifications apportees sur l'EDT\n\t" \
-                            "(0) Retour au Menu principal\n\n"
-                    changement_edt = input(" >>> ")
-                    if changement_edt == 1:
-                        print self.optimizer.afficher_EDT()
-                    elif changement_edt == 2:
-                        print "\n\n_______________________ Modification des groupes d'UE _______________________\n\n"
-                        intit_ue = get_all_ue_name()
-                        while True:
-                            print "\tVeuillez selectionner une UE a modifie : \n\n"+intit_ue
-                            try:
-                                ue_a_modifie = input(">>> ")
-                            except:
-                                print"im in expction input"
-                                continue
-                            break
-                        if ue_a_modifie <= len(self.optimizer.DictUEs) or ue_a_modifie >0 :
-                            while True:
-                                print "\n\t(1) Ajouter un nouveau groupe\n\t(2) Supprimer un groupe\n\t(3) Modifier la capacite d'un groupe\n\t(0) Retour au menu precedent\n"
-                                choix = raw_input(">>> ")
-                                if choix == '1':
-                                    self.ajouter_groupe(ue_a_modifie)
-                                elif choix == '2':
-                                    self.supprimer_groupe(ue_a_modifie)
-                                elif choix == '3':
-                                    self.modifier_capacite_groupe(ue_a_modifie)
-                                elif choix == '0':
-                                   break
-
-                    elif changement_edt == 3:
-                        self.sauvegarder()
-                    elif changement_edt == 0:
-                        break
-                    else:
-                        print "\nCommande incorrecte.\n"
-
-
+                self.delagateur_operations_edt(self.message_operations_EDT())
             elif choix == '4':
                 print"_____________________ Afficher la carte d'incompatibilites dans un Parcours "
 
@@ -178,7 +179,7 @@ class Script():
         option = int(option)
         if option not in range(5):          #NE PAS SORTIR TANT QUE VALEUR NON VALIDE SAISIE
             print "Saisir une valeur valide!"
-            self.print_equilibrage()
+            return self.print_equilibrage()
         return option
 
     def rematcher(self):
@@ -191,6 +192,19 @@ class Script():
         else:
             print "\t\tSaisir une valeur valide!"
             return self.rematcher()
+
+    def reeprouver_edt(self):
+        print "\nSouhaitez-vous a nouveau eprouver la resistance de l'EDT? " \
+              "(avec un autre pourcentage de desequilibre ou en generant plus de dossiers aleatoires par exemple)\n(1) Oui\n(0) Non\nSaisir une valeur (0-1):"
+        choix = raw_input(">>> ")
+        if choix == '1':
+            return True
+        elif choix == '0':
+            return False
+        else:
+            print "\t\tSaisir une valeur valide!"
+            return self.reeprouver_edt()
+
 
     def faire_le_matching(self):
         # while True:
@@ -218,6 +232,37 @@ class Script():
         if self.rematcher():
             self.faire_le_matching()
 
+
+    def message_operations_EDT(self):
+        choix = raw_input("\n\n__________________________ Operations sur l'EDT __________________________\n\n" \
+              "(1) Afficher\n" \
+              "(2) Modifier\n" \
+              "(3) Sauvegarder\n" \
+              "(0) Retour au Menu Principal\n" \
+              "Saisir une valeur (0-3) : ")
+        if choix not in [str(i) for i in range(4)]:
+            print 'Saisie Incorrecte!'
+            return self.message_operations_EDT()
+        choix = int(choix)
+        return choix
+
+    def delagateur_operations_edt(self, choix):
+        if choix == 1:
+            try:
+                self.optimizer.afficher_EDT()
+            except:
+                print "\nERREUR LORS DE L'AFFICHAGE DE L'EDT\n"
+        elif choix == 2:
+
+            pass # FOR THE MOMENT
+        elif choix == 3:
+            self.sauvegarder()
+            self.delagateur_operations_edt(self.message_operations_EDT())
+        elif choix == 0:        #PAS BESOIN J'AVAIS LA GARANTIE QUE soit 1, 2, 3 ou 0 seront saisies
+            return
+
+
+    # def message_
 
     def charger_voeux(self):
         annuler = False
@@ -251,73 +296,85 @@ class Script():
 
         return not annuler
 
+    def affichage_avant_eprouver_edt(self):
+        nbDossier = raw_input("Veuillez selectionner le nombre de dossiers voeux a generer. \"Entree\" pour {} dossiers aleatoires\n"
+                          "(1) {:3s} dossiers aleatoires (~ {} minute(s))\n(2) {:3s} dossiers aleatoires (~ {} minute(s))\n(3) {:3s} dossiers aleatoires (~ {} minute(s))\n"
+                              "(4) {:3s} dossiers aleatoires (~ {} minute(s))\n(5) {:3s} dossiers aleatoires (~ {} minute(s))\n(6) {:3s} dossiers aleatoires (~ {} minute(s))\n"
+                              "(0) Retour au Menu Principal\nSaisir une valeur (0-6) : ".format(self.dernier_nb_dossiers, '20', 1, '50', 2, '75', 3, '100', 4, '150', 7, '200', 9))
+
+        if nbDossier == '1':
+            nbDossier = 20
+        elif nbDossier == '2':
+            nbDossier = 50
+        elif nbDossier == '3':
+            nbDossier = 75
+        elif nbDossier == '4':
+            nbDossier = 100
+        elif nbDossier == '5':
+            nbDossier = 150
+        elif nbDossier == '6':
+            nbDossier = 200
+        elif nbDossier == '0':
+            nbDossier = 0
+        elif nbDossier == '' or nbDossier == ():
+            nbDossier = self.dernier_nb_dossiers
+        else:
+            print "Saisir une valeur valide!\n"
+            return self.affichage_avant_eprouver_edt()
+        if nbDossier != 0:       #Ne pas considerer le cas annuler
+            self.dernier_nb_dossiers = nbDossier
+        return nbDossier
+
     def eprouver_edt(self):
         annuler = False
         print "\n\n_________________________________ Eprouver l'EDT _________________________________\n\n"+\
             "Les dossiers de voeux aleatoires generes sont stockes automatiquement dans le repertoire ~/VOEUX_RANDOM\n"
 
         while not annuler:
-            nbDossier = raw_input("Veuillez selectionner le nombre de dossiers voeux a generer.\n"
-                          "(1) {:3s} dossiers aleatoires (~ {} minute(s))\n(2) {:3s} dossiers aleatoires (~ {} minute(s))\n(3) {:3s} dossiers aleatoires (~ {} minute(s))\n"
-                              "(4) {:3s} dossiers aleatoires (~ {} minute(s))\n(5) {:3s} dossiers aleatoires (~ {} minute(s))\n(6) {:3s} dossiers aleatoires (~ {} minute(s))\n"
-                              "(0) Retour au Menu Principal\nSaisir une valeur (0-6) : ".format('20', 1, '50', 2, '75', 3, '100', 4, '150', 7, '200', 9))
-            if nbDossier == '1':
-                nbDossier = 20
-            elif nbDossier == '2':
-                nbDossier = 50
-            elif nbDossier == '3':
-                nbDossier = 75
-            elif nbDossier == '4':
-                nbDossier = 100
-            elif nbDossier == '5':
-                nbDossier = 150
-            elif nbDossier == '6':
-                nbDossier = 200
-            elif nbDossier == '0':
+            nbDossier = self.affichage_avant_eprouver_edt()
+            if nbDossier == 0:
                 annuler = True
                 continue
-            else:
-                print "Saisir une valeur valide!"
+
+            option = self.print_equilibrage()
+            if option == 1:
+                self.optimizer.eprouver_edt(nombreDeDossierGeneres=nbDossier,equilibre=True, tauxEquilibre=0.05)
+
+                self.dernier_taux_equilibre = 0.05
+            elif option == 2:
+                self.optimizer.eprouver_edt(nombreDeDossierGeneres=nbDossier,equilibre=True)
+
+                self.dernier_taux_equilibre = DAK_Optimizer.tauxEquilibre
+            elif option == 3:
+                self.optimizer.eprouver_edt(nombreDeDossierGeneres=nbDossier,equilibre=True,tauxEquilibre=0.20)
+
+                self.dernier_taux_equilibre = 0.20
+            elif option == 4:
+                self.optimizer.eprouver_edt(nombreDeDossierGeneres=nbDossier,equilibre=True, tauxEquilibre=1)
+
+                self.dernier_taux_equilibre = 1
+            elif option == -1:
+                self.optimizer.eprouver_edt(nombreDeDossierGeneres=nbDossier,equilibre=True, tauxEquilibre=self.dernier_taux_equilibre)
+            elif option == 0:
+                annuler = True
+                continue          #RETOURNE DANS LA BOUCLE DU MENU PRINCIPAL
+            if not self.reeprouver_edt():
+                annuler = True
                 continue
 
-            ##########################################################################################################""
-            #MEME MODELE QUE LE MATCHING
-            edt_eprouve = False
-            while not edt_eprouve:
-                option = self.print_equilibrage()
-                if option == 1:
-                    self.optimizer.eprouver_edt(nombreDeDossierGeneres=nbDossier,equilibre=True, tauxEquilibre=0.05)
-                    edt_eprouve = True
-                    self.dernier_taux_equilibre = 0.05
-                elif option == 2:
-                    self.optimizer.eprouver_edt(nombreDeDossierGeneres=nbDossier,equilibre=True)
-                    edt_eprouve = True
-                    self.dernier_taux_equilibre = DAK_Optimizer.tauxEquilibre
-                elif option == 3:
-                    self.optimizer.eprouver_edt(nombreDeDossierGeneres=nbDossier,equilibre=True,tauxEquilibre=0.20)
-                    edt_eprouve = True
-                    self.dernier_taux_equilibre = 0.20
-                elif option == 4:
-                    self.optimizer.eprouver_edt(nombreDeDossierGeneres=nbDossier,equilibre=True, tauxEquilibre=1)
-                    edt_eprouve = True
-                    self.dernier_taux_equilibre = 1
-                elif option == -1:
-                    self.optimizer.eprouver_edt(nombreDeDossierGeneres=nbDossier,equilibre=True, tauxEquilibre=self.dernier_taux_equilibre)
-                elif option == 0:
-                    annuler = True
-                    break              #RETOURNE DANS LA BOUCLE DU MENU PRINCIPAL
-            ##############################################################################################################
+
 
     def sauvegarder(self):
         root = Tkinter.Tk()
         root.withdraw()
-        save_file_edt = tkFileDialog.asksaveasfile(title="Veuillez indiquer l'emplacement de la sauvegarde")
-        if save_file_edt !='':
-            print "save file  "+save_file_edt.name
-            self.optimizer.sauvegarde_UEs(save_file_edt.name)
-            print "============================== SAUVEGARDE REUSSIE ==============================\n\n"
-        else:
-            print "!!!________________ SAUVEGARDE ECHOUE ________________!!\n\n"
+        save_file_edt = tkFileDialog.asksaveasfile(title="Enregistrer sous ...", filetypes=[('CSV', '.csv')])
+        if save_file_edt != None: # Quand pas Annuler
+            try:
+                self.optimizer.sauvegarde_UEs(save_file_edt.name)
+                print "============================== SAUVEGARDE REUSSIE ==============================\n\n"
+            except:
+                print "!!!________________ SAUVEGARDE ECHOUE ________________!!\n\n"
+
 
     def ajouter_groupe(self,id_ue):
         while True:

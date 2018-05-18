@@ -425,8 +425,8 @@ class DAK_Optimizer:
             s += un_bloc(bloc)
             s += "_"*14*5
             s += "\n"
-
-        return s
+        print s
+        # return s
 
 
 
