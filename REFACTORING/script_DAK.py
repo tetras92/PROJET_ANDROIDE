@@ -18,7 +18,7 @@ class Script():
         self.dirname_dossier_voeux = ''
         # self.dirname_tout_dossier = ''
         self.optimizer = DAK_Optimizer()
-
+        self.dernier_taux_equilibre = DAK_Optimizer.tauxEquilibre
 
         print"\t\tP-ANDROIDE : OPTIMISATION DES INSCRIPTIONS AUX UES (PAR DAK)\n\n"
         # while True:
@@ -171,8 +171,11 @@ class Script():
 
     def print_equilibrage(self):
         print "\n\n_________________________________ Option Equilibrage au sein des groupes de chaque UE _________________________________\n"
-        option = input("Choisir le pourcentage maximal de desequilibre a tolerer :\n(1) Valeur par defaut : ({}%)\n(2) 20.0%\n(3) 5.0%\n(4) Sans equilibrage (100%)\n"
-                        "(0) Retour au Menu Principal\nSaisir une valeur (0-4) : ".format(DAK_Optimizer.tauxEquilibre*100))
+        option = raw_input("Choisir le pourcentage maximal de desequilibre a tolerer :\"Entree\" pour {}%\n(1) 5.0%\n(2) 10.0%\n(3) 20.0%\n(4) Sans equilibrage (100%)\n"
+                        "(0) Retour au Menu Principal\nSaisir une valeur (0-4) : ".format(self.dernier_taux_equilibre*100))
+        if option == '' or option == ():
+            return -1
+        option = int(option)
         if option not in range(5):          #NE PAS SORTIR TANT QUE VALEUR NON VALIDE SAISIE
             print "Saisir une valeur valide!"
             self.print_equilibrage()
@@ -190,25 +193,31 @@ class Script():
             return self.rematcher()
 
     def faire_le_matching(self):
-        while True:
-            options = self.print_equilibrage()
-            if options == 1:
-                self.optimizer.match()
-            elif options == 2:
-                self.optimizer.match(equilibre=True,tauxEquilibre=0.20)
-            elif options == 3:
-                self.optimizer.match(equilibre=True, tauxEquilibre=0.05)
-            elif options == 4:
-                self.optimizer.match(equilibre=True, tauxEquilibre=1)
-            elif options == 0:
-                break
-            else:
-                print "\t\tSaisir une valeur valide!"
-                continue
-            if self.rematcher():
-                continue
-            else:
-                break
+        # while True:
+        options = self.print_equilibrage()
+        if options == 1:
+            self.optimizer.match(equilibre=True, tauxEquilibre=0.05)
+            self.dernier_taux_equilibre = 0.05
+        elif options == 2:
+            self.optimizer.match(equilibre=True, tauxEquilibre=0.1)
+            self.dernier_taux_equilibre = 0.1
+        elif options == 3:
+            self.optimizer.match(equilibre=True,tauxEquilibre=0.20)
+            self.dernier_taux_equilibre = 0.20
+        elif options == 4:
+            self.optimizer.match(equilibre=True, tauxEquilibre=1)
+            self.dernier_taux_equilibre = 1
+        elif options == -1:
+            self.optimizer.match(equilibre=True, tauxEquilibre=self.dernier_taux_equilibre)
+        elif options == 0:
+            return
+        else:
+            print "\t\tSaisir une valeur valide!"
+            self.faire_le_matching()
+            return
+        if self.rematcher():
+            self.faire_le_matching()
+
 
     def charger_voeux(self):
         annuler = False
@@ -271,18 +280,33 @@ class Script():
                 print "Saisir une valeur valide!"
                 continue
 
-            option = self.print_equilibrage()
-            if option == 1:
-                self.optimizer.eprouver_edt(nombreDeDossierGeneres=nbDossier,equilibre=True)
-            elif option == 2:
-                self.optimizer.eprouver_edt(nombreDeDossierGeneres=nbDossier,equilibre=True,tauxEquilibre=0.20)
-            elif option == 3:
-                self.optimizer.eprouver_edt(nombreDeDossierGeneres=nbDossier,equilibre=True, tauxEquilibre=0.05)
-            elif option == 4:
-                self.optimizer.eprouver_edt(nombreDeDossierGeneres=nbDossier,equilibre=True, tauxEquilibre=1)
-            elif option == 0:
-                break              #RETOURNE DANS LA BOUCLE DU MENU PRINCIPAL
-
+            ##########################################################################################################""
+            #MEME MODELE QUE LE MATCHING
+            edt_eprouve = False
+            while not edt_eprouve:
+                option = self.print_equilibrage()
+                if option == 1:
+                    self.optimizer.eprouver_edt(nombreDeDossierGeneres=nbDossier,equilibre=True, tauxEquilibre=0.05)
+                    edt_eprouve = True
+                    self.dernier_taux_equilibre = 0.05
+                elif option == 2:
+                    self.optimizer.eprouver_edt(nombreDeDossierGeneres=nbDossier,equilibre=True)
+                    edt_eprouve = True
+                    self.dernier_taux_equilibre = DAK_Optimizer.tauxEquilibre
+                elif option == 3:
+                    self.optimizer.eprouver_edt(nombreDeDossierGeneres=nbDossier,equilibre=True,tauxEquilibre=0.20)
+                    edt_eprouve = True
+                    self.dernier_taux_equilibre = 0.20
+                elif option == 4:
+                    self.optimizer.eprouver_edt(nombreDeDossierGeneres=nbDossier,equilibre=True, tauxEquilibre=1)
+                    edt_eprouve = True
+                    self.dernier_taux_equilibre = 1
+                elif option == -1:
+                    self.optimizer.eprouver_edt(nombreDeDossierGeneres=nbDossier,equilibre=True, tauxEquilibre=self.dernier_taux_equilibre)
+                elif option == 0:
+                    annuler = True
+                    break              #RETOURNE DANS LA BOUCLE DU MENU PRINCIPAL
+            ##############################################################################################################
 
     def sauvegarder(self):
         root = Tkinter.Tk()
