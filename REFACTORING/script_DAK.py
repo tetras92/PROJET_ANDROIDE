@@ -253,16 +253,58 @@ class Script():
             except:
                 print "\nERREUR LORS DE L'AFFICHAGE DE L'EDT\n"
         elif choix == 2:
+            ue_a_modifierOuAnnuler = self.message_modifier_edt()
+            if ue_a_modifierOuAnnuler == 0:
+                self.delagateur_operations_edt(self.message_operations_EDT())
+            else:
+                self.delegateur_modifier_ue(ue_a_modifierOuAnnuler, self.message_modification_a_appliquer_une_UE(ue_a_modifierOuAnnuler))
 
-            pass # FOR THE MOMENT
         elif choix == 3:
             self.sauvegarder()
             self.delagateur_operations_edt(self.message_operations_EDT())
         elif choix == 0:        #PAS BESOIN J'AVAIS LA GARANTIE QUE soit 1, 2, 3 ou 0 seront saisies
             return
 
+    def delegateur_modifier_ue(self, idUE, choix):
+        if choix == 1:
+            self.modifier_capacite_groupe(idUE)
+        elif choix == 2:
+            self.ajouter_groupe(idUE)
+        elif choix == 3:
+            self.supprimer_groupe(idUE)
+        else:
+            print "NOT YET IMPLEMENTED"
 
-    # def message_
+
+
+    def message_modification_a_appliquer_une_UE(self, idUE):
+        s = "Vous avez choisi l'UE : {}.\n" \
+            "Que voulez-vous faire?\n" \
+            "(1) Modifier la capacite d'un ou plusieurs groupe(s)\n" \
+            "(2) Ajouter un groupe\n" \
+            "(3) Supprimer un groupe\n" \
+            "(4) Deplacer les seances de td/tme d'un groupe\n" \
+            "(5) Deplacer un cours\n" \
+            "(0) Annuler\n" \
+            "Saisir une valeur (0-5): ".format(self.optimizer.ListeDesUEs[idUE].get_intitule())
+        choix = raw_input(s)
+        if choix not in [str(i) for i in range(6)]:
+            print "\t\tSaisie incorrecte!"
+            return self.message_modification_a_appliquer_une_UE(idUE)
+        choix = int(choix)
+        return choix
+
+
+    def message_modifier_edt(self):
+        s = "\nSORBONNE UNIVERSITE : LES UE DU MASTER INFORMATIQUE\n" + self.chaine_ues_listees(5)
+        nbUEs = len(self.optimizer.ListeDesUEs[1:])
+        choix = raw_input(s + "Choisir l'UE a laquelle vous souhaitez appliquer des modifications.\n(0) pour \"Annuler\".\nSaisir une valeur (0-{}): ".format(nbUEs))
+        if choix not in [str(i) for i in range(nbUEs+1)]:
+            print "\t\tSaisie incorrecte!\n"
+            return self.message_modifier_edt()
+        return int(choix)
+
+
 
     def charger_voeux(self):
         annuler = False
@@ -422,7 +464,15 @@ class Script():
             print self.optimizer.ListeDesUEs[id_ue].print_groupe()
             break
 
-
+    def chaine_ues_listees(self, nombreParligne):
+        ListeUes = self.optimizer.ListeDesUEs
+        s = ""
+        for i in range(1, len(ListeUes)):
+            s += "{:4s} {:12s}\t".format("("+str(i)+")", ListeUes[i].get_intitule())
+            if i % nombreParligne == 0:
+                s += "\n"
+        s += "\n\n"
+        return s
 
 
 
