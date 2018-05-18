@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+import os
 import csv
 import matplotlib
 import matplotlib.pyplot as plt
@@ -67,7 +69,6 @@ class Analyzer:
         L_N_copy.sort()
         labelY = '%Inscriptions_satisfaites. Min : {}% Mediane : {}% Max : {}%'.format(L_Y_copy[0], L_Y_copy[len(L_Y_copy)//2], L_Y_copy[-1])
         labelN = '%Etudiants_satisfaits. Min : {}% Mediane : {}% Max : {}%'.format(L_N_copy[0], L_N_copy[len(L_N_copy)//2], L_N_copy[-1])
-        plt.figure(1, figsize=(15,10))
         plt.scatter(Liste_charge, Liste_satisfaction_Y, c='y', label=labelY)
 
         plt.scatter(Liste_charge, Liste_satisfaction_N, c='r', label=labelN)

@@ -1,12 +1,10 @@
-from heapq import heappop, heappush
-
-from Analyzer import *
+from UE import *
 from Etudiant import *
-from GenerateurDeVoeux import *
 from Incompatibilite import *
 from MatchingModel import *
-from UE import *
-
+from GenerateurDeVoeux import *
+from Analyzer import *
+from heapq import heappop, heappush
 
 class DAK_Optimizer:
 
@@ -426,27 +424,27 @@ class DAK_Optimizer:
             s += un_bloc(bloc)
             s += "_"*14*5
             s += "\n"
+        print s
+        # return s
 
-        return s
 
 
-
-# Optim = DAK_Optimizer()
-# Optim.charger_edt("edt.csv")
+Optim = DAK_Optimizer()
+Optim.charger_edt("edt.csv")
 #
-# Optim.charger_parcours("parcours.csv")
+Optim.charger_parcours("parcours.csv")
 
-# print Optim.afficher_EDT()
+print Optim.afficher_EDT()
 
-# Optim.AS_deplacer_cours(6, 17, 20)
+Optim.AS_deplacer_cours(6, 17, 20)
 
 
 
-# Optim.AS_deplacer_groupe(6,2,5,10)
-#
-# Optim.AS_deplacer_cours(10, 13, 15)
+Optim.AS_deplacer_groupe(6,2,5,10)
 
-# print Optim.afficher_EDT()
+Optim.AS_deplacer_cours(10, 13, 15)
+
+print Optim.afficher_EDT()
 
 #
 #
@@ -455,10 +453,8 @@ class DAK_Optimizer:
 # # # # #
 # # # # # Optim.AD_afficher_carte_incompatibilites("and")
 # # # # # # Optim.match()
-# debut = time.time()
-# Optim.eprouver_edt(nombreDeDossierGeneres=100)
-# print (time.time() - debut)/60
-# # # #
+# # Optim.eprouver_edt(nombreDeDossierGeneres=25)
+# # # # #
 # # # # # Optim.eprouver_edt(nombreDeDossierGeneres=10)
 # # # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
 # # # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
@@ -476,7 +472,7 @@ class DAK_Optimizer:
 # # # Optim.RL_appliquer(10)
 # # # Optim.match()
 # Optim.AS_supprimer_groupe(11, 3) #Groupe 3 Mapsi
-# Optim.match(tauxEquilibre=0.01)
+# Optim.match()
 #
 # Optim.match()
 # # Optim.AD_afficher_carte_incompatibilites("and")
