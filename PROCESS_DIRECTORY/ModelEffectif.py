@@ -41,6 +41,11 @@ class ModelEffectif:
         for csv_line in data:
             self.dictCapacitesUE[csv_line["intitule"]] = sum([int(csv_line["capac"+str(i)]) for i in range(1,ModelEffectif.nombreMaxGroupesParUE+1) if csv_line["capac"+str(i)] != ""])
 
+        somme = 0
+        for n, p in self.dictCapacitesUE.items():
+            somme += p
+        print "cumul", somme
+
     def initialiser_dictProbaConseilles(self):
         return {ue : list() for ue in self.dictCapacitesUE}
 
@@ -91,6 +96,10 @@ class ModelEffectif:
     def ajouterObjectif(self):
         # for c in ModelEffectif.modelGurobi.getConstrs():
         #     print c
+
+        for const in ModelEffectif.modelGurobi.getConstrs():
+            print const
+
         objectif = ModelEffectif.modelGurobi.getObjective()
         # # objectif += ModelEffectif.modelGurobi.getVarByName('dac')
         for var in ModelEffectif.modelGurobi.getVars():
@@ -102,6 +111,7 @@ class ModelEffectif:
         # for var in ModelEffectif.modelGurobi.getVars():
         #     if var.VarName != "Min":
         #         objectif2 += var
+        ModelEffectif.modelGurobi.setParam( 'OutputFlag', False)
         ModelEffectif.modelGurobi.update()
         # self.modelGurobi.setObjectiveN(objectif1,0,1)
         # self.modelGurobi.setObjectiveN(objectif2,1,0)

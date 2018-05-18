@@ -173,21 +173,20 @@ class DAK_Optimizer:
 
         if self.edt_charge:
             for fichierVoeux in os.listdir(dossierVoeux):
-                try: #POUR EVITER LES ERREURS DE SPLIT SUR LE DOSSIER DE VOEUX PAR PARCOURS
-                    parcours = fichierVoeux.split('.')[1]
-                    path = dossierVoeux+"/"+fichierVoeux
-                    f_voeux = open(path)
-                    data = csv.DictReader(f_voeux)
+                # try: #POUR EVITER LES ERREURS DE SPLIT SUR LE DOSSIER DE VOEUX PAR PARCOURS
+                parcours = fichierVoeux.split('.')[1]
+                path = dossierVoeux+"/"+fichierVoeux
+                f_voeux = open(path)
+                data = csv.DictReader(f_voeux)
 
-                    Obj_Parcours = self.get_Parcours(parcours)
-                    # print Obj_Parcours.nom
-                    for ligneEtu in data:
-                        currentEtu = Etudiant(ligneEtu, Obj_Parcours, self) #generation de l'objet etudiant
-                        self.ListeDesEtudiants.append(currentEtu)
-                        # currentEtu.enregistrer_interet_pour_UE()
-                        self.voeux_charges = True
-                except:
-                    pass
+                Obj_Parcours = self.get_Parcours(parcours)
+                for ligneEtu in data:
+                    currentEtu = Etudiant(ligneEtu, Obj_Parcours, self) #generation de l'objet etudiant
+                    self.ListeDesEtudiants.append(currentEtu)
+                    self.voeux_charges = True
+                # except:
+                #
+                #     pass
         else:
             print "Veuillez charger le fichier edt" #REMPLACER PAR UNE BOITE DE DIALOG OU DES EXCEPTIONS
 
@@ -431,22 +430,22 @@ class DAK_Optimizer:
 
 
 
-Optim = DAK_Optimizer()
-Optim.charger_edt("edt.csv")
+# Optim = DAK_Optimizer()
+# Optim.charger_edt("edt.csv")
 #
-Optim.charger_parcours("parcours.csv")
+# Optim.charger_parcours("parcours.csv")
 
-print Optim.afficher_EDT()
+# print Optim.afficher_EDT()
 
-Optim.AS_deplacer_cours(6, 17, 20)
+# Optim.AS_deplacer_cours(6, 17, 20)
 
 
 
-Optim.AS_deplacer_groupe(6,2,5,10)
+# Optim.AS_deplacer_groupe(6,2,5,10)
+#
+# Optim.AS_deplacer_cours(10, 13, 15)
 
-Optim.AS_deplacer_cours(10, 13, 15)
-
-print Optim.afficher_EDT()
+# print Optim.afficher_EDT()
 
 #
 #
@@ -455,8 +454,10 @@ print Optim.afficher_EDT()
 # # # # #
 # # # # # Optim.AD_afficher_carte_incompatibilites("and")
 # # # # # # Optim.match()
-# # Optim.eprouver_edt(nombreDeDossierGeneres=25)
-# # # # #
+# debut = time.time()
+# Optim.eprouver_edt(nombreDeDossierGeneres=100)
+# print (time.time() - debut)/60
+# # # #
 # # # # # Optim.eprouver_edt(nombreDeDossierGeneres=10)
 # # # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
 # # # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
@@ -474,7 +475,7 @@ print Optim.afficher_EDT()
 # # # Optim.RL_appliquer(10)
 # # # Optim.match()
 # Optim.AS_supprimer_groupe(11, 3) #Groupe 3 Mapsi
-# Optim.match()
+# Optim.match(tauxEquilibre=0.01)
 #
 # Optim.match()
 # # Optim.AD_afficher_carte_incompatibilites("and")
