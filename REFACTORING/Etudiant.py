@@ -1,7 +1,7 @@
-# from gurobipy import *
 import random
 
 import numpy as np
+from gurobipy import *
 
 
 class Etudiant:

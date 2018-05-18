@@ -55,7 +55,7 @@ class DAK_Optimizer:
 
 
     def __init__(self):
-        print "DAK_Optimizer Powered by DAK"
+        # print "DAK_Optimizer Powered by DAK"
         self.analyseur =  Analyzer(self)
 
     def operations_pre_chargement_edt(self):
@@ -174,21 +174,20 @@ class DAK_Optimizer:
 
         if self.edt_charge:
             for fichierVoeux in os.listdir(dossierVoeux):
-                try: #POUR EVITER LES ERREURS DE SPLIT SUR LE DOSSIER DE VOEUX PAR PARCOURS
-                    parcours = fichierVoeux.split('.')[1]
-                    path = dossierVoeux+"/"+fichierVoeux
-                    f_voeux = open(path)
-                    data = csv.DictReader(f_voeux)
+                # try: #POUR EVITER LES ERREURS DE SPLIT SUR LE DOSSIER DE VOEUX PAR PARCOURS
+                parcours = fichierVoeux.split('.')[1]
+                path = dossierVoeux+"/"+fichierVoeux
+                f_voeux = open(path)
+                data = csv.DictReader(f_voeux)
 
-                    Obj_Parcours = self.get_Parcours(parcours)
-                    # print Obj_Parcours.nom
-                    for ligneEtu in data:
-                        currentEtu = Etudiant(ligneEtu, Obj_Parcours, self) #generation de l'objet etudiant
-                        self.ListeDesEtudiants.append(currentEtu)
-                        # currentEtu.enregistrer_interet_pour_UE()
-                        self.voeux_charges = True
-                except:
-                    pass
+                Obj_Parcours = self.get_Parcours(parcours)
+                for ligneEtu in data:
+                    currentEtu = Etudiant(ligneEtu, Obj_Parcours, self) #generation de l'objet etudiant
+                    self.ListeDesEtudiants.append(currentEtu)
+                    self.voeux_charges = True
+                # except:
+                #
+                #     pass
         else:
             print "Veuillez charger le fichier edt" #REMPLACER PAR UNE BOITE DE DIALOG OU DES EXCEPTIONS
 
@@ -380,9 +379,11 @@ class DAK_Optimizer:
         file.close()
 
     def afficher_EDT(self):
+        # print "debut afficher", self.EDT[17]
         if self.UE_modifiees_significativement:
             self.maj_suite_a_une_modification_significative_ue()
 
+        # print self.EDT[17]
         EDT_str = [[] for i in range(DAK_Optimizer.Parameters.nbCreneauxParSemaine+1)]
         for creneauId in range(1, DAK_Optimizer.Parameters.nbCreneauxParSemaine+1):
             Dict_creneau = self.EDT[creneauId]
@@ -411,7 +412,7 @@ class DAK_Optimizer:
             nb_max_ligne = max([len(EDT_str[i + j_]) for i in range(0, DAK_Optimizer.Parameters.nbCreneauxParSemaine, DAK_Optimizer.Parameters.nbJoursOuvres)])
             for i in range(nb_max_ligne):
                 s += une_ligne(j_)
-            s += "\n\n"
+            s += "\n"
 
             return s
 
@@ -426,17 +427,27 @@ class DAK_Optimizer:
             s += "_"*14*5
             s += "\n"
 
-
-
         return s
 
 
 
-Optim = DAK_Optimizer()
-Optim.charger_edt("edt.csv")
+# Optim = DAK_Optimizer()
+# Optim.charger_edt("edt.csv")
 #
-print Optim.afficher_EDT()
 # Optim.charger_parcours("parcours.csv")
+
+# print Optim.afficher_EDT()
+
+# Optim.AS_deplacer_cours(6, 17, 20)
+
+
+
+# Optim.AS_deplacer_groupe(6,2,5,10)
+#
+# Optim.AS_deplacer_cours(10, 13, 15)
+
+# print Optim.afficher_EDT()
+
 #
 #
 #
@@ -444,12 +455,14 @@ print Optim.afficher_EDT()
 # # # # #
 # # # # # Optim.AD_afficher_carte_incompatibilites("and")
 # # # # # # Optim.match()
-# # Optim.eprouver_edt(nombreDeDossierGeneres=25)
-# # # # #
+# debut = time.time()
+# Optim.eprouver_edt(nombreDeDossierGeneres=100)
+# print (time.time() - debut)/60
+# # # #
 # # # # # Optim.eprouver_edt(nombreDeDossierGeneres=10)
 # # # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
 # # # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
-# # Optim.traiter_dossier_voeux("../VOEUX")
+# Optim.traiter_dossier_voeux("../VOEUX")
 # Optim.traiter_dossier_voeux("VOEUX_RANDOM/0")
 # Optim.AS_supprimer_groupe(9,1)
 # #
@@ -460,15 +473,10 @@ print Optim.afficher_EDT()
 # # # Optim.AS_modifier_capacite(4, 3, 36)   # AUX GROUPES DE ARES
 # # # Optim.AS_modifier_capacite(4, 2, 36)
 # # Optim.AD_interets_ue_conseillees_par_parcours("VOEUX_RANDOM/0")
-# # Optim.RL_appliquer(10)
-# # Optim.match()
-# Optim.AS_supprimer_groupe(6, 2) #Groupe 3 Mapsi
-# Optim.match()
-# print Optim.afficher_EDT()
 # # # Optim.RL_appliquer(10)
 # # # Optim.match()
 # Optim.AS_supprimer_groupe(11, 3) #Groupe 3 Mapsi
-# # # Optim.match()
+# Optim.match(tauxEquilibre=0.01)
 #
 # Optim.match()
 # # Optim.AD_afficher_carte_incompatibilites("and")
@@ -476,7 +484,7 @@ print Optim.afficher_EDT()
 # # Optim.AS_ajouter_groupe(13,24,25,32)
 # #
 # # Optim.AS_supprimer_groupe(6,1)
-# Optim.AS_deplacer_groupe(6,2,5,10)
+
 # # Optim.AS_deplacer_groupe(6,2,5,10)
 # # #
 # Optim.AS_modifier_capacite(10, 1, 36)
