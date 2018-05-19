@@ -175,65 +175,67 @@ class MatchingModel:
     def __str__(self):
         """Affiche les UES du Modele"""
         if not self.infeasible:
-            s = "\033[0;32;40m "
+            s = u"\033[37;1m "
             for i in range(1, len(self.ListeDesUEs)):
                 s += str(self.ListeDesUEs[-i])
-            s += "\t\t\t*** ^^ DETAIL DES AFFECTATIONS PAR UE ^^ ***"
+            s += u"\t\t\t\033[32;1m* * * * * * * * * * ^^ DETAIL DES AFFECTATIONS PAR UE (PLUS HAUT) ^^ * * * * * * * * * *\033[37;1m\n\n"
 
-            s += "\n{:150s}{}\n".format(" ", "^")
+            # s += "\n{:150s}{}\n".format(" ", "^")
             # s += "\n{:150s}{}\n".format(" ", "^")
             if self.optimizer.modeleAleatoire:
                 s += "\t\t\tDossier aleatoire n. {}\n\n".format(self.identifiantModele)
-            s += "Nombre Total d'inscriptions a satisfaire : {} ".format(self.nombreTotalDemandesInscriptions)
+            s += u"\033[38;5;65mNombre Total d'inscriptions a satisfaire \033[37;1m: {} ".format(self.nombreTotalDemandesInscriptions)
             # s += "\n{:150s}{}\n".format(" ", "^")
-            s += "Nombre Maximal d'inscriptions pouvant etre satisfaites : {}".format(self.capaciteTotaleAccueilUEs)
+            s += u"\033[38;5;65m\nNombre Maximal d'inscriptions pouvant etre satisfaites \033[37;1m: {}".format(self.capaciteTotaleAccueilUEs)
             # s += "\n{:150s}{}\n".format(" ", "^")
-            s += "\nNombre total d'etudiants du master : {}".format(self.nombreTotalEtudiants)
+            s += u"\033[38;5;65m\nNombre total d'etudiants du master \033[37;1m: {}".format(self.nombreTotalEtudiants)
 
-            s += "\nCharge : {} % \nDesequilibre maximal autorise : {} %".format(self.charge, self.tauxEquilibre*100)
-            s += "\n{:150s}{}\n".format(" ", "^")
-            s += "Caracteristiques de l'EDT :\n\tNombre total de contrats incompatibles (de taille {}) : {}".format(self.optimizer.Parameters.TailleMaxContrat, self.nombre_total_contrat_incompatible)
+            s += u"\033[38;5;65m\nCharge \033[37;1m: {} % \n\033[38;5;65mDesequilibre maximal autorise \033[37;1m: {} %".format(self.charge, self.tauxEquilibre*100)
             # s += "\n{:150s}{}\n".format(" ", "^")
-            s += "\n\tPar parcours : {}".format(self.chaine_nombre_contrats_incompatible_par_parcours())
+            s += u"\033[38;5;65m\nCaracteristiques de l'EDT \033[37;1m:\n\t\033[38;5;108mNombre total de contrats incompatibles (de taille {}) \033[37;1m: {}".format(self.optimizer.Parameters.TailleMaxContrat, self.nombre_total_contrat_incompatible)
+            # s += "\n{:150s}{}\n".format(" ", "^")
+            s += "\n\t\033[38;5;108mPar parcours \033[37;1m: {}".format(self.chaine_nombre_contrats_incompatible_par_parcours())
             # s += "\n\n\t\t\t*LES RESULTATS D'AFFECTATION*\n"
-            s += "\n{:150s}{}\n".format(" ", "^")
-            s += "\t\t\t** ^^ AUTRES INFORMATIONS ^^ **"
-            s += "\n{:150s}{}\n".format(" ", "^")
+            # s += "\n{:150s}{}\n".format(" ", "^")
+            s += "\n\n\t\t\t\t\t* * * * * ^^ AUTRES INFORMATIONS ^^ * * * * *\n"
+            # s += "\n{:150s}{}\n".format(" ", "^")
             # s += "\n{:150s}{}\n".format(" ", "^")
             # proportionSatisfaction = round(100.0*MainModel.nbInscriptionsSatisfaites/len(MainModel.ListedesVarY),2)
-            s += "Nombre d'inscriptions satisfaites : {} soit {}%\n".format(int(self.objectif1_Value), self.proportionSatisfactionY)
-            s += "Nombre d'etudiants entierement satisfaits : {} soit {}%\n".format(int(self.objectif2_Value), self.proportionSatisfactionN)
-            s += "Detail des inscriptions non satisfaites : \n\t\tNombre de demandes non satisfaites par parcours :\n\t\t\t"
+            s += u"\n\033[38;5;65mNombre d'inscriptions satisfaites \033[37;1m: {} soit {}%\n".format(int(self.objectif1_Value), self.proportionSatisfactionY)
+            s += u"\033[38;5;65mNombre d'etudiants entierement satisfaits \033[37;1m: {} soit {}%\n".format(int(self.objectif2_Value), self.proportionSatisfactionN)
+            s += u"\033[38;5;65mDetail des inscriptions non satisfaites \033[37;1m: \n\t\t\033[38;5;108mNombre de demandes non satisfaites par parcours \033[37;1m:\n\t\t\t"
             for Parcours_Obj in self.ListeDesParcours:
                 s += Parcours_Obj.str_nb_etudiants_insatisfaits()
-            s += "\n{:150s}{}\n".format(" ", "^")
-            s += "\t\tNombre de demandes non satisfaites par UE (**Saturee):\n\t\t\t"
+            # s += "\n{:150s}{}\n".format(" ", "^")
+            s += u"\n\t\t\033[38;5;108mNombre de demandes non satisfaites par UE (**Saturee)\033[37;1m:\n\t\t\t"
             for Ue in self.ListeDesUEs[1:]:
                 s += Ue.str_nb_non_inscrits()
             # s += "\n\n\n\t\t\t*DETAIL DES AFFECTATIONS PAR UE*\n\n"
-            s += "\n{:150s}{}\n".format(" ", "^")
-            s += "\t\t\t\t\t** ^^ LES RESULTATS D'AFFECTATION ^^ **"
-            s += "\n{:150s}{}\n".format(" ", "^")
             # s += "\n{:150s}{}\n".format(" ", "^")
-            s += "\t\t\t*** ^^ DONNEES RECAPITULATIVES DE L'AFFECTATION ^^ ***"
-            s += "\n{:150s}{}\n".format(" ", "^")
+            # s += "\n\t\t\t\t\t* * ^^ LES RESULTATS D'AFFECTATION ^^ * *"
             # s += "\n{:150s}{}\n".format(" ", "^")
             # s += "\n{:150s}{}\n".format(" ", "^")
+            s += u"\n\n\t\t\t\033[32;1m* * * * * * * * * ^^ DONNEES RECAPITULATIVES DE L'AFFECTATION ^^ * * * * * * * * *\033[37;1m\n\n\n"
+            s+="__________________________________________________________________________________________________________________________________________________________________________________"
+
             # s += "\n{:150s}{}\n".format(" ", "^")
-            s += "********** ^^^ OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK) ^^^ **********"
+            # s += "\n{:150s}{}\n".format(" ", "^")
+            # s += "\n{:150s}{}\n".format(" ", "^")
+            # s += "\n{:150s}{}\n".format(" ", "^")
+            # s += u"\t\t\t\033[32;1m* * * * * * * * * * ^^^ OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK) ^^^ * * * * * * * * * *\033[37;1m\n\n"
             # for i in range(1, len(self.ListeDesUEs)):
             #     s += str(self.ListeDesUEs[-i])
             # for Ue in self.ListeDesUEs[1:]:
             #     s += str(Ue)
             return s
         else:
-            s = "INSCRIPTION PEDAGOGIQUE DU "
+            s = u"\033[31;1mINSCRIPTION PEDAGOGIQUE DU "
             if self.optimizer.modeleAleatoire:
                 s += "DOSSIER ALEATOIRE {} ".format(self.identifiantModele)
             else:
                 s += "DOSSIER DE VOEUX "
 
-            s += "INFAISABLE : Certaines inscriptions obligatoires non satisfaites"
+            s += "INFAISABLE : Certaines inscriptions obligatoires non satisfaites\033[37;1m"
 
             return s
 

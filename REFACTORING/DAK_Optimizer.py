@@ -1,10 +1,12 @@
-from UE import *
+from heapq import heappop, heappush
+
+from Analyzer import *
 from Etudiant import *
+from GenerateurDeVoeux import *
 from Incompatibilite import *
 from MatchingModel import *
-from GenerateurDeVoeux import *
-from Analyzer import *
-from heapq import heappop, heappush
+from UE import *
+
 
 class DAK_Optimizer:
 
@@ -255,7 +257,7 @@ class DAK_Optimizer:
 
 #----------EPROUVER
     def eprouver_edt(self, nombreDeDossierGeneres=nbDossiersParDefaut, directoryName='VOEUX_RANDOM',equilibre=True, tauxEquilibre=0.10):
-        print "Mesure de la resistance de l'edt avec {} dossier(s) aleatoire(s)\n".format(nombreDeDossierGeneres)
+        print u"\033[32;1mMesure de la resistance de l'edt avec {} dossier(s) aleatoire(s)\033[37;1m\n".format(nombreDeDossierGeneres)
         self.analyseur.reset()
         # if self.UE_modifiees_significativement:
         #     self.maj_suite_a_une_modification_significative_ue()
@@ -429,22 +431,22 @@ class DAK_Optimizer:
 
 
 
-Optim = DAK_Optimizer()
-Optim.charger_edt("edt.csv")
+# Optim = DAK_Optimizer()
+# Optim.charger_edt("edt.csv")
 #
-Optim.charger_parcours("parcours.csv")
+# Optim.charger_parcours("parcours.csv")
 
-print Optim.afficher_EDT()
+# print Optim.afficher_EDT()
 
-Optim.AS_deplacer_cours(6, 17, 20)
+# Optim.AS_deplacer_cours(6, 17, 20)
 
 
 
-Optim.AS_deplacer_groupe(6,2,5,10)
+# Optim.AS_deplacer_groupe(6,2,5,10)
+#
+# Optim.AS_deplacer_cours(10, 13, 15)
 
-Optim.AS_deplacer_cours(10, 13, 15)
-
-print Optim.afficher_EDT()
+# print Optim.afficher_EDT()
 
 #
 #
@@ -453,8 +455,10 @@ print Optim.afficher_EDT()
 # # # # #
 # # # # # Optim.AD_afficher_carte_incompatibilites("and")
 # # # # # # Optim.match()
-# # Optim.eprouver_edt(nombreDeDossierGeneres=25)
-# # # # #
+# debut = time.time()
+# Optim.eprouver_edt(nombreDeDossierGeneres=100)
+# print (time.time() - debut)/60
+# # # #
 # # # # # Optim.eprouver_edt(nombreDeDossierGeneres=10)
 # # # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
 # # # # # Optim.RL_appliquer(len(DAK_Optimizer.ListeDesEtudiants)/2, 35)
@@ -472,7 +476,7 @@ print Optim.afficher_EDT()
 # # # Optim.RL_appliquer(10)
 # # # Optim.match()
 # Optim.AS_supprimer_groupe(11, 3) #Groupe 3 Mapsi
-# Optim.match()
+# Optim.match(tauxEquilibre=0.01)
 #
 # Optim.match()
 # # Optim.AD_afficher_carte_incompatibilites("and")

@@ -3,17 +3,18 @@ from gurobipy import *
 
 class UE:
         """Classe definissant une UE"""
+        colors = [1,2,5,6,112,164,7,9,14,37,70,63,96,166,124,100,209,12,190,155,81,64,127]
         def __init__(self,csv_line,optimizer):
             self.optimizer_Params = optimizer.Parameters
             self.optimizer = optimizer
             self.id =int(csv_line["id_ue"])
+            self.color = str(self.colors[self.id - 1])#str(self.id+32)
             self.intitule = csv_line["intitule"]
             self.nb_groupes = int(csv_line["nb_groupes"])
             self.ListeCapacites = [int(csv_line["capac"+str(i)]) for i in range(1,int(self.nb_groupes)+1)]
             self.EnsEtuInteresses = set()
             self.ListeCreneauxCours = [int(csv_line["cours"+str(i)]) for i in range(1,self.optimizer_Params.nbMaxCoursParUE+1) if csv_line["cours"+str(i)] != ""]
             self.ListeCreneauxTdTme = [()]+[(csv_line["td"+str(i)],csv_line["tme"+str(i)]) for i in range(1,int(self.nb_groupes)+1)]
-
             self.nbInscrits = 0
             self.ListeNonInscrits = list()
             self.ListeEtudiantsGroupes = [list() for kk in range(self.nb_groupes+1)]
@@ -215,7 +216,7 @@ class UE:
 
         def __str__(self):
             """ Retourne la chaine representant une UE"""
-            s = "UE {} ({}) :\n\tNombre de groupes : {}\n\tCapacite totale d'accueil: {}\n\t".format(self.intitule, self.id, self.nb_groupes - len(self.groupes_supprimes), sum(self.ListeCapacites))
+            s = u"\033[38;5;"+self.color+"m UE {} ({}) :\n\tNombre de groupes : {}\n\tCapacite totale d'accueil: {}\n\t".format(self.intitule, self.id, self.nb_groupes - len(self.groupes_supprimes), sum(self.ListeCapacites))
             if self.equilibre:
                 s += "Equilibre? : Oui\n"
             else:
@@ -232,7 +233,7 @@ class UE:
                 for etu in self.ListeEtudiantsGroupes[numGroup]:
                     s += etu + " "
                 s += "\n"
-            s+= "\n\n"
+            s+= "\n\n\033[37;1m"
 
 
             return s
