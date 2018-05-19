@@ -252,6 +252,7 @@ class Script():
                 self.optimizer.afficher_EDT()
             except:
                 print "\nERREUR LORS DE L'AFFICHAGE DE L'EDT\n"
+            self.delagateur_operations_edt(self.message_operations_EDT())
         elif choix == 2:
             ue_a_modifierOuAnnuler = self.message_modifier_edt()
             if ue_a_modifierOuAnnuler == 0:
@@ -272,10 +273,12 @@ class Script():
             self.ajouter_groupe(idUE)
         elif choix == 3:
             self.supprimer_groupe(idUE)
-        else:
-            print "NOT YET IMPLEMENTED"
-
-
+        elif choix == 4:
+            self.deplacer_groupe(idUE)
+        elif choix == 5:
+            self.deplacer_cours(idUE)
+        elif choix == 0:
+            self.delagateur_operations_edt(self.message_operations_EDT())
 
     def message_modification_a_appliquer_une_UE(self, idUE):
         s = "Vous avez choisi l'UE : {}.\n" \
@@ -418,51 +421,120 @@ class Script():
                 print "!!!________________ SAUVEGARDE ECHOUE ________________!!\n\n"
 
 
-    def ajouter_groupe(self,id_ue):
-        while True:
-            print"\n\n___________________________ Ajouter un nouveau groupe _____________________________\n\n"
-            print self.optimizer.ListeDesUEs[id_ue].print_groupe()+"\n\n"+\
-                "Veuillez indiquer les creneaux TD, TME et la capacite du nouveau groupe.\nNB : Les creneaux sont numerotes de 1 a 25 (5 creneaux par jour ex: Mardi 10h45 - 12h45 est note 7)\n\n"
-            try:
-                creneau_td = input("Creneau TD  : ")
-                creneau_tme = input("Creneau TME  : ")
-                capacite = input("Capacite du groupe  : ")
-            except:
-                continue
-
-            self.optimizer.AS_ajouter_groupe(id_ue, creneau_td, creneau_tme, capacite)
-            print"\n============================ AJOUT ENREGISTRE ============================\n\n"
-            print self.optimizer.ListeDesUEs[id_ue].print_groupe()
-            break
 
 
-    def supprimer_groupe(self,id_ue):
-        while True:
-            print"\n\n___________________________ Supprimer un groupe _____________________________\n\n"
-            print self.optimizer.ListeDesUEs[id_ue].print_groupe()+"\n\n"
-            try:
-                numGroupe = input("Numero du groupe a supprimer  : ")
-            except:
-                continue
-            self.optimizer.AS_supprimer_groupe(id_ue,numGroupe)
-            print"\n============================ SUPPRESSION ENREGISTREE ============================\n\n"
-            print self.optimizer.ListeDesUEs[id_ue].print_groupe()
-            break
+
+
 
 
     def modifier_capacite_groupe(self,id_ue):
-        while True:
-            print"\n\n___________________________ Modifier capacite d'un groupe _____________________________\n\n"
-            print self.optimizer.ListeDesUEs[id_ue].print_groupe()+"\n\n"
-            try:
-                numGroupe = input("Numero du groupe  : ")
-                nouvelle_capacite = input("Nouvelle capacite du groupe : ")
-            except:
-                continue
+        print"\n\n___________________________ Modifier capacite d'un groupe _____________________________\n\n"
+        self.optimizer.afficher_EDT()          #ULTRA IMPORTANT POUR EVITER LES BUGS
+        print self.optimizer.ListeDesUEs[id_ue].print_groupe()+"\n"
+        try:
+            nb_groupes = self.optimizer.ListeDesUEs[id_ue].nb_groupes
+            ens_groupes = set(range(1,nb_groupes+1)) - self.optimizer.ListeDesUEs[id_ue].groupes_supprimes
+            ens_groupes = {g for g in ens_groupes}
+            numGroupe = raw_input("Saisir numero du groupe : \n>>> ")
+            numGroupe = int(numGroupe)
+            if numGroupe not in ens_groupes:
+                raise Exception
+            nouvelle_capacite = raw_input("Saisir nouvelle capacite du groupe : \n>>> ")
+            nouvelle_capacite = int(nouvelle_capacite)
             self.optimizer.AS_modifier_capacite(id_ue,numGroupe,nouvelle_capacite)
+            print"\n============================ MODIFICATION ENREGISTREE ============================\n"
+        except:
+            print "\n\tOperation Annulee : Saisie incorrecte\n"
+        self.delagateur_operations_edt(self.message_operations_EDT())
+
+    def ajouter_groupe(self,id_ue):
+
+        print"\n\n___________________________ Ajouter un nouveau groupe _____________________________\n\n"
+        self.optimizer.afficher_EDT()                    #ULTRA IMPORTANT POUR EVITER LES BUGS
+        print self.optimizer.ListeDesUEs[id_ue].print_groupe()+"\n\n"+\
+            "Veuillez indiquer les creneaux TD, TME et la capacite du nouveau groupe.\nNB : Les creneaux sont numerotes de 1 a 25 (5 creneaux par jour ex: Mardi 10h45 - 12h45 est note 7)\n" \
+            "\tVous pouvez vous aider de l'EDT afficher ci-dessus! "
+        try:
+            print "Nouveau groupe : \n"
+            creneau_td = raw_input("Saisir numero creneau TD : \n>>> ")
+            creneau_td = int(creneau_td)
+            creneau_tme = raw_input("Saisir numero creneau TME : \n>>> ")
+            creneau_tme = int(creneau_tme)
+            capacite = raw_input("Saisir capacite du nouveau groupe : \n>>> ")
+            capacite = int(capacite)
+            if creneau_tme not in range(1, DAK_Optimizer.Parameters.nbCreneauxParSemaine+1) or creneau_td not in range(1, DAK_Optimizer.Parameters.nbCreneauxParSemaine+1):
+                raise Exception
+            if creneau_tme == creneau_td:
+                raise Exception
+            self.optimizer.AS_ajouter_groupe(id_ue, creneau_td, creneau_tme, capacite)
+            print"\n============================ AJOUT ENREGISTRE ============================\n\n"
+        except:
+            print "\n\tOperation Annulee : Saisie incorrecte\n"
+        self.delagateur_operations_edt(self.message_operations_EDT())
+
+    def supprimer_groupe(self,id_ue):
+        print"\n\n___________________________ Supprimer un groupe _____________________________\n\n"
+        self.optimizer.afficher_EDT()                           #ULTRA IMPORTANT POUR EVITER LES BUGS
+        print self.optimizer.ListeDesUEs[id_ue].print_groupe()+"\n"
+        try:
+            nb_groupes = self.optimizer.ListeDesUEs[id_ue].nb_groupes
+            ens_groupes = set(range(1,nb_groupes+1)) - self.optimizer.ListeDesUEs[id_ue].groupes_supprimes
+            ens_groupes = {g for g in ens_groupes}
+            numGroupe = raw_input("Saisir numero du groupe a supprimer: \n>>> ")
+            numGroupe = int(numGroupe)
+            if numGroupe not in ens_groupes:
+                raise Exception
+            self.optimizer.AS_supprimer_groupe(id_ue, numGroupe)
+            print"\n============================ SUPPRESSION ENREGISTREE ============================\n\n"
+        except:
+            print "\n\tOperation Annulee : Saisie incorrecte\n"
+        self.delagateur_operations_edt(self.message_operations_EDT())
+
+    def deplacer_groupe(self, id_ue):
+        print"\n\n___________________________ Deplacer un groupe _____________________________\n\n"
+        self.optimizer.afficher_EDT()                    #ULTRA IMPORTANT POUR EVITER LES BUGS
+        print self.optimizer.ListeDesUEs[id_ue].print_groupe()+"\n"
+        try:
+            nb_groupes = self.optimizer.ListeDesUEs[id_ue].nb_groupes
+            ens_groupes = set(range(1,nb_groupes+1)) - self.optimizer.ListeDesUEs[id_ue].groupes_supprimes
+            ens_groupes = {str(g) for g in ens_groupes}
+            groupe_a_deplacer = raw_input("Saisir numero du groupe a deplacer : \n>>> ")
+            if groupe_a_deplacer not in ens_groupes:
+                raise Exception
+            groupe_a_deplacer = int(groupe_a_deplacer)
+            new_creneau_td = raw_input("Saisir numero du nouveau creneau TD : \n>>> ")
+            new_creneau_td = int(new_creneau_td)
+            new_creneau_tme = raw_input("Saisir numero du nouveau creneau TME : \n>>> ")
+            new_creneau_tme = int(new_creneau_tme)
+            if new_creneau_tme not in range(1, DAK_Optimizer.Parameters.nbCreneauxParSemaine+1) or new_creneau_td not in range(1, DAK_Optimizer.Parameters.nbCreneauxParSemaine+1):
+                raise Exception
+            if new_creneau_tme == new_creneau_td:
+                raise Exception
+            self.optimizer.AS_deplacer_groupe(id_ue, groupe_a_deplacer, new_creneau_td, new_creneau_tme)
             print"\n============================ MODIFICATION ENREGISTREE ============================\n\n"
-            print self.optimizer.ListeDesUEs[id_ue].print_groupe()
-            break
+        except:
+            print "\n\tOperation Annulee : Saisie incorrecte\n"
+        self.delagateur_operations_edt(self.message_operations_EDT())
+
+    def deplacer_cours(self, id_ue):
+        print"\n\n___________________________ Deplacer un cours _____________________________\n\n"
+        self.optimizer.afficher_EDT()                        #ULTRA IMPORTANT POUR EVITER LES BUGS
+        print self.optimizer.ListeDesUEs[id_ue].print_groupe()+"\n"
+        try:
+            creneau_actuel = raw_input("Saisir numero du creneau actuel : \n>>> ")
+            creneau_actuel = int(creneau_actuel)
+            if creneau_actuel not in range(1, DAK_Optimizer.Parameters.nbCreneauxParSemaine+1):
+                raise Exception
+            nouveau_creneau = raw_input("Saisir numero du nouveau creneau : \n>>>")
+            nouveau_creneau = int(nouveau_creneau)
+            if nouveau_creneau not in range(1, DAK_Optimizer.Parameters.nbCreneauxParSemaine+1):
+                raise Exception
+            self.optimizer.AS_deplacer_cours(id_ue,creneau_actuel,nouveau_creneau)
+            print"\n============================ MODIFICATION ENREGISTREE ============================\n\n"
+        except:
+            print "\n\tOperation Annulee : Saisie incorrecte\n"
+        self.delagateur_operations_edt(self.message_operations_EDT())
+
 
     def chaine_ues_listees(self, nombreParligne):
         ListeUes = self.optimizer.ListeDesUEs
@@ -488,86 +560,3 @@ class Script():
 
 
 Script()
-
-# def modifier_edt(self):
-#     print "\n___________________________Parametre EDT______________________________________\n\n"
-#     print "Veuillez selectionner une UE : \n\n\t\t(1) AAGB\t(2) ALGAV"
-#     choix_ue = raw_input(">>> ")
-#     idUE =2# self.optimizer.ListeDesUEs[str.lower(choix_ue)]
-#
-#     while True:
-#
-#         print "\n\n\t\t(1) Ajouter un groupe\n\t\t(2) Supprimer un groupe \n\t\t(3) Changer l'UE\n\t\t(0) Retourner au Menu Principal\n\n "
-#
-#         input = raw_input(">>> ")
-#
-#         if input == '0':
-#             break
-#         elif input == '1':
-#             # numeroGroupe = self.optimizer.ListeDesUEs[idUE].get_nb_groupes()
-#             # self.optimizer.AS_supprimer_groupe(idUE, numeroGroupe+1)
-#             while True:
-#                 print "\n NOTE : les creneaux sont numerotes de 1 a 25 (5 creneaux par jours)\n\n"
-#                 cr_td = raw_input("Veuillez indiquer le creneau du TD  : ")
-#                 cr_tme = raw_input("Veuillez indiquer le creneau du TME : ")
-#                 cap = raw_input("Veuillez indiquer la capacite du nouveau groupe : ")
-#                 if str.isdigit(cr_td) and str.isdigit(cr_tme) and str.isdigit(cap):
-#                     # self.optimizer.AS_ajouter_groupe(self, idUE, int(cr_td), int(cr_tme), int(cap))
-#                     print "\n\n===================== AJOUT GROUPE {} UE {} ENREGISTRE =====================\n\n".format(numeroGroupe+1,idUE)
-#         elif input == '2':
-#             done = False
-#             while not(done) :
-#                 numeroGroupe = raw_input("Veuillez indiquer le numero du groupe a supprimer : ")
-#                 if str.isdigit(numeroGroupe):
-#                     # self.optimizer.AS_supprimer_groupe(idUE,int(numeroGroupe))
-#                     done = True
-#                     print "\n\n===================== SUPPRESSION DU GROUPE {} UE {} ENREGISTRE =====================\n\n".format(numeroGroupe, idUE)
-#
-#         elif input == '3':
-#             continue
-
-
-# def sauvegarder(self):
-#
-#     def save_file():
-#         save_dialog_name = tkFileDialog.asksaveasfile()
-#         return save_dialog_name.name
-#
-#     input = 't'
-#     while input !='':
-#         print "\n\n\t\t(1) Sauvegarder les modifications sur le fichier EDT\n\t\t(2) Sauvegarder les modifications sur le fichier Parcours \n\t\t(3) Sauvegarder la carte des incompatabilites\n\t\t"+\
-#               "(0) Quitter\n\n " + "Tapez Entree pour retourner au Menu Principal.\n\n"
-#         # "(4) Sauvegarder les donnees generees\n\t\t
-#
-#         input = raw_input(">>> ")
-#
-#         if input == '0':
-#             exit(0)
-#         elif input == '1':
-#             self.path_to_save_edt = save_file()
-#         elif input == '2' :
-#             self.path_to_save_parcours = save_file()
-#         elif input == '3':
-#             self.path_to_save_incompabilite = save_file()
-#         # elif input == '4':
-#         #     self.path_to_save_donnees_generees = save_file()  ##_____________________________________________NOT A FILE BUT A DIRECTORY
-#         else:
-#             continue
-#         print "--------------------------------------- ENREGISTRE ---------------------------------------"
-#
-#     self.menu_principal()
-
-
-# def modifier_cap(self) :
-#     print "\n___________________________Parametre UE______________________________________\n\n"
-#     print "Veuillez selectionner une UE : \n\n\t\t(1) AAGB\t(2) ALGAV"
-#     choix_ue = raw_input(">>> ")
-#     idUE =2# self.optimizer.ListeDesUEs[str.lower(choix_ue)]
-#
-#     while True:
-#         numeroGroupe = raw_input("Veuillez le numero du groupe : ")
-#         cap = raw_input("Veuillez indiquer la nouvelle capacite du groupe : ")
-#         if str.isdigit(numeroGroupe) and str.isdigit(cap):
-#             # self.optimizer.AS_modifier_capacite(idUE,int(numeroGroupe),int(cap))
-#             print "\n\n===================== MODIFICATION DU GROUPE {} UE {} ENREGISTRE =====================\n\n".format(numeroGroupe, idUE)
-#             self.menu_principal()

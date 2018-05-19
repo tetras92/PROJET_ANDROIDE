@@ -278,14 +278,12 @@ class DAK_Optimizer:
 
 
     def AS_modifier_capacite(self, idUE, numeroGroupe, nouvelleCapacite):
-        # if nouvelleCapacite != 0:
         self.ListeDesUEs[idUE].modifier_capacite_groupe(numeroGroupe, nouvelleCapacite)
-        # self.affectationFaite = True
-        # else:
-        #     print "pour supprimer un groupe utiliser la fonction adequate"
+
 
     def AS_supprimer_groupe(self, idUE, numeroGroupe):
-        self.AS_modifier_capacite(idUE, numeroGroupe, 0)
+        # self.AS_modifier_capacite(idUE, numeroGroupe, 0)
+        self.ListeDesUEs[idUE].supprimer_groupe(numeroGroupe)
         self.UE_modifiees_significativement = True              #5/5
 
     def AS_ajouter_groupe(self, ueId, creneauTd, creneauTme, capacite):
@@ -406,9 +404,18 @@ class DAK_Optimizer:
                 s += '{:12s}| '.format(prochain_element_creneau(EDT_str[i+j]))
             s += "\n"
             return s
-        def un_bloc(j_):
+
+        def ligne_intro_bloc(j):
             s = ""
+            for i in range(0, DAK_Optimizer.Parameters.nbCreneauxParSemaine, DAK_Optimizer.Parameters.nbJoursOuvres):
+                s += '{:5s}{:2s}{:5s}| '.format(" ", str(i+j), " ")
+            s += "\n"
+            return s
+
+        def un_bloc(j_):
+            s = ligne_intro_bloc(j_)
             nb_max_ligne = max([len(EDT_str[i + j_]) for i in range(0, DAK_Optimizer.Parameters.nbCreneauxParSemaine, DAK_Optimizer.Parameters.nbJoursOuvres)])
+
             for i in range(nb_max_ligne):
                 s += une_ligne(j_)
             s += "\n"
@@ -432,6 +439,7 @@ class DAK_Optimizer:
 
 # Optim = DAK_Optimizer()
 # Optim.charger_edt("edt.csv")
+# Optim.afficher_EDT()
 #
 # Optim.charger_parcours("parcours.csv")
 

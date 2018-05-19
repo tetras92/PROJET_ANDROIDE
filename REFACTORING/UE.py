@@ -76,11 +76,7 @@ class UE:
             modelGurobi.update()
 
 
-        # def affecterEtuGroup(self, parcours, idRelatif, idGroup):
-        #     # try:
-        #     self.ResumeDesAffectations[idGroup].add((parcours, idRelatif))
-            # except:
-            #     print "Affectation de l'etudiant {}({}) imopssible. Groupe {} de l'UE {} est inconnu ".format(idRelatif,parcours,idGroup,self.intitule)
+
 
         def ajouterUnInscrit(self):
             self.nbInscrits += 1
@@ -113,18 +109,18 @@ class UE:
         #--------------------------------------------------------------#
         def ajouter_un_groupe(self, creneauTd, creneauTme, capacite):
             if creneauTme != creneauTd: #Les exceptions
-                numero_nouveau_groupe = 0
-                if len(self.groupes_supprimes) != 0:
-                    L = list(self.groupes_supprimes)
-                    L.sort()
-                    numero_nouveau_groupe = L[0]
-                if numero_nouveau_groupe != 0:
-                    self.ListeCreneauxTdTme[numero_nouveau_groupe-1] = (creneauTd, creneauTme)
-                    self.ListeCapacites[numero_nouveau_groupe-1] = capacite
-                    self.groupes_supprimes.remove(numero_nouveau_groupe)
-                    self.maj_capacite_totale()
-                    self.optimizer.capaciteTotaleAccueil += capacite
-                    return numero_nouveau_groupe
+                # numero_nouveau_groupe = 0
+                # if len(self.groupes_supprimes) != 0:
+                #     L = list(self.groupes_supprimes)
+                #     L.sort()
+                #     numero_nouveau_groupe = L[0]
+                # if numero_nouveau_groupe != 0:
+                #     self.ListeCreneauxTdTme[numero_nouveau_groupe-1] = (creneauTd, creneauTme)
+                #     self.ListeCapacites[numero_nouveau_groupe-1] = capacite
+                #     self.groupes_supprimes.remove(numero_nouveau_groupe)
+                #     self.maj_capacite_totale()
+                #     self.optimizer.capaciteTotaleAccueil += capacite
+                #     return numero_nouveau_groupe
 
                 self.ListeCreneauxTdTme.append((creneauTd, creneauTme))
                 self.ListeCapacites.append(capacite)
@@ -167,16 +163,18 @@ class UE:
                                 break
 
         def modifier_capacite_groupe(self, numeroGroupe, nouvelleCapacite):
-            # try:
-            # if numeroGroupe <= self.nb_groupes: #A REMPLACER PAR DES EXCEPTIONS
             self.optimizer.capaciteTotaleAccueil -= self.ListeCapacites[numeroGroupe - 1]
             self.optimizer.capaciteTotaleAccueil += nouvelleCapacite
             self.ListeCapacites[numeroGroupe - 1] = nouvelleCapacite
             self.maj_capacite_totale()
-            if nouvelleCapacite == 0:
-                self.groupes_supprimes.add(numeroGroupe)
-            # except:
-            #     print "Groupe {} de l'UE {} est inexistant dans la base.".format(numeroGroupe,self.intitule)
+            # if nouvelleCapacite == 0:
+            #     self.groupes_supprimes.add(numeroGroupe)
+
+        def supprimer_groupe(self, numero_groupe):
+            self.ListeCreneauxTdTme.pop(numero_groupe)
+            self.ListeCapacites.pop(numero_groupe-1)
+            self.nb_groupes -= 1
+            self.maj_capacite_totale()
 
         def modifier_creneau_cours(self, ancien_creneau, nouveau_creneau):
             pos_ancien_creneau = self.ListeCreneauxCours.index(ancien_creneau) #0 ou 1
@@ -240,14 +238,20 @@ class UE:
 
         def print_groupe(self):
             s = ""
-            for i in range(1,len(self.ListeCreneauxCours)+1):
-              s += "\t  COURS {}    :   {}  \n".format(i,self.ListeCreneauxCours[i-1])
-            # s += "UE {} :\n\tNombre de groupes : {}\n\tCapacite totale d'accueil: {}\n".format(self.intitule, self.nb_groupes - len(self.groupes_supprimes), self.capaciteTotale)
-            s += "\n\n|\t Num groupe \t|\t Capacite \t|\t Creneau TD \t|\t Creneau TME \t|\n"+\
-                 "-------------------------------------------------------------------\n"
-
-            for i in range(1,self.nb_groupes+1):
-                if i not in self.groupes_supprimes:
-                    s += "\t     {}     \t|\t     {}    \t|\t     {}     \t|\t     {}      \t|\n".format(i,self.ListeCapacites[i-1],self.ListeCreneauxTdTme[i][0],self.ListeCreneauxTdTme[i][1])+\
-                         "-------------------------------------------------------------------\n"
+            s += "\tLes Creneaux [Capacites]\n\t"
+            for cours in self.ListeCreneauxCours:
+                s += "\t{:6s}: {:4s}\n\t".format("Cours", str(cours))
+            s += "\t"
+            s += "-"*12
+            s += "\n\t"
+            #LES CRENEAUX
+            for i in range(1, len(self.ListeCreneauxTdTme)):                                     #LES CRENEAUX
+                td, tme = self.ListeCreneauxTdTme[i]
+                #LES CRENEAUX
+                s += "\t{:3s} {:2s}:{:4s}\n\t".format("Gr.", str(i), "["+str(self.ListeCapacites[i-1])+"]")
+                s += "\t{:3s} {:2s}: {:4s}\n\t".format("TD", str(i), str(td))
+                s += "\t{:3s} {:2s}: {:4s}\n\t".format("TME", str(i), str(tme))
+                s += "\t"
+                s += "-"*12
+                s += "\n\t"
             return s

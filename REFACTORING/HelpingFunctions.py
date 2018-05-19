@@ -27,3 +27,4 @@ def produit_cartesien_mult(LL):
         return final(PC, LLR[1:])
 
     return final(PC, LL[2:])
+
