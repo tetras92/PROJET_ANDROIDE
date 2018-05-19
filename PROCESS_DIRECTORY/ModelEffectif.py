@@ -1,5 +1,7 @@
 import csv
+
 from gurobipy import *
+
 
 class ModelEffectif:
 

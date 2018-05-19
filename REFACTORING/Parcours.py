@@ -32,7 +32,7 @@ class Parcours:
             self.mesEtudiants = list()
             self.DicoConfigurations = dict()
             deb = time.time()
-            # self.generer_dico_Nbconfig()
+            self.generer_dico_Nbconfig()
             # print ("....." * int(time.time() - deb + 1)*9)
             self.effectif = 0
 
@@ -125,7 +125,7 @@ class Parcours:
 
         def generer_dico_Nbconfig(self):
             self.DicoConfigurations = dict()
-            print "{} : Generation des contrats incompatibles ... en cours ...\n".format(self.nom)
+            print "\033[38;5;102m{} : Generation des contrats incompatibles ... en cours ...\n".format(self.nom)
             for taille_voeu in range(2,self.optimizer_Params.TailleMaxContrat+1): #A elargir a toutes les tailles
                 nbMaxUEObligatoiresDuVoeu = min(self.nbUEObligatoires, taille_voeu)
                 nbMinUEObligatoiresDuVoeu = max(0, self.nbUEObligatoires - (5 - taille_voeu))
@@ -153,7 +153,8 @@ class Parcours:
                             ContratStr = tuple(ContratStr)
                             nb_config = int(nb_config)
                             self.DicoConfigurations[ContratStr] = nb_config
-            print "{} : FIN Generation des contrats incompatibles\n".format(self.nom)
+            print u"\033[37;1m"
+            # print "{} : FIN Generation des contrats incompatibles\n\033[37;1m".format(self.nom)
             self.optimizer.effacer_donnees_affectation_UEs()
             self.actualiser_dico_contrats_incompatibles()
             return self.DicoConfigurations
@@ -191,12 +192,24 @@ class Parcours:
 
         def afficher_carte_incompatibilites(self,taille):
             Liste = list()
+            print_tuple = list()
+            exists = False
             for tuple_, nbConfig in self.DicoConfigurations.items():
                 if taille == len(tuple_) and nbConfig == 0:
+                    exists = True
                     Liste.append((tuple_, nbConfig))
+                    l = ""
+                    for ue in tuple_:
+                        l +=self.optimizer.DictUEs[ue].intituleCOLOR()+" - "
+
+                    l = l[:-2]
+                    print_tuple.append(l)
             # Liste.sort(key=lambda elmt:elmt[1])
-            for elmt in Liste:
-                print list(elmt[0])
+            # for elmt in Liste:
+            #     print list(elmt[0])
+            for elem in print_tuple:
+                print "\t"+ elem +"\n"
+            return exists
 
         def get_Liste_ue_conseillees(self):
             return [self.optimizer.DictUEs[ue].get_id() for ue in self.ListeUEConseilles]

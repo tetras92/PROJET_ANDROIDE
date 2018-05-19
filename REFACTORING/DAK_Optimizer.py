@@ -233,7 +233,7 @@ class DAK_Optimizer:
             print MM
             return value
         else:
-            print "Etat des chargements indispensables : \nVoeux charges : {}\t EDT charge : {}\t Parcours charges : {}\n".format(self.voeux_charges, self.edt_charge, self.parcours_charge)
+            print u"\033[31;1mEtat des chargements indispensables : \nVoeux charges : {}\t EDT charge : {}\t Parcours charges : {}\n\033[37;1m".format(self.voeux_charges, self.edt_charge, self.parcours_charge)
 
     # def nettoyer_les_Ues_et_les_Incompatibilites(self):
     #     for Ue in self.ListeDesUEs[1:]:
@@ -329,7 +329,7 @@ class DAK_Optimizer:
         while nomParcours != self.ListeDesParcours[indexParcours].get_intitule():
             indexParcours += 1
 
-        self.ListeDesParcours[indexParcours].afficher_carte_incompatibilites(taille)
+        return self.ListeDesParcours[indexParcours].afficher_carte_incompatibilites(taille)
 
     # def maj_interets_etudiants_pour_les_ues(self):
     #     for Etu in self.ListeDesEtudiants:

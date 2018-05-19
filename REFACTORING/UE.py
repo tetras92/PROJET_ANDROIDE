@@ -26,6 +26,12 @@ class UE:
 
 
 
+        def intituleCOLOR(self,up=True):
+            intitule = self.intitule
+            if up:
+                intitule = intitule.upper()
+            return "\033[38;5;"+self.color+"m"+intitule+"\033[37;1m"
+
         def actualiseEDT(self, EDT):
             """MAJ de l'EDT"""
             for creneauCours in self.ListeCreneauxCours:

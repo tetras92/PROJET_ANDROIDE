@@ -36,8 +36,8 @@ class Script():
     def menu_chargement(self):
 
         valider = False
-        self.optimizer.charger_edt("/users/nfs/Vrac/AK/ANDRO/REFACTORING/edt.csv")
-        self.optimizer.charger_parcours("/users/nfs/Vrac/AK/ANDRO/REFACTORING/parcours.csv")
+        self.optimizer.charger_edt("/users/nfs/Vrac/AK/PROJET_ANDROIDE/REFACTORING/edt.csv")
+        self.optimizer.charger_parcours("/users/nfs/Vrac/AK/PROJET_ANDROIDE/REFACTORING/parcours.csv")
 
 
         # self.file_edt = "..."
@@ -80,8 +80,8 @@ class Script():
         #                 self.file_parcours = "..."
         #     else:
         #         print u"\033[31;1mCommande incorrecte.\n\n"
-
-        os.system("clear")
+        #
+        # os.system("clear")
         self.menu_principal()
 
 
@@ -94,7 +94,7 @@ class Script():
 
             print u"\n\n\033[34;1m__________________________________Menu principal__________________________________\n\n" + \
                  u"\033[37;1m\t(1) Charger un dossier de voeux et effectuer les inscriptions pedagogiques\n\t(2) Mesurer la resistance de l'EDT actif : Generation aleatoire de dossiers de voeux\n\t(3) EDT : Afficher, Modifier, Sauvegarder\n" \
-                "\t(4) Contrats incompatibilites par parcours : Visualiser\n\n\t(5) Retour au Menu chargement\n\t(0) Quitter\nSaisir une valeur (0-5) : \n\n"
+                "\t(4) Contrats incompatibilites par parcours : Visualiser\n\n\t(5) Retour au Menu chargement\n\t(0) Quitter\n\nSaisir une valeur (0-5) : \n"
 
             choix = raw_input(">>> ")
 
@@ -122,25 +122,81 @@ class Script():
                 self.delagateur_operations_edt(self.message_operations_EDT())
 
             elif choix == '4':
-                print"_____________________ Afficher la carte d'incompatibilites dans un Parcours "
-                parcours = raw_input("Veuillez indiquer le nom du parcours : ")
-                if parcours != '':
-                    taille = input(" Veuillez indiquez la taille : ")
-                    self.optimizer.AD_afficher_carte_incompatibilites(parcours, taille)
+                self.carte_incompatibilite()
 
             elif choix == '5':
                 self.menu_chargement()
 
+    def carte_incompatibilite(self):
+        os.system("clear")
+        print u"\033[34;1m_______________ Afficher la carte d'incompatibilites d'un Parcours _______________\033[37;1m\n\n"
+        nbParcours = len(self.optimizer.ListeDesParcours)
+        id_parcours = raw_input("Veuillez indiquer le parcours. \n\n"+self.chaine_parcours_listees(3)+"\n\n(0) Retour au menu precedent\n\nSaisir une valur (0-%d"%nbParcours+") : ")
+
+        if not str.isdigit(id_parcours):
+            print u"\033[31;1mSaisir une valeur valide.\033[37;1m"
+            return self.carte_incompatibilite()
+        id_parcours = int(id_parcours)
+        if id_parcours == 0:
+            return
+        if id_parcours not in range(1,nbParcours+1):
+            self.carte_incompatibilite()
+            return
+
+        valide = False
+        taille = 5
+        parcours = self.optimizer.ListeDesParcours[id_parcours].nom
+        while not valide:
+            s = u"\n\n\033[34;1m_______________ Contrats incompatibles du Parcours {} _______________\033[37;1m".format(parcours)
+            taille = raw_input(s+u"\n\nVeuillez indiquez la taille du contrat (1-%d"%self.optimizer.Parameters.TailleMaxContrat+")\n\n\"Entree\" pour un contrat de (5)\n\n>>> ")
+
+            if taille =='':
+                taille = 5
+                break
+            elif str.isdigit(taille):
+                taille = int(taille)
+                if taille == 0:
+                    return
+                elif taille >5 or taille <1:
+                    print u"\033[31;1mSaisir une valeur valide.\033[37;1m"
+                else :
+                    valide = True
+
+        if self.optimizer.AD_afficher_carte_incompatibilites(parcours, taille) == False:
+            print u"\033[31;1mAucune incompabilite de taille {} observe en {}.\033[37;1m".format(taille,parcours)
+
+        if self.reafficher_incompatibilite() == False:
+            return
+        self.carte_incompatibilite()
+
+
+    def reafficher_incompatibilite(self):
+        print "\n\n__________________________________________________________________________\n\n"
+        print u"\n\033[37;1mSouhaitez-vous a nouveau visualiser les incompatibilites ? " \
+              "(avec une autre taille de contrat par exemple)\n\t(1) Oui\n\t(0) Non\nSaisir une valeur (0-1) "
+        choix = raw_input(">>> ")
+        if choix == '1':
+            return True
+        elif choix == '0':
+            return False
+        else:
+            print u"\033[31;1mCommande incorrecte.\033[37;1m"
+        return self.reafficher_incompatibilite()
 
 
     def print_equilibrage(self):
         print u"\033[34;1m\n\n____________ Option Equilibrage au sein des groupes de chaque UE ____________ \n\033[37;1m"
-        option = raw_input("Choisir le pourcentage maximal de desequilibre a tolerer :\n\t(1) 5.0%\n\t(2) 10.0%\n\t(3) 20.0%\n\t(4) Sans equilibrage (100%)\n"
-                        "\n\t(0) Retour au Menu Principal\n\"Entree\" pour {}% : \n>>> ".format(self.dernier_taux_equilibre*100))
+        option = raw_input(
+            "Choisir le pourcentage maximal de desequilibre a tolerer :\n\t(1) 5.0%\n\t(2) 10.0%\n\t(3) 20.0%\n\t(4) Sans equilibrage (100%)\n"
+            "\n\t(0) Retour au Menu Principal\n\"Entree\" pour {}% : \n>>> ".format(self.dernier_taux_equilibre * 100))
         if option == '' or option == ():
             return -1
+        if not str.isdigit(option):
+            print u"\033[31;1mCommande incorrecte.\033[37;1m"
+            return self.print_equilibrage()
+
         option = int(option)
-        if option not in range(5):          #NE PAS SORTIR TANT QUE VALEUR NON VALIDE SAISIE
+        if option not in range(5):  # NE PAS SORTIR TANT QUE VALEUR NON VALIDE SAISIE
             print u"\033[31;1mCommande incorrecte.\033[37;1m"
             return self.print_equilibrage()
 
@@ -199,24 +255,27 @@ class Script():
 
 
     def message_operations_EDT(self):
-        choix = raw_input("\n\n__________________________ Operations sur l'EDT __________________________\n\n" \
-              "(1) Afficher\n" \
-              "(2) Modifier\n" \
-              "(3) Sauvegarder\n" \
-              "(0) Retour au Menu Principal\n" \
+        choix = raw_input(u"\n\n\033[34;1m__________________________ Operations sur l'EDT __________________________\033[37;1m\n\n" \
+              "\t(1) Afficher\n" \
+              "\t(2) Modifier\n" \
+              "\t(3) Sauvegarder\n\n" \
+              "\t(0) Retour au Menu Principal\n\n" \
               "Saisir une valeur (0-3) : ")
         if choix not in [str(i) for i in range(4)]:
-            print 'Saisie Incorrecte!'
+            print u"\033[31;1mCommande incorrecte.\033[37;1m"
             return self.message_operations_EDT()
         choix = int(choix)
+        print "\n\n"
         return choix
+
 
     def delagateur_operations_edt(self, choix):
         if choix == 1:
-            try:
-                self.optimizer.afficher_EDT()
-            except:
-                print "\nERREUR LORS DE L'AFFICHAGE DE L'EDT\n"
+            # try:
+            os.system("clear")
+            self.optimizer.afficher_EDT()
+            # except:
+            #     print u"\033[31;1m\nERREUR LORS DE L'AFFICHAGE DE L'EDT\033[37;1m\n"
         elif choix == 2:
             ue_a_modifierOuAnnuler = self.message_modifier_edt()
             if ue_a_modifierOuAnnuler == 0:
@@ -229,6 +288,10 @@ class Script():
             self.delagateur_operations_edt(self.message_operations_EDT())
         elif choix == 0:        #PAS BESOIN J'AVAIS LA GARANTIE QUE soit 1, 2, 3 ou 0 seront saisies
             return
+
+        self.delagateur_operations_edt(self.message_operations_EDT())
+
+
 
     def delegateur_modifier_ue(self, idUE, choix):
         if choix == 1:
@@ -243,29 +306,33 @@ class Script():
 
 
     def message_modification_a_appliquer_une_UE(self, idUE):
-        s = "Vous avez choisi l'UE : {}.\n" \
+        s = u"\n\n\033[34;1m__________________________ Operations sur l'UE __________________________\033[37;1m\n\n"
+
+        s += u"Vous avez choisi l'UE : \033[38;5;"+str(idUE)+"m{}\n\033[37;1m.\n" \
             "Que voulez-vous faire?\n" \
-            "(1) Modifier la capacite d'un ou plusieurs groupe(s)\n" \
-            "(2) Ajouter un groupe\n" \
-            "(3) Supprimer un groupe\n" \
-            "(4) Deplacer les seances de td/tme d'un groupe\n" \
-            "(5) Deplacer un cours\n" \
-            "(0) Annuler\n" \
+            "\t(1) Modifier la capacite d'un ou plusieurs groupe(s)\n" \
+            "\t(2) Ajouter un groupe\n" \
+            "\t(3) Supprimer un groupe\n" \
+            "\t(4) Deplacer les seances de td/tme d'un groupe\n" \
+            "\t(5) Deplacer un cours\n" \
+            "\n\t(0) Annuler\n\n" \
             "Saisir une valeur (0-5): ".format(self.optimizer.ListeDesUEs[idUE].get_intitule())
         choix = raw_input(s)
         if choix not in [str(i) for i in range(6)]:
-            print "\t\tSaisie incorrecte!"
+            print u"\033[31;1mCommande incorrecte.\033[37;1m"
             return self.message_modification_a_appliquer_une_UE(idUE)
         choix = int(choix)
         return choix
 
 
     def message_modifier_edt(self):
-        s = "\nSORBONNE UNIVERSITE : LES UE DU MASTER INFORMATIQUE\n" + self.chaine_ues_listees(5)
+        os.system("clear")
+        s = u"\n\033[33;1m\t\t\tSORBONNE UNIVERSITE : LES UE DU MASTER INFORMATIQUE\033[37;1m\n" + self.chaine_ues_listees(5)
+        s += "(0) pour \"Annuler\"\n\n"
         nbUEs = len(self.optimizer.ListeDesUEs[1:])
-        choix = raw_input(s + "Choisir l'UE a laquelle vous souhaitez appliquer des modifications.\n(0) pour \"Annuler\".\nSaisir une valeur (0-{}): ".format(nbUEs))
+        choix = raw_input(s + "Choisir l'UE a laquelle vous souhaitez appliquer des modifications.\nSaisir une valeur (0-{}): ".format(nbUEs))
         if choix not in [str(i) for i in range(nbUEs+1)]:
-            print "\t\tSaisie incorrecte!\n"
+            print u"\033[31;1mCommande incorrecte.\033[37;1m"
             return self.message_modifier_edt()
         return int(choix)
 
@@ -379,6 +446,7 @@ class Script():
 
 
     def sauvegarder(self):
+        os.system("clear")
         root = Tkinter.Tk()
         root.withdraw()
         save_file_edt = tkFileDialog.asksaveasfile(title="Enregistrer sous ...", filetypes=[('CSV', '.csv')])
@@ -440,7 +508,21 @@ class Script():
         ListeUes = self.optimizer.ListeDesUEs
         s = ""
         for i in range(1, len(ListeUes)):
-            s += "{:4s} {:12s}\t".format("("+str(i)+")", ListeUes[i].get_intitule())
+            color = "\033[38;5;"+ListeUes[i].color+"m"
+            s += "{:4s} ".format("("+str(i)+")")
+            s += color+"{:12s}\t\033[37;1m".format(ListeUes[i].intitule)
+            if i % nombreParligne == 0:
+                s += "\n"
+        s += "\n\n"
+        return s
+
+
+    def chaine_parcours_listees(self,nombreParligne):
+        ListeParcours = self.optimizer.ListeDesParcours
+        s = ""
+
+        for i in range(len(ListeParcours)):
+            s += "{:4s} {:12s}\t".format("(" + str(i+1) + ")", ListeParcours[i].nom.upper())
             if i % nombreParligne == 0:
                 s += "\n"
         s += "\n\n"
