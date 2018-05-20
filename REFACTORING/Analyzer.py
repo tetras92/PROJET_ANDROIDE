@@ -1,9 +1,10 @@
-import matplotlib.pyplot as plt
-import os
 import csv
 import matplotlib
+import matplotlib.pyplot as plt
+import os
 import random
 from PIL import Image
+
 
 class Analyzer:
 
@@ -50,9 +51,9 @@ class Analyzer:
         plt.figure(1, figsize=(15,10))
         plt.bar(range(len(L)), [self.dico_etat_demande_ue[ue] for ue in L], width = 0.4, color=[self.colorNames[random.randint(0,len(self.colorNames)-1)] for i in range(len(L))], edgecolor = 'black')
 
-        plt.xticks([x for x in range(len(L))], [ue+self.etoile_si_moyenne_sup_a_capacite_un_groupe(ue) for ue in L], rotation=15)
+        plt.xticks([x for x in range(len(L))], [ue+self.etoile_si_moyenne_sup_a_capacite_un_groupe(ue) for ue in L], rotation='vertical')
         plt.suptitle("Analyse UE susceptibles d'etre saturees : Mesure de la sur-demande")
-        plt.title("Une * symbolise le fait que la moyenne des places encore disponibles apres affectation depasse la capacite d'au moins un groupe de l'ue concernee et suggere donc une suppression.")
+        plt.title("Une * symbolise le fait que la moyenne des places encore disponibles apres affectation \ndepasse la capacite d'au moins un groupe de l'ue concernee et suggere donc une suppression.")
         plt.savefig(".ue_saturees.png")
         img = Image.open(".ue_saturees.png")
         img.show()
@@ -64,9 +65,9 @@ class Analyzer:
         L_Y_copy.sort()
         L_N_copy = [val for val in Liste_satisfaction_N]
         L_N_copy.sort()
-        labelY = '%Inscriptions_satisfaites. Min : {}% Mediane : {}% Max : {}%'.format(L_Y_copy[0], L_Y_copy[len(L_Y_copy)//2], L_Y_copy[-1])
-        labelN = '%Etudiants_satisfaits. Min : {}% Mediane : {}% Max : {}%'.format(L_N_copy[0], L_N_copy[len(L_N_copy)//2], L_N_copy[-1])
-        plt.figure(1, figsize=(15,10))
+        labelY = '%Inscriptions satisfaites. Min : {}% Mediane : {}% Max : {}%'.format(L_Y_copy[0], L_Y_copy[len(L_Y_copy)//2], L_Y_copy[-1])
+        labelN = '%Etudiants satisfaits. Min : {}% Mediane : {}% Max : {}%'.format(L_N_copy[0], L_N_copy[len(L_N_copy)//2], L_N_copy[-1])
+        fig = plt.figure(1, figsize=(18,12))
         plt.scatter(Liste_charge, Liste_satisfaction_Y, c='y', label=labelY)
 
         plt.scatter(Liste_charge, Liste_satisfaction_N, c='r', label=labelN)
@@ -75,8 +76,11 @@ class Analyzer:
             plt.annotate(Liste_idMM[i], (Liste_charge[i], Liste_satisfaction_Y[i]))
         for i in range(len(Liste_idMM)):
             plt.annotate(Liste_idMM[i], (Liste_charge[i], Liste_satisfaction_N[i]))
-        plt.legend()
-        plt.title("Mesure de la resistance d'un EDT : Evolution des pourcentages de satisfaction en fonction de la charge.")
+
+        plt.legend(bbox_to_anchor=(0.5, 0), loc="lower center", bbox_transform=fig.transFigure)
+        plt.subplots_adjust(bottom=0.125)
+
+        plt.title("Mesure de la resistance d'un EDT : \nEvolution des pourcentages de satisfaction en fonction de la charge.")
         plt.grid(True)
         plt.savefig(".resistance_edt.png")
         img = Image.open(".resistance_edt.png")
@@ -107,8 +111,9 @@ class Analyzer:
                     pass
             for parcours, D in self.dico_recapitulatif_interet_ue_conseillees_par_parcours.items():
                 self.generer_histogramme_des_interest(parcours, D)
-            self.id_subplot = 1                  #evite les crash de reouverture
+            self.id_subplot = 1  # evite les crash de reouverture
             plt.suptitle("Mesure du choix des UE conseillees en fonction du parcours")
+            plt.gcf().subplots_adjust(hspace=0.5)
             plt.savefig(".interets_ue_conseilles.png")
             # plt.show()
             img = Image.open(".interets_ue_conseilles.png")
@@ -127,9 +132,10 @@ class Analyzer:
             Liste_effectif.append(effectif)
         plt.subplot(3,3,self.id_subplot)
         self.id_subplot += 1
-        plt.bar(range(len(Liste_ues)), Liste_effectif, width = 0.4, color=self.colorNames[color], edgecolor = 'black', label=parcours)# color=[colorNames[random.randint(0,len(colorNames)-1)] for i in range(len(Liste_effectif))])
-        plt.xticks([x for x in range(len(Liste_effectif))],[str(Liste_ues[i])+"("+str(Liste_effectif[i])+")" for i in range(len(Liste_ues))], rotation=15)
-        plt.legend()
+
+        plt.bar(range(len(Liste_ues)), Liste_effectif, width=0.4, color=self.colorNames[color], edgecolor='black',label=parcours)  # color=[colorNames[random.randint(0,len(colorNames)-1)] for i in range(len(Liste_effectif))])
+        plt.xticks([x for x in range(len(Liste_effectif))],[str(Liste_ues[i]) + "(" + str(Liste_effectif[i]) + ")" for i in range(len(Liste_ues))],rotation='vertical')
+        plt.legend(loc=0)
         #
         # plt.title("Mesure du choix des UE conseillees en fonction du parcours : {}".format(parcours))
         # plt.show()
