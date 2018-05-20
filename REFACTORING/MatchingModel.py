@@ -1,246 +1,175 @@
-import csv
+import random
 
+import numpy as np
 from gurobipy import *
 
 
-class MatchingModel:
+class Etudiant:
+        """ Classe representant un etudiant"""
+        def __init__(self,csv_line, Parcours_Obj, optimizer):
+            self.optimizer_Params = optimizer.Parameters
+            self.optimizer = optimizer
+            self.idRelatif = int(csv_line["num"])
+            self.Parcours = Parcours_Obj
+            self.indexParcours = Parcours_Obj.get_index()
+            self.ue_obligatoires = [self.optimizer.DictUEs[csv_line["oblig"+str(id)]].get_id() for id in range(1, self.optimizer_Params.nbMaxUEObligatoires+1) if csv_line["oblig"+str(id)] != ""]
+            self.ue_non_obligatoires = [self.optimizer.DictUEs[csv_line["cons"+str(id)]].get_id() for id in range(1, self.optimizer_Params.nbMaxUEConseillees+1) if csv_line["cons"+str(id)] != ""]
+            self.nombreDeVoeux = len(self.ue_obligatoires) + len(self.ue_non_obligatoires)
+            self.varName = "x_{}_{}".format(self.indexParcours, self.idRelatif)
+            self.ListeDesInscriptions = list()
+            # Parcours_Obj.rajouter_etudiant(self) #L'etudiant se rajoute a son parcours
+            self.non_entierement_satisfait = False
 
-    def __init__(self, optimizer, equilibre=True):
-        self.optimizer = optimizer
-        self.Params = optimizer.Parameters
-        self.modelGurobi = Model("OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK)")
-        self.tauxEquilibre = self.optimizer.tauxEquilibre
-        self.ListeDesUEs = optimizer.ListeDesUEs
-        self.EnsIncompatibilites = optimizer.EnsIncompatibilites
-        self.ListeDesEtudiants = optimizer.ListeDesEtudiants
-        self.ListeDesParcours = optimizer.ListeDesParcours
-        self.objectif1 = LinExpr()
-        self.objectif2 = LinExpr()
-        self.identifiantModele = optimizer.iModelAlea
-        self.ListedesVarY = list()
-        self.ListedesVarN = list()
-        self.infeasible = False
-        #Contraintes s'appliquant aux etudiants
-        for Etu in self.ListeDesEtudiants:
-            Etu.enregistrer_interet_pour_UE()
-            Etu.s_inscrire_dans_son_parcours()
-            Etu.gerer_variables_contraintes_ue_non_obligatoires(self)#(self.modelGurobi)
-            Etu.gerer_variables_contraintes_ue_obligatoires(self)#(self.modelGurobi)
-        #Fin Contraintes s'appliquant aux etudiants
+        def s_inscrire_dans_son_parcours(self):
+            self.Parcours.rajouter_etudiant(self)
 
-        #Contraintes d'incompatibilite
-        for Incomp in self.EnsIncompatibilites:
-            Incomp.m_a_j_EnsEtuConcernes()
-            Incomp.ajouterContrainteModeleGurobi(self.modelGurobi)
-        #Fin Contraintes d'incompatibilite
+        def gerer_variables_contraintes_ue_obligatoires(self, matchingModel):
+            """ajoute les contraintes relatives aux ue obligatoires"""
+            # objectif = modelGurobi.getObjective()
+            modelGurobi = matchingModel.modelGurobi
+            for id_ue in self.ue_obligatoires:
+                var = modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name="y_%d"%self.indexParcours+"_%d"%self.idRelatif+"_%d"%id_ue)
+                # self.optimizer.ListedesVarY.append(var) #append("y_{}_{}_{}".format(self.indexParcours, self.idRelatif, id_ue))
+                matchingModel.ListedesVarY.append(var)
+                contrainte = LinExpr()
+                for num_group in range(1, self.optimizer.ListeDesUEs[id_ue].get_nb_groupes()+1):
+                    contrainte += modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name=self.varName+"_%d"%id_ue+"_%d"%num_group)
+                contrainte -= var
 
-        #Contraintes d'UE (capacite)
-        for Ue in self.ListeDesUEs[1:]:
-            Ue.ajouterContrainteCapaciteModelGurobi(self.modelGurobi)
-        #Fin Contraintes d'UE (capacite)
+                # objectif += var
 
-        #Contraintes d'UE (Equilibre)
-        if equilibre:
-            for Ue in self.ListeDesUEs[1:]:
-                Ue.ajouterContraintesEquilibre(self.modelGurobi)
-        #fIN Contraintes d'UE (Equilibre)
+                modelGurobi.addConstr(var , GRB.EQUAL, 1)   #y_i_j = 1
+                modelGurobi.addConstr(contrainte, GRB.EQUAL, 0)
 
-        #pour ANALYZER : UE SURDEMANDEES
-        self.DictUeSurdemandees = dict()
-        for Ue in self.ListeDesUEs[1:]:
-            Ue.etat_demande(self.DictUeSurdemandees)
+            # modelGurobi.setObjective(objectif,GRB.MAXIMIZE) # NE PEUt-ON PAS S'EN PASSER
+            modelGurobi.update()
 
-        self.nombreTotalDemandesInscriptions = len(self.ListedesVarY)#(self.optimizer.ListedesVarY)
-        self.nombreTotalEtudiants = len(self.ListedesVarN)#(self.optimizer.ListedesVarN)
-        self.capaciteTotaleAccueilUEs = self.optimizer.capaciteTotaleAccueil
+        def gerer_variables_contraintes_ue_non_obligatoires(self, matchingModel):
+            """ajoute les contraintes relatives aux ue non obligatoires"""
+            # objectif = modelGurobi.getObjective()
+            modelGurobi = matchingModel.modelGurobi
+            varN = modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name="n_%d"%self.indexParcours+"_%d"%self.idRelatif)
+            matchingModel.ListedesVarN.append(varN)
 
-    def match(self, path=''):
-        self.modelGurobi.NumObj = 2
-        self.modelGurobi.setParam(GRB.Param.OutputFlag, False)
+            ListeCouranteVarYij = list()
+            for id_ue in self.ue_non_obligatoires:
+                var = modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name="y_%d"%self.indexParcours+"_%d"%self.idRelatif+"_%d"%id_ue)
+                ListeCouranteVarYij.append(var)
+                # self.optimizer.ListedesVarY.append("y_{}_{}_{}".format(self.indexParcours, self.idRelatif, id_ue))
+                matchingModel.ListedesVarY.append(var)
+                contrainte = LinExpr()
+                for num_group in range(1, self.optimizer.ListeDesUEs[id_ue].get_nb_groupes()+1):
+                    contrainte += modelGurobi.addVar(vtype=GRB.BINARY, lb=0, name=self.varName+"_%d"%id_ue+"_%d"%num_group)
+                contrainte -= var
 
-        self.objectif1 = quicksum(var for var in self.ListedesVarY) #(self.modelGurobi.getVarByName(var) for var in self.optimizer.ListedesVarY)
-        self.objectif2 = quicksum(var for var in self.ListedesVarN)
-        self.modelGurobi.setObjectiveN(self.objectif1,0,1)                        #DEFAUT (self.objectif1,0,1)
-        self.modelGurobi.setObjectiveN(self.objectif2,1,0)                          #defaut (self.objectif2,1,0)
+                # objectif += var
+                #VERIFIER LES CONTRAINTES DU MODELES
+                modelGurobi.addConstr(contrainte, GRB.EQUAL, 0)
+            #contrainte ETUDIANT ENTIEREMENT SATISFAIT
+            # if ListeCouranteVarYij != []:
+            modelGurobi.addConstr(quicksum(varYij for varYij in ListeCouranteVarYij) >= len(self.ue_non_obligatoires)*varN)
+            # modelGurobi.setObjective(objectif,GRB.MAXIMIZE) # NE PEUt-ON PAS S'EN PASSER
+            modelGurobi.update()
 
-        self.modelGurobi.modelSense = -1        #MAXIMIZE
+        def enregistrer_interet_pour_UE(self):
+            for ue in self.ue_non_obligatoires + self.ue_obligatoires:
+                self.optimizer.ListeDesUEs[ue].ajouterEtuInteresses(self.varName)
 
-        self.modelGurobi.optimize()
-        status = self.modelGurobi.Status
-        if status == GRB.Status.INFEASIBLE:
-            self.objectif1_Value = 0
-            self.objectif1_Value = 0
-            self.infeasible = True
-        else:
-            self.modelGurobi.setParam(GRB.Param.ObjNumber, 0)
-            self.objectif1_Value = self.modelGurobi.ObjNVal           #Nombre d'inscriptions satisfaites
-            self.modelGurobi.setParam(GRB.Param.ObjNumber, 1)
-            self.objectif2_Value = self.modelGurobi.ObjNVal           #Nombre d'etudiants entierement satisfaits
+        def get_nombreDeVoeux(self):
+            return self.nombreDeVoeux
 
-            self.traitement_resolution(path)
-            return  self.objectif2_Value
+        def get_index_parcours(self):
+            return  self.indexParcours
 
-    def traitement_resolution(self, path=''):
-        self.charge = round(100.0*self.nombreTotalDemandesInscriptions/self.capaciteTotaleAccueilUEs,2)
-        self.proportionSatisfactionY =  round(100.*self.objectif1_Value/self.nombreTotalDemandesInscriptions, 2)
-        self.proportionSatisfactionN =  round(100.*self.objectif2_Value/self.nombreTotalEtudiants, 2)
+        def get_varName(self):
+            return self.varName
 
+        def get_id_relatif(self):
+            return self.idRelatif
 
-
-        for var in self.ListedesVarY:
-            varName = var.VarName
-            # print (varName)
-            if var.x == 1:
-                indexParcours, idRelatif, ue = varName[2:].split('_')
-                self.ListeDesUEs[int(ue)].ajouterUnInscrit()
-                # print self.ListeDesParcours[int(indexParcours)].nom, len(self.ListeDesParcours[int(indexParcours)].get_mes_etudiants()), idRelatif
-                currentEtudiant = self.ListeDesParcours[int(indexParcours)].get_mes_etudiants()[int(idRelatif)]
-                numGroup = 1
-                # print currentEtudiant, ue
-                # try:
-                while self.modelGurobi.getVarByName(currentEtudiant.get_varName()+"_%d"%int(ue)+"_%d"%numGroup).x == 0:
-                    # print numGroup
-                    numGroup += 1
-                # except:
-                #     print currentEtudiant.get_varName()+"_%d"%int(ue)+"_%d"%numGroup
-                currentEtudiant.entrer_inscription(int(ue), numGroup)
+        def entrer_inscription(self, ue, numeroGroup):
+            if numeroGroup != 0:  #numeroGroup 0 signifie non accepte
+                    chaine = self.optimizer.ListeDesUEs[ue].get_intitule()+str(numeroGroup)
+                    self.optimizer.ListeDesUEs[ue].inscrire(str(self), numeroGroup)
             else:
-                indexParcours, idRelatif, ue = varName[2:].split('_')
-                self.ListeDesUEs[int(ue)].signalerNonInscrit(indexParcours, idRelatif)
-                currentEtudiant = self.ListeDesParcours[int(indexParcours)].get_mes_etudiants()[int(idRelatif)]
-                currentEtudiant.entrer_inscription(int(ue), 0)
+                    chaine = self.optimizer.ListeDesUEs[ue].get_intitule()+"X"
+                    self.non_entierement_satisfait = True
 
-        for var in self.ListedesVarN:
-            if var.x == 0:
-                varName = var.VarName
-                indexParcours, idRelatif = varName[2:].split('_')
-                self.ListeDesParcours[int(indexParcours)].signalerUnProblemeDinscription(int(idRelatif))
-
-        if path != '':
-            try:
-                affectationDirectory = path + "MATCHING/" #path + str(self.identifiantModele)+"MATCHING/"
-                os.mkdir(affectationDirectory)
-            except:
-                pass
-            for Parcours_Obj in self.ListeDesParcours:
-                f = open(affectationDirectory + Parcours_Obj.get_intitule() + ".csv", "w")
-                fieldnames = ["num"] + ["oblig"+str(i) for i in range(1,self.optimizer.Parameters.nbMaxUEObligatoires + 1)] + ["cons"+str(i) for i in range(1,self.optimizer.Parameters.nbMaxUEConseillees + 1 )]
-                writer = csv.DictWriter(f, fieldnames=fieldnames)
-                writer.writeheader()
-                for Etu in Parcours_Obj.get_mes_etudiants()[1:]:
-                    csvLine = dict()
-                    csvLine["num"] = Etu.get_id_relatif()
-                    L_inscriptions = Etu.get_ListeDesInscriptions()
-                    L_Oblig = Etu.get_ue_obligatoires()
-                    L_Cons = Etu.get_ue_conseillees()
-                    for o in range(len(L_Oblig)):
-                        csvLine["oblig"+str(o+1)] = L_inscriptions[o]
-                    for c in range(len(L_Cons)):
-                        csvLine["cons"+str(c+1)] = L_inscriptions[len(L_Oblig) + c]
-                    writer.writerow(csvLine)
-
-            f.close()
-        #VERIFICATION DE L'EQUILIBRE DES GROUPES
-        #On en profite POUR
-        for Ue in self.ListeDesUEs[1:]:
-            Ue.set_equilibre()
-        self.calculer_nombre_total_contrats_incompatibles()
-
-
-    def get_identifiantModele(self):
-        return self.identifiantModele
-
-    def get_charge(self):
-        return self.charge
-
-    def get_PsatisfactionY(self):
-        return self.proportionSatisfactionY
-
-    def get_PsatisfactionN(self):
-        return self.proportionSatisfactionN
-
-    def calculer_nombre_total_contrats_incompatibles(self):
-        self.nombre_total_contrat_incompatible = 0
-        for parc, eff in self.optimizer.dict_nombre_de_contrats_incompatibles_par_parcours.items():
-            self.nombre_total_contrat_incompatible += eff
-
-    def chaine_nombre_contrats_incompatible_par_parcours(self):
-        s = ""
-        L = list(self.optimizer.dict_nombre_de_contrats_incompatibles_par_parcours.keys())
-        L.sort()
-        for parc in L:
-            s += "{}({})  ".format(parc, self.optimizer.dict_nombre_de_contrats_incompatibles_par_parcours[parc])
-        return s
-
-    def __str__(self):
-        """Affiche les UES du Modele"""
-        if not self.infeasible:
-            s = u"\033[37;1m "
-            for i in range(1, len(self.ListeDesUEs)):
-                s += str(self.ListeDesUEs[-i])
-            s += u"\t\t\t\033[32;1m* * * * * * * * * * ^^ DETAIL DES AFFECTATIONS PAR UE (PLUS HAUT) ^^ * * * * * * * * * *\033[37;1m\n\n"
-
-            # s += "\n{:150s}{}\n".format(" ", "^")
-            # s += "\n{:150s}{}\n".format(" ", "^")
-            if self.optimizer.modeleAleatoire:
-                s += "\t\t\tDossier aleatoire n. {}\n\n".format(self.identifiantModele)
-            s += u"\033[38;5;65mNombre Total d'inscriptions a satisfaire \033[37;1m: {} ".format(self.nombreTotalDemandesInscriptions)
-            # s += "\n{:150s}{}\n".format(" ", "^")
-            s += u"\033[38;5;65m\nNombre Maximal d'inscriptions pouvant etre satisfaites \033[37;1m: {}".format(self.capaciteTotaleAccueilUEs)
-            # s += "\n{:150s}{}\n".format(" ", "^")
-            s += u"\033[38;5;65m\nNombre total d'etudiants du master \033[37;1m: {}".format(self.nombreTotalEtudiants)
-
-            s += u"\033[38;5;65m\nCharge \033[37;1m: {} % \n\033[38;5;65mDesequilibre maximal autorise \033[37;1m: {} %".format(self.charge, self.tauxEquilibre*100)
-            # s += "\n{:150s}{}\n".format(" ", "^")
-            s += u"\033[38;5;65m\nCaracteristiques de l'EDT \033[37;1m:\n\t\033[38;5;108mNombre total de contrats incompatibles (de taille {}) \033[37;1m: {}".format(self.optimizer.Parameters.TailleMaxContrat, self.nombre_total_contrat_incompatible)
-            # s += "\n{:150s}{}\n".format(" ", "^")
-            s += "\n\t\033[38;5;108mPar parcours \033[37;1m: {}".format(self.chaine_nombre_contrats_incompatible_par_parcours())
-            # s += "\n\n\t\t\t*LES RESULTATS D'AFFECTATION*\n"
-            # s += "\n{:150s}{}\n".format(" ", "^")
-            s += "\n\n\t\t\t\t\t* * * * * ^^ AUTRES INFORMATIONS ^^ * * * * *\n"
-            # s += "\n{:150s}{}\n".format(" ", "^")
-            # s += "\n{:150s}{}\n".format(" ", "^")
-            # proportionSatisfaction = round(100.0*MainModel.nbInscriptionsSatisfaites/len(MainModel.ListedesVarY),2)
-            s += u"\n\033[38;5;65mNombre d'inscriptions satisfaites \033[37;1m: {} soit {}%\n".format(int(self.objectif1_Value), self.proportionSatisfactionY)
-            s += u"\033[38;5;65mNombre d'etudiants entierement satisfaits \033[37;1m: {} soit {}%\n".format(int(self.objectif2_Value), self.proportionSatisfactionN)
-            s += u"\033[38;5;65mDetail des inscriptions non satisfaites \033[37;1m: \n\t\t\033[38;5;108mNombre de demandes non satisfaites par parcours \033[37;1m:\n\t\t\t"
-            for Parcours_Obj in self.ListeDesParcours:
-                s += Parcours_Obj.str_nb_etudiants_insatisfaits()
-            # s += "\n{:150s}{}\n".format(" ", "^")
-            s += u"\n\t\t\033[38;5;108mNombre de demandes non satisfaites par UE (**Saturee)\033[37;1m:\n\t\t\t"
-            for Ue in self.ListeDesUEs[1:]:
-                s += Ue.str_nb_non_inscrits()
-            # s += "\n\n\n\t\t\t*DETAIL DES AFFECTATIONS PAR UE*\n\n"
-            # s += "\n{:150s}{}\n".format(" ", "^")
-            # s += "\n\t\t\t\t\t* * ^^ LES RESULTATS D'AFFECTATION ^^ * *"
-            # s += "\n{:150s}{}\n".format(" ", "^")
-            # s += "\n{:150s}{}\n".format(" ", "^")
-            s += u"\n\n\t\t\t\033[32;1m* * * * * * * * * ^^ DONNEES RECAPITULATIVES DE L'AFFECTATION ^^ * * * * * * * * *\033[37;1m\n\n\n"
-            s+="__________________________________________________________________________________________________________________________________________________________________________________"
-
-            # s += "\n{:150s}{}\n".format(" ", "^")
-            # s += "\n{:150s}{}\n".format(" ", "^")
-            # s += "\n{:150s}{}\n".format(" ", "^")
-            # s += "\n{:150s}{}\n".format(" ", "^")
-            # s += u"\t\t\t\033[32;1m* * * * * * * * * * ^^^ OPTIMISATION DES INSCRIPTIONS AUX UE (PAR DAK) ^^^ * * * * * * * * * *\033[37;1m\n\n"
-            # for i in range(1, len(self.ListeDesUEs)):
-            #     s += str(self.ListeDesUEs[-i])
-            # for Ue in self.ListeDesUEs[1:]:
-            #     s += str(Ue)
-            return s
-        else:
-            s = u"\033[31;1mINSCRIPTION PEDAGOGIQUE DU "
-            if self.optimizer.modeleAleatoire:
-                s += "DOSSIER ALEATOIRE {} ".format(self.identifiantModele)
+            if ue in self.ue_obligatoires:
+                self.ListeDesInscriptions = [chaine] + self.ListeDesInscriptions
             else:
-                s += "DOSSIER DE VOEUX "
+                self.ListeDesInscriptions.append(chaine)
 
-            s += "INFAISABLE : Certaines inscriptions obligatoires non satisfaites\033[37;1m"
+        def get_ListeDesInscriptions(self):
+            return self.ListeDesInscriptions
 
+        def enregistrer_affectation(self, file):
+            """enregistre l'etat des inscriptions de l'etudiant dans le fichier des affectations corresopondant a son parcours"""
+            file.write(str(self.idRelatif)+" ")
+            for aff in self.ListeDesInscriptions:
+                file.write(aff + " ")
+            file.write("\n")
+
+        def get_contrat(self):
+            return self.ue_obligatoires + self.ue_non_obligatoires
+
+        def get_ue_obligatoires(self):
+            return self.ue_obligatoires
+
+        def get_ue_conseillees(self):
+            return self.ue_non_obligatoires
+
+
+        def generer_aleatoirement_mes_indifferences(self):
+            def indifferenceValide(mesIndifferences):
+                for i in range(len(mesIndifferences)):
+                    if mesIndifferences[i] == self.ue_non_obligatoires[i]:
+                        return False
+                return True
+            ListeDesUeConseilleesDeMonParcours = self.Parcours.get_Liste_ue_conseillees()
+            self.mesIndifferences = np.random.choice(ListeDesUeConseilleesDeMonParcours, len(self.ue_non_obligatoires))
+
+            while not indifferenceValide(self.mesIndifferences):
+                self.mesIndifferences = np.random.choice(ListeDesUeConseilleesDeMonParcours, len(self.ue_non_obligatoires))
+
+
+        def changer_mes_ues_non_obligatoires(self):
+            self.non_entierement_satisfait = False
+            self.ue_non_obligatoires_copy = [ue for ue in self.ue_non_obligatoires] #pour s'assurer qu'elle n'est pas incompatible
+
+            def is_nouveau_contrat_incompatible(optimizer, ue_obligatoires, ue_non_obligatoires):
+                LOblig = [optimizer.ListeDesUEs[ueO].get_intitule() for ueO in ue_obligatoires]
+                LOblig.sort()
+                LCons = [optimizer.ListeDesUEs[ueC].get_intitule() for ueC in ue_non_obligatoires]
+                LCons.sort()
+                try:                  #Juste pour les ecarts par rapport aux ues conseillees retenues dans parcours
+                    # print(tuple(LOblig + LCons))
+                    if self.Parcours.get_dico_configurations()[tuple(LOblig + LCons)] == 0:
+                        # print "incompatibilite introduite"
+                        return True
+                except:
+                    pass
+                return False
+
+
+            for i in range(len(self.ue_non_obligatoires)):
+                if random.random() <= 0.5:# and ue_indifference_non_encore_introduite(self.ue_non_obligatoires,i, self.mesIndifferences[i]):
+                    aux = self.mesIndifferences[i]
+                    self.mesIndifferences[i] = self.ue_non_obligatoires[i]
+                    self.ue_non_obligatoires[i] = aux
+            if len(set(self.ue_non_obligatoires)) != len(self.ue_non_obligatoires):
+                self.ue_non_obligatoires = self.ue_non_obligatoires_copy
+                return
+
+            if is_nouveau_contrat_incompatible(self.optimizer, self.ue_obligatoires, self.ue_non_obligatoires):
+                self.ue_non_obligatoires = self.ue_non_obligatoires_copy
+            # print "a la fin"
+            # print self.mesIndifferences
+            # print self.ue_non_obligatoires
+
+        def get_statut(self):
+            return self.non_entierement_satisfait
+
+        def __str__(self):
+            s = str(self.idRelatif)+"("+self.Parcours.get_intitule()+")"
             return s
-
-
-
-
-
-

@@ -376,7 +376,7 @@ class DAK_Optimizer:
             writer.writerow(csvLine)
         file.close()
 
-    def afficher_EDT(self):
+    def afficher_EDT(self,idUE=None):
         # print "debut afficher", self.EDT[17]
         if self.UE_modifiees_significativement:
             self.maj_suite_a_une_modification_significative_ue()
@@ -402,8 +402,16 @@ class DAK_Optimizer:
         def une_ligne(j):
             s = ""
             for i in range(0, DAK_Optimizer.Parameters.nbCreneauxParSemaine, DAK_Optimizer.Parameters.nbJoursOuvres):
-                s += '{:12s}| '.format(prochain_element_creneau(EDT_str[i+j]))
+                prochain_elem = prochain_element_creneau(EDT_str[i+j])
+
+                if idUE != None:
+                    ue_a_colorie = self.ListeDesUEs[idUE]
+                    if prochain_elem == ue_a_colorie.get_intitule().upper() or prochain_elem[:-1]== ue_a_colorie.get_intitule():
+                        s += u"\033[38;5;"+ue_a_colorie.color+"m"
+                s += '{:12s}'.format(prochain_elem)
+                s += u"\033[37;1m| "
             s += "\n"
+
             return s
 
         def ligne_intro_bloc(j):

@@ -26,6 +26,9 @@ class UE:
 
 
 
+        def get_code_couleur(self):
+            return u"\033[38;5;"+self.color+"m"
+
         def intituleCOLOR(self,up=True):
             intitule = self.intitule
             if up:
@@ -245,20 +248,27 @@ class UE:
 
         def print_groupe(self):
             s = ""
-            s += "\tLes Creneaux [Capacites]\n\t"
+            s += "\t   Les Creneaux [Capacites]\n\n\t"
             for cours in self.ListeCreneauxCours:
-                s += "\t{:6s}: {:4s}\n\t".format("Cours", str(cours))
+                s += self.get_code_couleur()
+                s += "\t{:6s}: {:4s}\n\t".format("Cours",str(cours))
+                s += u"\033[37;1m"
+
             s += "\t"
-            s += "-"*12
+            s += "-"*14
             s += "\n\t"
             #LES CRENEAUX
             for i in range(1, len(self.ListeCreneauxTdTme)):                                     #LES CRENEAUX
                 td, tme = self.ListeCreneauxTdTme[i]
                 #LES CRENEAUX
-                s += "\t{:3s} {:2s}:{:4s}\n\t".format("Gr.", str(i), "["+str(self.ListeCapacites[i-1])+"]")
-                s += "\t{:3s} {:2s}: {:4s}\n\t".format("TD", str(i), str(td))
-                s += "\t{:3s} {:2s}: {:4s}\n\t".format("TME", str(i), str(tme))
+                s += self.get_code_couleur()
+                s += "\t{:3s} {:2s}:{:4s}\n\t".format("Gr.", str(i), " [ "+str(self.ListeCapacites[i-1])+" ]")
+
+                s += u"\033[37;1m"
+
+                s += "\t{:5s} : {:4s}\n\t".format("TD", str(td))
+                s += "\t{:5s} : {:4s}\n\t".format("TME", str(tme))
                 s += "\t"
-                s += "-"*12
+                s += "-"*14
                 s += "\n\t"
             return s
