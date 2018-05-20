@@ -36,52 +36,49 @@ class Script():
     def menu_chargement(self):
 
         valider = False
-        self.optimizer.charger_edt("/users/nfs/Vrac/AK/PROJET_ANDROIDE/REFACTORING/edt.csv")
-        self.optimizer.charger_parcours("/users/nfs/Vrac/AK/PROJET_ANDROIDE/REFACTORING/parcours.csv")
 
+        self.file_edt = "..."
+        self.file_parcours = "..."
+        while not valider: #("..." in [self.file_parcours,self.file_edt]):
+            s = u"\033[34;1m---------------------------- Chargement des fichiers ----------------------------\n\n" \
+                u"\033[37;1m\t\t{:50s}{}\n\t\t{:50s}{}\n\n".format("(1) Charger le fichier EDT",self.file_edt,"(2) Charger le fichier decrivant les parcours",self.file_parcours)
+            s += "\t\t(0) Quitter\n "
+            print (s)
+            if self.file_edt != "..." and self.file_parcours != "...":
+                valider = True
+                self.appuyer_entree_pour_continuer()
+                continue
 
-        # self.file_edt = "..."
-        # self.file_parcours = "..."
-        # while not valider: #("..." in [self.file_parcours,self.file_edt]):
-        #     s = u"\033[34;1m---------------------------- Chargement des fichiers ----------------------------\n\n" \
-        #         u"\033[37;1m\t\t{:50s}{}\n\t\t{:50s}{}\n\n".format("(1) Charger le fichier EDT",self.file_edt,"(2) Charger le fichier decrivant les parcours",self.file_parcours)
-        #     s += "\t\t(0) Quitter\n "
-        #     print (s)
-        #     if self.file_edt != "..." and self.file_parcours != "...":
-        #         valider = True
-        #         self.appuyer_entree_pour_continuer()
-        #         continue
-        #
-        #     root = Tkinter.Tk()
-        #     root.withdraw()
-        #     chargement = raw_input(">>> ")
-        #
-        #     if chargement == '0':
-        #         exit(0)
-        #     elif chargement == '1':
-        #         edtfile = tkFileDialog.askopenfilename(title="Veuillez selectionne le fichier EDT",filetypes=[('CSV', '.csv')])
-        #         if edtfile != () :#and edtfile != "":
-        #             try:
-        #                 self.optimizer.charger_edt(edtfile)
-        #                 self.file_edt = edtfile #JUSTE POUR L'AFFICHAGE
-        #                 print u"\033[32;1m\n============================ Chargement EDT termine =============================\n"
-        #             except:
-        #                 print u"\033[31;1mERREUR SURVENUE LORS DU CHARGEMENT DU FICHIER EDT!\n"
-        #                 self.file_edt = "..."
-        #     elif chargement == '2':
-        #         file_parcours = tkFileDialog.askopenfilename(title="Veuillez selectionne le fichier Parcours",filetypes=[('CSV', '.csv')])
-        #         if file_parcours != () :#and file_parcours != "":
-        #             try:
-        #                 self.optimizer.charger_parcours(file_parcours)
-        #                 self.file_parcours = file_parcours
-        #                 print u"\033[32;1m\n============== Chargement fichier descriptif des parcours termine ===============\n"
-        #             except:
-        #                 print u"\033[31;1mERREUR SURVENUE LORS DU CHARGEMENT DU FICHIER DESCRIPTIF DES PARCOURS!\n"
-        #                 self.file_parcours = "..."
-        #     else:
-        #         print u"\033[31;1mCommande incorrecte.\n\n"
-        #
-        # os.system("clear")
+            root = Tkinter.Tk()
+            root.withdraw()
+            chargement = raw_input(">>> ")
+
+            if chargement == '0':
+                exit(0)
+            elif chargement == '1':
+                edtfile = tkFileDialog.askopenfilename(title="Veuillez selectionner le fichier EDT",filetypes=[('CSV', '.csv')])
+                if edtfile != () :#and edtfile != "":
+                    try:
+                        self.optimizer.charger_edt(edtfile)
+                        self.file_edt = edtfile #JUSTE POUR L'AFFICHAGE
+                        print u"\033[32;1m\n============================ Chargement EDT termine =============================\n"
+                    except:
+                        print u"\033[31;1mERREUR SURVENUE LORS DU CHARGEMENT DU FICHIER EDT!\n"
+                        self.file_edt = "..."
+            elif chargement == '2':
+                file_parcours = tkFileDialog.askopenfilename(title="Veuillez selectionner le fichier Parcours",filetypes=[('CSV', '.csv')])
+                if file_parcours != () :#and file_parcours != "":
+                    try:
+                        self.optimizer.charger_parcours(file_parcours)
+                        self.file_parcours = file_parcours
+                        print u"\033[32;1m\n============== Chargement fichier descriptif des parcours termine ===============\n"
+                    except:
+                        print u"\033[31;1mERREUR SURVENUE LORS DU CHARGEMENT DU FICHIER DESCRIPTIF DES PARCOURS!\n"
+                        self.file_parcours = "..."
+            else:
+                print u"\033[31;1mCommande incorrecte.\n\n"
+
+        os.system("clear")
         self.menu_principal()
 
 
@@ -545,9 +542,14 @@ class Script():
         print u"\n\n\033[34;1m_____________________________ Supprimer un groupe _______________________________\033[37;1m\n\n"
 
         self.optimizer.afficher_EDT(idUE=id_ue)                           #ULTRA IMPORTANT POUR EVITER LES BUGS
+
         print self.optimizer.ListeDesUEs[id_ue].print_groupe()+"\n"
         try:
             nb_groupes = self.optimizer.ListeDesUEs[id_ue].nb_groupes
+            if nb_groupes == 1:
+                print u"\033[31;1m------------------------ SUPPRESSION DU GROUPE NON-AUTORISE: L'UE N'A PLUS QU'UN SEUL GROUPE! --------------------------"
+                self.delagateur_operations_edt(self.message_operations_EDT())
+                return
             ens_groupes = set(range(1,nb_groupes+1)) - self.optimizer.ListeDesUEs[id_ue].groupes_supprimes
             ens_groupes = {g for g in ens_groupes}
             numGroupe = raw_input("Saisir numero du groupe a supprimer: \n>>> ")

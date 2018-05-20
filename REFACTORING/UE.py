@@ -115,22 +115,13 @@ class UE:
             s += self.intitule + "(" + str(len(self.EnsEtuInteresses) - self.nbInscrits) + " / " + str(self.capaciteTotale - self.nbInscrits) + ")  "
             return s
 
+        def deplacer_groupe(self, numeroGroupe, new_creneautd, new_creneautme):
+            self.ListeCreneauxTdTme[numeroGroupe] = (new_creneautd, new_creneautme)
+
 
         #--------------------------------------------------------------#
         def ajouter_un_groupe(self, creneauTd, creneauTme, capacite):
             if creneauTme != creneauTd: #Les exceptions
-                # numero_nouveau_groupe = 0
-                # if len(self.groupes_supprimes) != 0:
-                #     L = list(self.groupes_supprimes)
-                #     L.sort()
-                #     numero_nouveau_groupe = L[0]
-                # if numero_nouveau_groupe != 0:
-                #     self.ListeCreneauxTdTme[numero_nouveau_groupe-1] = (creneauTd, creneauTme)
-                #     self.ListeCapacites[numero_nouveau_groupe-1] = capacite
-                #     self.groupes_supprimes.remove(numero_nouveau_groupe)
-                #     self.maj_capacite_totale()
-                #     self.optimizer.capaciteTotaleAccueil += capacite
-                #     return numero_nouveau_groupe
 
                 self.ListeCreneauxTdTme.append((creneauTd, creneauTme))
                 self.ListeCapacites.append(capacite)

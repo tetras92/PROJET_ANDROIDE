@@ -7,7 +7,6 @@ from Incompatibilite import *
 from MatchingModel import *
 from UE import *
 
-
 class DAK_Optimizer:
 
     class Parameters:
@@ -222,7 +221,6 @@ class DAK_Optimizer:
                 self.preparer_condition_matching_courant()
             if self.UE_modifiees_significativement:
                 self.maj_suite_a_une_modification_significative_ue()
-
             if tauxEquilibre >= 0 and tauxEquilibre <= 1.0:
                 self.tauxEquilibre = tauxEquilibre      #un changement de taux d'equilibre persiste
             MM = MatchingModel(self,equilibre)
@@ -283,7 +281,6 @@ class DAK_Optimizer:
 
 
     def AS_supprimer_groupe(self, idUE, numeroGroupe):
-        # self.AS_modifier_capacite(idUE, numeroGroupe, 0)
         self.ListeDesUEs[idUE].supprimer_groupe(numeroGroupe)
         self.UE_modifiees_significativement = True              #5/5
 
@@ -309,9 +306,8 @@ class DAK_Optimizer:
         self.UE_modifiees_significativement = True
 
     def AS_deplacer_groupe(self, ueId, numeroGroupe, new_creneautd, new_creneautme):
-        capacite = self.ListeDesUEs[ueId].ListeCapacites[numeroGroupe-1]
-        self.AS_supprimer_groupe(ueId, numeroGroupe)
-        self.AS_ajouter_groupe(ueId, new_creneautd, new_creneautme, capacite)
+        self.ListeDesUEs[ueId].deplacer_groupe(numeroGroupe, new_creneautd, new_creneautme)
+        self.UE_modifiees_significativement = True
 
     def AS_deplacer_cours(self, ueId, creneau_actuel, nouveau_creneau):
         self.ListeDesUEs[ueId].modifier_creneau_cours(creneau_actuel, nouveau_creneau)
@@ -490,7 +486,7 @@ class DAK_Optimizer:
 # # # Optim.AS_modifier_capacite(4, 2, 36)
 # # Optim.AD_interets_ue_conseillees_par_parcours("VOEUX_RANDOM/0")
 # # # Optim.RL_appliquer(10)
-# # # Optim.match()
+# Optim.match()
 # Optim.AS_supprimer_groupe(11, 3) #Groupe 3 Mapsi
 # Optim.match(tauxEquilibre=0.01)
 #
