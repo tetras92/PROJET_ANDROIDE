@@ -1,6 +1,7 @@
 from gurobipy import *
+
 from HelpingFunctions import *
-import time
+
 
 class CompatibilityModel():
 

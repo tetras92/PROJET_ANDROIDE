@@ -1,11 +1,12 @@
-from UE import *
-from Etudiant import *
-from Incompatibilite import *
-from Parcours import *
-from MatchingModel import *
-from GenerateurDeVoeux import *
-from Analyzer import *
 from heapq import heappop, heappush
+
+from Analyzer import *
+from Etudiant import *
+from GenerateurDeVoeux import *
+from Incompatibilite import *
+from MatchingModel import *
+from UE import *
+
 
 class DAK_Optimizer:
 
@@ -54,7 +55,7 @@ class DAK_Optimizer:
 
 
     def __init__(self):
-        print "DAK_Optimizer Powered by DAK"
+        # print "DAK_Optimizer Powered by DAK"
         self.analyseur =  Analyzer(self)
 
     def operations_pre_chargement_edt(self):
@@ -232,7 +233,7 @@ class DAK_Optimizer:
             print MM
             return value
         else:
-            print "Etat des chargements indispensables : \nVoeux charges : {}\t EDT charge : {}\t Parcours charges : {}\n".format(self.voeux_charges, self.edt_charge, self.parcours_charge)
+            print u"\033[31;1mEtat des chargements indispensables : \nVoeux charges : {}\t EDT charge : {}\t Parcours charges : {}\n\033[37;1m".format(self.voeux_charges, self.edt_charge, self.parcours_charge)
 
     # def nettoyer_les_Ues_et_les_Incompatibilites(self):
     #     for Ue in self.ListeDesUEs[1:]:
@@ -256,7 +257,7 @@ class DAK_Optimizer:
 
 #----------EPROUVER
     def eprouver_edt(self, nombreDeDossierGeneres=nbDossiersParDefaut, directoryName='VOEUX_RANDOM',equilibre=True, tauxEquilibre=0.10):
-        print "Mesure de la resistance de l'edt avec {} dossier(s) aleatoire(s)\n".format(nombreDeDossierGeneres)
+        print u"\033[32;1mMesure de la resistance de l'edt avec {} dossier(s) aleatoire(s)\033[37;1m\n".format(nombreDeDossierGeneres)
         self.analyseur.reset()
         # if self.UE_modifiees_significativement:
         #     self.maj_suite_a_une_modification_significative_ue()
@@ -326,7 +327,7 @@ class DAK_Optimizer:
         while nomParcours != self.ListeDesParcours[indexParcours].get_intitule():
             indexParcours += 1
 
-        self.ListeDesParcours[indexParcours].afficher_carte_incompatibilites(taille)
+        return self.ListeDesParcours[indexParcours].afficher_carte_incompatibilites(taille)
 
     # def maj_interets_etudiants_pour_les_ues(self):
     #     for Etu in self.ListeDesEtudiants:
@@ -375,7 +376,7 @@ class DAK_Optimizer:
             writer.writerow(csvLine)
         file.close()
 
-    def afficher_EDT(self):
+    def afficher_EDT(self,idUE=None):
         # print "debut afficher", self.EDT[17]
         if self.UE_modifiees_significativement:
             self.maj_suite_a_une_modification_significative_ue()
@@ -401,8 +402,16 @@ class DAK_Optimizer:
         def une_ligne(j):
             s = ""
             for i in range(0, DAK_Optimizer.Parameters.nbCreneauxParSemaine, DAK_Optimizer.Parameters.nbJoursOuvres):
-                s += '{:12s}| '.format(prochain_element_creneau(EDT_str[i+j]))
+                prochain_elem = prochain_element_creneau(EDT_str[i+j])
+
+                if idUE != None:
+                    ue_a_colorie = self.ListeDesUEs[idUE]
+                    if prochain_elem == ue_a_colorie.get_intitule().upper() or prochain_elem[:-1]== ue_a_colorie.get_intitule():
+                        s += u"\033[38;5;"+ue_a_colorie.color+"m"
+                s += '{:12s}'.format(prochain_elem)
+                s += u"\033[37;1m| "
             s += "\n"
+
             return s
 
         def ligne_intro_bloc(j):
